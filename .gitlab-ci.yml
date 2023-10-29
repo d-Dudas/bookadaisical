@@ -1,0 +1,19 @@
+stages:
+  # - test-frontend
+  - test-backend
+
+test-backend-job:
+    image: maven:3-jdk-11
+    stage: test-backend
+    script:
+        - apt-get update -qy
+        - apt-get install -y openjdk-17-jdk
+        - export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+        - echo "Running unit tests..."
+        - cd backend
+        - ./mvnw test
+
+# test-frontend-job:
+#     image: node:18
+#     stage: test-frontend
+#     script:
