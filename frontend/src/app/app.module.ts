@@ -6,11 +6,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { LoginPopupComponent } from './login-popup/login-popup.component';
 
 @NgModule({
   declarations: [
     // AppComponent,
-    LandingPageComponent
+    LandingPageComponent,
+    LoginPopupComponent
   ],
   imports: [
     BrowserModule,
