@@ -1,6 +1,10 @@
 <button (click)="showPopup($event)">{{ popupButtonText }}</button>
 <div class="login-popup" *ngIf="isPopupVisible" (click)="showPopup($event)">
     <div class="login-popup-content">
-        <p>login-popup works!</p>
+        <form class="login-form" (ngSubmit)="submitLoginForm()" #loginForm="ngForm">
+            <input type="text" name="accountIdentificator" placeholder="Username or email or phone number" [(ngModel)]="loginFormData.accountIdentificator" required #accountIdentificator="ngModel">
+            <input type="password" name="accountPassword" placeholder="Password" [(ngModel)]="loginFormData.accountPassword" #accountPassword="ngModel">
+            <button type="submit" [disabled]="!isFormValid(loginForm)">Submit</button>
+        </form>
     </div>
 </div>

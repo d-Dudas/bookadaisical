@@ -2,23 +2,30 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
-// import { AppComponent } from './app.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginPopupComponent } from './login-popup/login-popup.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { UserInfoComponent } from './user-info/user-info.component';
+import { authReducer } from './account-management/auth.reducer';
 
 @NgModule({
   declarations: [
     // AppComponent,
     LandingPageComponent,
-    LoginPopupComponent
+    LoginPopupComponent,
+    UserInfoComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    StoreModule.forRoot(authReducer),
+    StoreModule.forFeature('auth', authReducer),
+    EffectsModule.forRoot([])
   ],
   providers: [],
   bootstrap: [LandingPageComponent]
