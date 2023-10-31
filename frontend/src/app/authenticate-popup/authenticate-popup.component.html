@@ -1,0 +1,5 @@
+<button (click)="showPopup($event)" *ngIf="isButtonVisible">{{ popupButtonText }}</button>
+<button (click)="signOut()" *ngIf="!isButtonVisible">Sign out</button>
+<div class="authenticate-popup" *ngIf="isPopupVisible" (click)="showPopup($event)">
+    <app-login-popup [isLoginPopupVisible]="isLoginPopupVisible" (authenticateDoneEvent)="authenticateDone()"></app-login-popup>
+</div>

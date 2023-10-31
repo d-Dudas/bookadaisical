@@ -5,18 +5,22 @@ import { AppRoutingModule } from './app-routing.module';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { LoginPopupComponent } from './login-popup/login-popup.component';
+import { AuthenticatePopupComponent } from './authenticate-popup/authenticate-popup.component';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { UserInfoComponent } from './user-info/user-info.component';
 import { authReducer } from './account-management/auth.reducer';
+import { RegisterPopupComponent } from './register-popup/register-popup.component';
+import { LoginPopupComponent } from './login-popup/login-popup.component';
 
 @NgModule({
   declarations: [
     // AppComponent,
     LandingPageComponent,
+    AuthenticatePopupComponent,
     LoginPopupComponent,
-    UserInfoComponent
+    UserInfoComponent,
+    RegisterPopupComponent
   ],
   imports: [
     BrowserModule,

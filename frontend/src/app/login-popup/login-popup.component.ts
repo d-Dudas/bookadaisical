@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AccountService } from '../account.service';
 import { AuthService } from '../account-management/auth-service.service';
 import { User } from '../account-management/user';
@@ -9,9 +9,8 @@ import { User } from '../account-management/user';
   styleUrls: ['./login-popup.component.css']
 })
 export class LoginPopupComponent {
-
-  isPopupVisible: boolean = false;
-  popupButtonText: string = "Show popup";
+  @Input() isLoginPopupVisible: boolean = false;
+  @Output() authenticateDoneEvent = new EventEmitter<void>();
   loginFormData = {
     accountIdentificator: '',
     accountPassword: ''
@@ -20,42 +19,23 @@ export class LoginPopupComponent {
   constructor(private accountService: AccountService,
               private authService: AuthService) {}
 
-  showPopup(event: MouseEvent)
-  {
-    if(event.target === event.currentTarget)
-    {
-      this.isPopupVisible = !this.isPopupVisible;
-      if (this.isPopupVisible)
-      {
-        this.popupButtonText = "Hide popup";
-      }
-      else
-      {
-        this.popupButtonText = "Show popup";
-      }
-    }
-  }
-
-  isFormValid(form: any): boolean {
-    return form.form.valid && this.loginFormData.accountIdentificator && this.loginFormData.accountPassword;
-  }
-
   submitLoginForm()
   {
     console.log(this.loginFormData);
     this.accountService.sendLoginFormToBackend(this.loginFormData).subscribe({
-      next:response =>
+      next:(response: any) =>
       {
         console.log("Backend response:");
         console.log(response);
 
-        const user: User = {
-          username: "Paperplanes",
-          id: 13,
-          email: "secret"
-        }
+        const user: User = response as User;
+
+        console.log("User:");
+        console.log(user);
 
         this.authService.login(user);
+        this.clearLoginFormData();
+        this.authenticateDoneEvent.emit();
       },
       error:error =>
       {
@@ -63,5 +43,18 @@ export class LoginPopupComponent {
         console.log(error);
       }
     })
+  }
+
+  isFormValid(form: any): boolean
+  {
+    return form.form.valid && this.loginFormData.accountIdentificator && this.loginFormData.accountPassword;
+  }
+
+  clearLoginFormData()
+  {
+    this.loginFormData = {
+      accountIdentificator: '',
+      accountPassword: ''
+    };
   }
 }

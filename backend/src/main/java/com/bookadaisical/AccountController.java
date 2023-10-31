@@ -1,6 +1,5 @@
 package com.bookadaisical;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,15 +14,12 @@ public class AccountController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        // Handle the login logic here and return a response.
-        // You can use the loginRequest object to access the loginFormData.
-
-        // Example response:
+    public ResponseEntity<User> login(@RequestBody LoginRequest loginRequest) {
         if (loginRequest.getAccountIdentificator().equals("username") && loginRequest.getAccountPassword().equals("password")) {
-            return ResponseEntity.ok("{\"message\": \"Login successful\"}");
+            User user = new User("Boogiedue", 123, "topsecret@e-uvt.ro");
+            return ResponseEntity.ok(user);
         } else {
-            return ResponseEntity.ok("{\"message\": \"Login failed\"}");
+            return ResponseEntity.badRequest().body(null);
         }
     }
 }
