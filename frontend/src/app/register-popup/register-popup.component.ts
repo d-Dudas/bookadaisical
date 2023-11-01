@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AccountService } from '../account.service';
 import { AuthService } from '../account-management/auth-service.service';
 import { User } from '../account-management/user';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControlOptions, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-register-popup',
@@ -14,6 +14,8 @@ export class RegisterPopupComponent {
   @Output() authenticateDoneEvent = new EventEmitter<void>();
   @Output() showLoginPopupEvent = new EventEmitter<void>();
   registerFormData: FormGroup;
+  isPasswordVisisble: boolean = false;
+  passwordInputType: string = this.isPasswordVisisble ? "text" : "password";
 
   constructor(private accountService: AccountService,
     private authService: AuthService,
@@ -22,15 +24,28 @@ export class RegisterPopupComponent {
     this.registerFormData = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(6)]],
       email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
-      password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/)]]
-    })
+      phoneNumber: ['', [Validators.required, Validators.pattern(/^07\d{8}$/)]],
+      password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/)]],
+      confirmPassword: ['', [Validators.required]]
+    }, {
+      validators: this.passwordMatchValidator
+    } as AbstractControlOptions);
+  }
+
+  passwordMatchValidator(group: FormGroup): ValidationErrors | null {
+    const password = group.get('password')?.value;
+    const confirmPassword = group.get('confirmPassword')?.value;
+
+    if (password === confirmPassword) {
+      return null;
+    } else {
+      return { mismatch: true };
+    }
   }
 
   submitRegisterForm()
   {
-    console.log(this.registerFormData);
-    this.accountService.sendLoginFormToBackend(this.registerFormData).subscribe({
+    this.accountService.sendRegisterFormToBackend(this.registerFormData.getRawValue()).subscribe({
       next:(response: any) =>
       {
         console.log("Backend response:");
@@ -68,4 +83,9 @@ export class RegisterPopupComponent {
     this.showLoginPopupEvent.emit();
   }
 
+  togglePasswordVisibility()
+  {
+    this.isPasswordVisisble = !this.isPasswordVisisble;
+    this.passwordInputType = this.isPasswordVisisble ? "text" : "password";
+  }
 }

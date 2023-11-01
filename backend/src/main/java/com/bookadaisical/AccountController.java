@@ -8,9 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AccountController {
     @PostMapping("/register-account")
-    public ResponseEntity<String> receiveDataFromRegisterAccountForm(@RequestBody String data)
+    public ResponseEntity<User> receiveDataFromRegisterAccountForm(@RequestBody RegisterRequest registerRequest)
     {
-        return ResponseEntity.ok("Data received successfully");
+        User user = new User(registerRequest.getUsername(), 123, registerRequest.getEmail());
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping("/login")

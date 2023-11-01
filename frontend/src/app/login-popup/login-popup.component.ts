@@ -16,6 +16,8 @@ export class LoginPopupComponent {
     accountIdentificator: '',
     accountPassword: ''
   };
+  isPasswordVisisble: boolean = false;
+  passwordInputType: string = this.isPasswordVisisble ? "text" : "password";
 
   constructor(private accountService: AccountService,
               private authService: AuthService) {}
@@ -62,5 +64,11 @@ export class LoginPopupComponent {
   showRegisterPopup()
   {
     this.showRegisterPopupEvent.emit();
+  }
+
+  togglePasswordVisibility()
+  {
+    this.isPasswordVisisble = !this.isPasswordVisisble;
+    this.passwordInputType = this.isPasswordVisisble ? "text" : "password";
   }
 }

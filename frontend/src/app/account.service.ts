@@ -23,4 +23,10 @@ export class AccountService {
   {
     return this.http.post(this.backendUrl + this.loginAddress, loginFormData);
   }
+
+  sendRegisterFormToBackend(registerFormData : {})
+  {
+    console.log(registerFormData);
+    return this.http.post(this.backendUrl + this.registerAccountAddress, registerFormData);
+  }
 }
