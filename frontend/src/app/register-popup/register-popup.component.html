@@ -1,1 +1,15 @@
-<p>register-popup works!</p>
+<div class="register-popup-content" *ngIf="isRegisterPopupVisible">
+    <form class="register-form" (ngSubmit)="submitRegisterForm()" #registerForm="ngForm" [formGroup]="registerFormData">
+        <input type="text" name="username" placeholder="Username" formControlName="username">
+        <input type="text" name="email" placeholder="Email" formControlName="email">
+        <input type="text" name="phoneNumber" placeholder="Phone number" formControlName="phoneNumber">
+        <input type="password" name="password" placeholder="Password" formControlName="password">
+        <button type="submit" [disabled]="!registerFormData.valid">Submit</button>
+    </form>
+    <div class="dont-have-account-box">
+        <div class="dont-have-account-content">
+            <p>Already have an account?</p>
+            <button (click)="showLoginPopup()">Sign in!</button>
+        </div>
+    </div>
+</div>

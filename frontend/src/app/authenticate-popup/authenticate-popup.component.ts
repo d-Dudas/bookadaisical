@@ -21,6 +21,7 @@ export class AuthenticatePopupComponent {
     {
       this.isPopupVisible = !this.isPopupVisible;
       this.isLoginPopupVisible = this.isPopupVisible;
+      this.isRegisterPopupVisible = false;
     }
   }
 
@@ -36,5 +37,17 @@ export class AuthenticatePopupComponent {
     this.isPopupVisible = false;
     this.isPopupVisible = false;
     this.isButtonVisible = false;
+  }
+
+  showRegisterPopup()
+  {
+    this.isLoginPopupVisible = false;
+    this.isRegisterPopupVisible = true;
+  }
+
+  showLoginPopup()
+  {
+    this.isRegisterPopupVisible = false;
+    this.isLoginPopupVisible = true;
   }
 }

@@ -11,6 +11,7 @@ import { User } from '../account-management/user';
 export class LoginPopupComponent {
   @Input() isLoginPopupVisible: boolean = false;
   @Output() authenticateDoneEvent = new EventEmitter<void>();
+  @Output() showRegisterPopupEvent = new EventEmitter<void>();
   loginFormData = {
     accountIdentificator: '',
     accountPassword: ''
@@ -56,5 +57,10 @@ export class LoginPopupComponent {
       accountIdentificator: '',
       accountPassword: ''
     };
+  }
+
+  showRegisterPopup()
+  {
+    this.showRegisterPopupEvent.emit();
   }
 }
