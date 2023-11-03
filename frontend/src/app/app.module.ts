@@ -12,6 +12,12 @@ import { UserInfoComponent } from './user-info/user-info.component';
 import { authReducer } from './account-management/auth.reducer';
 import { RegisterPopupComponent } from './register-popup/register-popup.component';
 import { LoginPopupComponent } from './login-popup/login-popup.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { BookPreviewComponent } from './book-preview/book-preview.component';
+import { Book } from './book';
+import { SearchPageComponent } from './search-page/search-page.component';
+import { RootComponent } from './root/root.component';
+import { NgxSliderModule } from 'ngx-slider-v2';
 
 @NgModule({
   declarations: [
@@ -19,7 +25,11 @@ import { LoginPopupComponent } from './login-popup/login-popup.component';
     AuthenticatePopupComponent,
     LoginPopupComponent,
     UserInfoComponent,
-    RegisterPopupComponent
+    RegisterPopupComponent,
+    NavbarComponent,
+    BookPreviewComponent,
+    SearchPageComponent,
+    RootComponent
   ],
   imports: [
     BrowserModule,
@@ -29,9 +39,10 @@ import { LoginPopupComponent } from './login-popup/login-popup.component';
     StoreModule.forRoot(authReducer),
     StoreModule.forFeature('auth', authReducer),
     EffectsModule.forRoot([]),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxSliderModule
   ],
-  providers: [],
-  bootstrap: [LandingPageComponent]
+  providers: [Book],
+  bootstrap: [RootComponent]
 })
 export class AppModule { }

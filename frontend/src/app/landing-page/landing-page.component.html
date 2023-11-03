@@ -6,7 +6,12 @@
     <title>Bookadaisical</title>
 </head>
 <body>
-    <app-authenticate-popup></app-authenticate-popup>
+    <app-navbar></app-navbar>
     <app-user-info></app-user-info>
+    <div class="popular-books-container">
+        <div class="popular-books-content" *ngFor="let book of books">
+            <app-book-preview [book]="book"></app-book-preview>
+        </div>
+    </div>
 </body>
 </html>
