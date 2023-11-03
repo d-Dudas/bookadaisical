@@ -7,17 +7,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class AccountController {
-    @PostMapping("/register-account")
+    @PostMapping("/register")
     public ResponseEntity<User> receiveDataFromRegisterAccountForm(@RequestBody RegisterRequest registerRequest)
     {
-        User user = new User(registerRequest.getUsername(), 123, registerRequest.getEmail());
+        User user = new User(registerRequest.getUsername(), 123);
         return ResponseEntity.ok(user);
     }
 
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody LoginRequest loginRequest) {
-        if (loginRequest.getAccountIdentificator().equals("username") && loginRequest.getAccountPassword().equals("password")) {
-            User user = new User("Boogiedue", 123, "topsecret@e-uvt.ro");
+        if (loginRequest.getIdentificator().equals("username") && loginRequest.getPassword().equals("password")) {
+            User user = new User("Boogiedue", 123);
             return ResponseEntity.ok(user);
         } else {
             return ResponseEntity.badRequest().body(null);

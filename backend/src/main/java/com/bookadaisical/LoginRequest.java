@@ -1,24 +1,22 @@
 package com.bookadaisical;
 
 public class LoginRequest {
-    private String accountIdentificator;
-    private String accountPassword;
+    private String identificator;
+    private String password;
 
-    // Getters and setters (or Lombok annotations for automatic generation)
-
-    public String getAccountIdentificator() {
-        return accountIdentificator;
+    public String getIdentificator() {
+        return identificator;
     }
 
-    public void setAccountIdentificator(String accountIdentificator) {
-        this.accountIdentificator = accountIdentificator;
+    public void setIdentificator(String identificator) {
+        this.identificator = identificator;
     }
 
-    public String getAccountPassword() {
-        return accountPassword;
+    public String getPassword() {
+        return password;
     }
 
-    public void setAccountPassword(String accountPassword) {
-        this.accountPassword = accountPassword;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

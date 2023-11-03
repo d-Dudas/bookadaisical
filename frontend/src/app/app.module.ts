@@ -15,7 +15,6 @@ import { LoginPopupComponent } from './login-popup/login-popup.component';
 
 @NgModule({
   declarations: [
-    // AppComponent,
     LandingPageComponent,
     AuthenticatePopupComponent,
     LoginPopupComponent,

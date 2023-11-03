@@ -13,8 +13,8 @@ export class LoginPopupComponent {
   @Output() authenticateDoneEvent = new EventEmitter<void>();
   @Output() showRegisterPopupEvent = new EventEmitter<void>();
   loginFormData = {
-    accountIdentificator: '',
-    accountPassword: ''
+    identificator: '',
+    password: ''
   };
   isPasswordVisisble: boolean = false;
   passwordInputType: string = this.isPasswordVisisble ? "text" : "password";
@@ -28,14 +28,7 @@ export class LoginPopupComponent {
     this.accountService.sendLoginFormToBackend(this.loginFormData).subscribe({
       next:(response: any) =>
       {
-        console.log("Backend response:");
-        console.log(response);
-
         const user: User = response as User;
-
-        console.log("User:");
-        console.log(user);
-
         this.authService.login(user);
         this.clearLoginFormData();
         this.authenticateDoneEvent.emit();
@@ -50,14 +43,14 @@ export class LoginPopupComponent {
 
   isFormValid(form: any): boolean
   {
-    return form.form.valid && this.loginFormData.accountIdentificator && this.loginFormData.accountPassword;
+    return form.form.valid && this.loginFormData.identificator && this.loginFormData.password;
   }
 
   clearLoginFormData()
   {
     this.loginFormData = {
-      accountIdentificator: '',
-      accountPassword: ''
+      identificator: '',
+      password: ''
     };
   }
 

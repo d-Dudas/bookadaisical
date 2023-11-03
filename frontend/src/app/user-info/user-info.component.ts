@@ -1,3 +1,4 @@
+// TODO: remove this temporary component later
 import { Component } from '@angular/core';
 import { User } from '../account-management/user';
 import { Store } from '@ngrx/store';

@@ -48,14 +48,7 @@ export class RegisterPopupComponent {
     this.accountService.sendRegisterFormToBackend(this.registerFormData.getRawValue()).subscribe({
       next:(response: any) =>
       {
-        console.log("Backend response:");
-        console.log(response);
-
         const user: User = response as User;
-
-        console.log("User:");
-        console.log(user);
-
         this.authService.login(user);
         this.clearRegisterFormData();
         this.authenticateDoneEvent.emit();

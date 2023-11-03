@@ -3,16 +3,11 @@ package com.bookadaisical;
 public class User {
     private String username;
     private int id;
-    private String email;
+    public User() {}
 
-    public User() {
-        // Default constructor
-    }
-
-    public User(String username, int id, String email) {
+    public User(String username, int id) {
         this.username = username;
         this.id = id;
-        this.email = email;
     }
 
     // Getter and setter methods for the fields
@@ -30,13 +25,5 @@ public class User {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 }
