@@ -5,15 +5,19 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class AccountService {
-  private backendUrl = 'http://localhost:8080/register-account';
+  private backendUrl = 'http://localhost:8080';
+  private registerAccountAddress = '/register';
+  private loginAddress = '/login';
 
   constructor(private http: HttpClient) { }
 
-  sendRegisterAccountFormToBackend(data: string)
+  sendLoginFormToBackend(loginFormData: {})
   {
-    return this.http.post(this.backendUrl, data, {
-      headers: {'Content-Type': 'text/plain'},
-      responseType: 'text'
-    });
+    return this.http.post(this.backendUrl + this.loginAddress, loginFormData);
+  }
+
+  sendRegisterFormToBackend(registerFormData : {})
+  {
+    return this.http.post(this.backendUrl + this.registerAccountAddress, registerFormData);
   }
 }
