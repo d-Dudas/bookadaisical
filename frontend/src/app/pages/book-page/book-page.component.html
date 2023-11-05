@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookadaisical</title>
+</head>
+<body>
+    <app-navbar></app-navbar>
+    <h1>{{book?.title}}</h1>
+    <h2>{{book?.author}}</h2>
+    <h3>{{book?.description}}</h3>
+    <h3>{{book?.uniqueId}}</h3>
+    <app-send-message-to-book-owner-popup></app-send-message-to-book-owner-popup>
+    <button [routerLink]="['/negotiate', book?.uniqueId]">Swap</button>
+</body>
+</html>
