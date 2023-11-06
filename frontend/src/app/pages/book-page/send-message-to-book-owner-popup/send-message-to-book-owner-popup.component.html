@@ -1,0 +1,8 @@
+<button (click)="showBuyBookPopup()">Buy</button>
+<div class="send-message-to-owner-popup" *ngIf="isBuyPopupVisible" (click)="hideBuyBookPopup($event)">
+    <div class="send-message-to-owner-container">
+        <h1>Contact the owner</h1>
+        <input type="text" id="message-to-owner" [(ngModel)]="messageToOwner">
+        <button [disabled]="isMessageEmpty()" (click)="sendMessage()">Send</button>
+    </div>
+</div>

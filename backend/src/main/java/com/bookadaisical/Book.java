@@ -1,13 +1,15 @@
 package com.bookadaisical;
 
 public class Book {
+    private int uniqueId;
     private String title;
     private String author;
     private String description;
     private TargetAudience targetAudience;
 
-    public Book(String title, String author, String description, TargetAudience targetAudience)
+    public Book(int uniqueId, String title, String author, String description, TargetAudience targetAudience)
     {
+        this.uniqueId = uniqueId;
         this.title = title;
         this.author = author;
         this.description = description;
@@ -51,4 +53,13 @@ public class Book {
     public void setTargetAudience(TargetAudience targetAudience) {
         this.targetAudience = targetAudience;
     }
+
+    public int getUniqueId() {
+        return uniqueId;
+    }
+
+    public void setUniqueId(int uniqueId) {
+        this.uniqueId = uniqueId;
+    }
+
 }
