@@ -5,9 +5,9 @@ CREATE TABLE bookadaisical.users (
 	username text NOT NULL UNIQUE,
 	email text NOT NULL UNIQUE,
 	password text NOT NULL,
-	current_points int,
-	total_points int,
-	special_currency int
+	current_points int DEFAULT 0,
+	total_points int DEFAULT 0,
+	special_currency int DEFAULT 0
 );
 
 CREATE TABLE bookadaisical.admins (
@@ -66,7 +66,7 @@ CREATE TYPE bookadaisical.genres AS ENUM (
     'Crime',
     'Classics',
     'Dark',
-	'Dystopian',
+    'Dystopian',
     'Encyclopedic',
     'Essay',
     'Feminist',
@@ -110,39 +110,39 @@ CREATE TYPE bookadaisical.condition_books AS ENUM (
 );
 	
 CREATE TYPE bookadaisical.trading_options AS ENUM (
-	'currency',
-	'points',
-	'swap'
+    'currency',
+    'points',
+    'swap'
 );
 
 CREATE TABLE bookadaisical.images (
-	id serial PRIMARY KEY,
-	image_data bytea
+    id serial PRIMARY KEY,
+    image_data bytea
 ); 
 
 CREATE TABLE bookadaisical.books (
     id serial PRIMARY KEY,
-	uploader int REFERENCES bookadaisical.users(id),
+    uploader int REFERENCES bookadaisical.users(id),
     title text NOT NULL,
     author text NOT NULL,
-	num_views int,
-	description text,
-	created_on timestamp NOT NULL DEFAULT NOW(),
-	last_modified timestamp,
-	year_of_publication int,
-	target_audience bookadaisical.target_audience_books,
-	book_condition bookadaisical.condition_books
+    num_views int,
+    description text,
+    created_on timestamp NOT NULL DEFAULT NOW(),
+    last_modified timestamp,
+    year_of_publication int,
+    target_audience bookadaisical.target_audience_books,
+    book_condition bookadaisical.condition_books
 );
 
 CREATE TABLE bookadaisical.images_books (
-	book_id int REFERENCES bookadaisical.books(id),
+    book_id int REFERENCES bookadaisical.books(id),
     image_id int REFERENCES bookadaisical.images(id),
     PRIMARY KEY (book_id, image_id)
 );
 
 CREATE TABLE bookadaisical.active_books (
-	id serial PRIMARY KEY,
-	book_id int REFERENCES bookadaisical.books(id)
+    id serial PRIMARY KEY,
+    book_id int REFERENCES bookadaisical.books(id)
 );
 
 CREATE TABLE bookadaisical.genres_books (
