@@ -1,4 +1,4 @@
-package com.bookadaisical.service;
+package com.bookadaisical.service.interfaces;
 
 import java.util.List;
 
