@@ -1,4 +1,4 @@
-package com.bookadaisical;
+package com.bookadaisical.utils;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

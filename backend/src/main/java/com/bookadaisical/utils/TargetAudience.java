@@ -1,4 +1,4 @@
-package com.bookadaisical;
+package com.bookadaisical.utils;
 
 public enum TargetAudience {
     ALL,

@@ -1,4 +1,6 @@
-package com.bookadaisical;
+package com.bookadaisical.model;
+
+import com.bookadaisical.utils.TargetAudience;
 
 public class Book {
     private int uniqueId;
