@@ -1,4 +1,4 @@
-package com.bookadaisical;
+package com.bookadaisical.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.bookadaisical.dto.SearchFiltersDto;
+import com.bookadaisical.model.Book;
+import com.bookadaisical.utils.TargetAudience;
 
 @RestController
 public class BookController {
@@ -38,7 +42,7 @@ public class BookController {
     }
 
     @PostMapping("/get-filtered-books")
-    public ResponseEntity<List<Book>> getFilteredBooks(@RequestBody SearchFilters searchFilters)
+    public ResponseEntity<List<Book>> getFilteredBooks(@RequestBody SearchFiltersDto searchFilters)
     {
         List<Book> books = new ArrayList<>();
         populateList(books);

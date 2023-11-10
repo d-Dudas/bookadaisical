@@ -1,6 +1,8 @@
-package com.bookadaisical;
+package com.bookadaisical.dto;
 
-public class SearchFilters {
+import com.bookadaisical.utils.TargetAudience;
+
+public class SearchFiltersDto {
     private String genre;
     private TargetAudience targetAudience;
     private String artistitMovement;

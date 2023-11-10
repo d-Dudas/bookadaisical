@@ -1,4 +1,4 @@
-package com.bookadaisical;
+package com.bookadaisical.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -104,4 +104,3 @@ public class User {
     }
     
 }
-

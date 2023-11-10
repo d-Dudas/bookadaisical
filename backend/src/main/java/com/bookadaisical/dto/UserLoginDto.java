@@ -1,6 +1,6 @@
-package com.bookadaisical;
+package com.bookadaisical.dto;
 
-public class LoginRequest {
+public class UserLoginDto {
     private String identificator;
     private String password;
 
