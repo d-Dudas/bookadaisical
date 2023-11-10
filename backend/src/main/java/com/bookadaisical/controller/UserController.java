@@ -21,7 +21,7 @@ public class UserController {
     }
     
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<User> registerUser(@RequestBody UserRegisterDto userRegisterDto) throws Exception {
+    public ResponseEntity<User> registerUser(@RequestBody UserRegisterDto userRegisterDto) {
         return ResponseEntity.ok(userService.registerUser(userRegisterDto));
     }
 

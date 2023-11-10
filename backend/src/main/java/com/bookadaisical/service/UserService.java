@@ -1,5 +1,7 @@
 package com.bookadaisical.service;
 
+import com.bookadaisical.service.interfaces.IUserService;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -29,15 +31,23 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User registerUser(UserRegisterDto userRegisterDto) throws Exception {
+    public User registerUser(UserRegisterDto userRegisterDto) {
         User user = mapper.toUser(userRegisterDto);
         Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
         if (existingUser.isPresent()) {
-            throw new Exception(String.format("User with username \"%s\" is already registered", user.getUsername()));
+            try {
+                throw new Exception(String.format("User with username \"%s\" is already registered", user.getUsername()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         existingUser = userRepository.findByEmail(user.getEmail());
         if (existingUser.isPresent()) {
-            throw new Exception(String.format("User with email \"%s\" is already registered", user.getEmail()));
+            try {
+                throw new Exception(String.format("User with email \"%s\" is already registered", user.getEmail()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         userRepository.save(user);
         return userRepository.findByUsername(user.getUsername()).get();
