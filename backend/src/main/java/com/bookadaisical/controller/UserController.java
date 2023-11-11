@@ -8,11 +8,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bookadaisical.dto.UserLoginDto;
 import com.bookadaisical.dto.UserRegisterDto;
 import com.bookadaisical.service.UserService;
 
 @RestController
 public class UserController {
+
     private final UserService userService;
 
     @Autowired
@@ -29,4 +31,14 @@ public class UserController {
         }
     }
 
+    @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> loginUser(@RequestBody UserLoginDto userLoginDto) {
+        try {
+            return new ResponseEntity<>(userService.loginUser(userLoginDto), HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("error: " + e.getMessage());
+        }
+    }
+
+    
 }

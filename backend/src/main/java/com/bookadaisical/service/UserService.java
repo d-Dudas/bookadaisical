@@ -8,8 +8,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bookadaisical.dto.UserLoginDto;
 import com.bookadaisical.dto.UserRegisterDto;
-import com.bookadaisical.mapper.MapStructMapper;
+import com.bookadaisical.mapper.UserMapper;
 import com.bookadaisical.model.User;
 import com.bookadaisical.repository.UserRepository;
 
@@ -17,10 +18,10 @@ import com.bookadaisical.repository.UserRepository;
 public class UserService implements IUserService {
     
     private final UserRepository userRepository;
-    private final MapStructMapper mapper;
+    private final UserMapper mapper;
 
     @Autowired
-    public UserService(UserRepository userRepository, MapStructMapper mapper) {
+    public UserService(UserRepository userRepository, UserMapper mapper) {
         this.userRepository = userRepository;
         this.mapper = mapper;
     }
@@ -44,6 +45,20 @@ public class UserService implements IUserService {
         }
         userRepository.save(user);
         return userRepository.findByUsername(user.getUsername()).get();
+    }
+
+    @Override
+    public User loginUser(UserLoginDto userLoginDto) throws Exception {
+        Optional<User> user = userRepository.findByUsernameOrEmailAndPassword(userLoginDto.getIdentificator(), userLoginDto.getPassword());
+        if (user.isPresent()) {
+            return user.get();
+        }
+        Optional<User> checkIdentifier = userRepository.findByUsernameOrEmail(userLoginDto.getIdentificator(), userLoginDto.getIdentificator());
+        if (checkIdentifier.isPresent() && !checkIdentifier.get().getPassword().equals(userLoginDto.getPassword())) {
+            throw new Exception("Invalid password");
+        } else {
+            throw new Exception(String.format("User with identifier \"%s\" does not exist", userLoginDto.getIdentificator()));
+        }
     }
 
 }
