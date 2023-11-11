@@ -6,8 +6,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(schema = "bookadaisical", name = "users")
 public class User {
 
@@ -33,74 +41,5 @@ public class User {
 
     @Column(name = "special_currency")
     private int specialCurrency;
-
-    public User() {}
-
-    public User(int id, String username, String email, String password, int currentPoints, int totalPoints,
-            int specialCurrency) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.currentPoints = currentPoints;
-        this.totalPoints = totalPoints;
-        this.specialCurrency = specialCurrency;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public int getCurrentPoints() {
-        return currentPoints;
-    }
-
-    public void setCurrentPoints(int currentPoints) {
-        this.currentPoints = currentPoints;
-    }
-
-    public int getTotalPoints() {
-        return totalPoints;
-    }
-
-    public void setTotalPoints(int totalPoints) {
-        this.totalPoints = totalPoints;
-    }
-
-    public int getSpecialCurrency() {
-        return specialCurrency;
-    }
-
-    public void setSpecialCurrency(int specialCurrency) {
-        this.specialCurrency = specialCurrency;
-    }
     
 }
