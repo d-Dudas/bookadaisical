@@ -20,9 +20,10 @@ CREATE TABLE bookadaisical.yet_to_be_validated_users (
 	user_id int REFERENCES bookadaisical.users(id)
 );
 
-CREATE TYPE bookadaisical.target_audience_books AS ENUM ('Children’s', 'Young Adult', 'Adult');
+CREATE TYPE bookadaisical.target_audience_books AS ENUM ('All', 'Children’s', 'Young Adult', 'Adult');
 
 CREATE TYPE bookadaisical.artistic_movement_books AS ENUM (
+    'All',
     'Ancient Literature',
     'Medieval Literature',
     'Baroque',
@@ -58,6 +59,7 @@ CREATE TYPE bookadaisical.artistic_movement_books AS ENUM (
 );
 
 CREATE TYPE bookadaisical.genres AS ENUM (
+    'All',
     'Alternate history',
     'Academic',
     'Adventure',
@@ -102,6 +104,7 @@ CREATE TYPE bookadaisical.genres AS ENUM (
 );
 
 CREATE TYPE bookadaisical.condition_books AS ENUM (
+    'all',
     'new',
     'like new',
     'very good',
@@ -110,6 +113,7 @@ CREATE TYPE bookadaisical.condition_books AS ENUM (
 );
 	
 CREATE TYPE bookadaisical.trading_options AS ENUM (
+    'all',
     'currency',
     'points',
     'swap'
