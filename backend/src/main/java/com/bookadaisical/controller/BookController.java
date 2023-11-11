@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bookadaisical.dto.SearchFiltersDto;
+import com.bookadaisical.enums.TargetAudience;
 import com.bookadaisical.model.Book;
-import com.bookadaisical.utils.TargetAudience;
 
 @RestController
 public class BookController {

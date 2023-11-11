@@ -1,4 +1,4 @@
-package com.bookadaisical.utils;
+package com.bookadaisical.enums;
 
 public enum Condition {
     ALL,

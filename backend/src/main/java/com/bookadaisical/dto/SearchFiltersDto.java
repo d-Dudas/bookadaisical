@@ -1,6 +1,6 @@
 package com.bookadaisical.dto;
 
-import com.bookadaisical.utils.TargetAudience;
+import com.bookadaisical.enums.TargetAudience;
 
 public class SearchFiltersDto {
     private String genre;

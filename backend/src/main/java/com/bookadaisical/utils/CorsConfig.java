@@ -1,4 +1,4 @@
-package com.bookadaisical;
+package com.bookadaisical.utils;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -12,6 +12,7 @@ public class CorsConfig implements WebMvcConfigurer
     {
         registry.addMapping("/**")
             .allowedOrigins("http://localhost:4200")
+            .allowedOrigins("http://127.0.0.1:4200")
             .allowedMethods("GET", "POST")
             .allowedHeaders("*");
     }
