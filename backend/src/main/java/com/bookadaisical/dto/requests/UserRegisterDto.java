@@ -1,4 +1,4 @@
-package com.bookadaisical.dto;
+package com.bookadaisical.dto.requests;
 
 import lombok.Getter;
 import lombok.Setter;

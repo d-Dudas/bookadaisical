@@ -8,15 +8,16 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bookadaisical.dto.UserLoginDto;
-import com.bookadaisical.dto.UserRegisterDto;
+import com.bookadaisical.dto.requests.UserLoginDto;
+import com.bookadaisical.dto.requests.UserRegisterDto;
+import com.bookadaisical.dto.responses.UserSlimDto;
 import com.bookadaisical.mapper.UserMapper;
 import com.bookadaisical.model.User;
 import com.bookadaisical.repository.UserRepository;
 
 @Service
 public class UserService implements IUserService {
-    
+
     private final UserRepository userRepository;
     private final UserMapper mapper;
 
@@ -48,17 +49,16 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User loginUser(UserLoginDto userLoginDto) throws Exception {
-        Optional<User> user = userRepository.findByUsernameOrEmailAndPassword(userLoginDto.getIdentificator(), userLoginDto.getPassword());
+    public UserSlimDto loginUser(UserLoginDto userLoginDto) throws Exception {
+        Optional<User> user = userRepository.findByUsernameOrEmailAndPassword(userLoginDto.getIdentifier(), userLoginDto.getPassword());
         if (user.isPresent()) {
-            return user.get();
+            return mapper.toUserSlimDto(user.get());
         }
-        Optional<User> checkIdentifier = userRepository.findByUsernameOrEmail(userLoginDto.getIdentificator(), userLoginDto.getIdentificator());
+        Optional<User> checkIdentifier = userRepository.findByUsernameOrEmail(userLoginDto.getIdentifier(), userLoginDto.getIdentifier());
         if (checkIdentifier.isPresent() && !checkIdentifier.get().getPassword().equals(userLoginDto.getPassword())) {
             throw new Exception("Invalid password");
         } else {
-            throw new Exception(String.format("User with identifier \"%s\" does not exist", userLoginDto.getIdentificator()));
+            throw new Exception("User not found");
         }
     }
-
 }

@@ -4,8 +4,9 @@ package com.bookadaisical.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import com.bookadaisical.dto.UserLoginDto;
-import com.bookadaisical.dto.UserRegisterDto;
+import com.bookadaisical.dto.requests.UserLoginDto;
+import com.bookadaisical.dto.requests.UserRegisterDto;
+import com.bookadaisical.dto.responses.UserSlimDto;
 import com.bookadaisical.model.User;
 
 @Mapper(componentModel = "spring")
@@ -21,5 +22,8 @@ public interface UserMapper {
 
     UserLoginDto toUserLoginDto(User user);
     User toUser (UserLoginDto userLoginDto);
+
+    UserSlimDto toUserSlimDto(User user);
+    User toUser(UserSlimDto userSlimDto);
     
 }

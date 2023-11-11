@@ -1,4 +1,4 @@
-package com.bookadaisical.dto;
+package com.bookadaisical.dto.requests;
 
 import com.bookadaisical.enums.TargetAudience;
 
