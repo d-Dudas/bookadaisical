@@ -1,6 +1,6 @@
 package com.bookadaisical.utils;
 
-public enum Genres {
+public enum Genre {
     ALL,
     ALTERNATE_HISTORY,
     ACADEMIC,

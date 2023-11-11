@@ -1,6 +1,6 @@
 package com.bookadaisical.utils;
 
-public enum TradingOptions {
+public enum TradingOption {
     ALL,
     CURRENCY,
     POINTS,
