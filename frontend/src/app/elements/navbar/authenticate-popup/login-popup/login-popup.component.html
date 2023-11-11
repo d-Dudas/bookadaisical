@@ -1,6 +1,6 @@
 <div class="login-popup-content" *ngIf="isLoginPopupVisible">
     <form class="login-form" (ngSubmit)="submitLoginForm()" #loginForm="ngForm">
-        <input type="text" name="identificator" placeholder="Username or email or phone number" [(ngModel)]="loginFormData.identificator" required #identificator="ngModel">
+        <input type="text" name="identifier" placeholder="Username or email or phone number" [(ngModel)]="loginFormData.identifier" required #identificator="ngModel">
         <input [type]="passwordInputType" name="password" placeholder="Password" [(ngModel)]="loginFormData.password" #password="ngModel">
         <input type="checkbox" (change)="togglePasswordVisibility()"> Show Password
         <button type="submit" [disabled]="!isFormValid(loginForm)">Submit</button>

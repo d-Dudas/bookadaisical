@@ -13,7 +13,7 @@ export class LoginPopupComponent {
   @Output() authenticateDoneEvent = new EventEmitter<void>();
   @Output() showRegisterPopupEvent = new EventEmitter<void>();
   loginFormData = {
-    identificator: '',
+    identifier: '',
     password: ''
   };
   isPasswordVisisble: boolean = false;
@@ -43,13 +43,13 @@ export class LoginPopupComponent {
 
   isFormValid(form: any): boolean
   {
-    return form.form.valid && this.loginFormData.identificator && this.loginFormData.password;
+    return form.form.valid && this.loginFormData.identifier && this.loginFormData.password;
   }
 
   clearLoginFormData()
   {
     this.loginFormData = {
-      identificator: '',
+      identifier: '',
       password: ''
     };
   }
