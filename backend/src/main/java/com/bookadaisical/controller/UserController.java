@@ -33,13 +33,10 @@ public class UserController {
 
     @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> loginUser(@RequestBody UserLoginDto userLoginDto) {
-        System.out.println("Expected line");
         try {
             return new ResponseEntity<>(userService.loginUser(userLoginDto), HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("error: " + e.getMessage());
         }
     }
-
-    
 }

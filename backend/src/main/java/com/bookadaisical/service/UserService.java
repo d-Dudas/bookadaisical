@@ -50,10 +50,8 @@ public class UserService implements IUserService {
 
     @Override
     public UserSlimDto loginUser(UserLoginDto userLoginDto) throws Exception {
-        System.out.println("Expected line no.2");
         Optional<User> user = userRepository.findByUsernameOrEmailAndPassword(userLoginDto.getIdentifier(), userLoginDto.getPassword());
         if (user.isPresent()) {
-            System.out.println("Expected line no.3");
             return mapper.toUserSlimDto(user.get());
         }
         Optional<User> checkIdentifier = userRepository.findByUsernameOrEmail(userLoginDto.getIdentifier(), userLoginDto.getIdentifier());
