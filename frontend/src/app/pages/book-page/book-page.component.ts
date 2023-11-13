@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Book } from '../../elements/classes/book';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BookService } from '../../services/book.service';
+import { Store } from '@ngrx/store';
+import { selectIsAuthenticated } from 'src/app/account-management/auth.state';
+import { showAuthPopup } from 'src/app/account-management/auth.actions';
 
 @Component({
   selector: 'app-book-page',
@@ -13,7 +16,9 @@ export class BookPageComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private bookService: BookService
+    private router: Router,
+    private bookService: BookService,
+    private store: Store
   ) {}
 
   ngOnInit(): void {
@@ -26,5 +31,16 @@ export class BookPageComponent implements OnInit {
           });
         }
       });
+  }
+
+  onSwapClicked(): void {
+    console.log(this.store.select(selectIsAuthenticated).subscribe((authenticated) => {return authenticated}));
+    let isAuthenticated;
+    this.store.select(selectIsAuthenticated).subscribe((authenticated) => {isAuthenticated = authenticated});
+    if(isAuthenticated){
+      this.router.navigate(['/negotiate/' + this.book?.uniqueId]);
+    } else {
+      this.store.dispatch(showAuthPopup());
+    }
   }
 }

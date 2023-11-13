@@ -1,5 +1,8 @@
 import { Component} from '@angular/core';
 import { AuthService } from '../../../account-management/auth-service.service';
+import { Store } from '@ngrx/store';
+import { selectIsAuthPopupVisible, selectIsLoginPopupVisible } from 'src/app/account-management/auth.state';
+import { hideAuthPopup, hideLoginPopup, showAuthPopup } from 'src/app/account-management/auth.actions';
 
 @Component({
   selector: 'app-authenticate-popup',
@@ -13,14 +16,18 @@ export class AuthenticatePopupComponent {
   isRegisterPopupVisible: boolean = false;
   popupButtonText: string = this.isPopupVisible ? "Hide popup" : "Show popup";
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService,
+              private store: Store)
+  {
+    this.store.select(selectIsAuthPopupVisible).subscribe((ispx) => {this.isPopupVisible = ispx;});
+    this.store.select(selectIsLoginPopupVisible).subscribe((ispx) => {this.isLoginPopupVisible = ispx;});
+  }
 
   showPopup(event: MouseEvent)
   {
     if(event.target === event.currentTarget)
     {
-      this.isPopupVisible = !this.isPopupVisible;
-      this.isLoginPopupVisible = this.isPopupVisible;
+      this.isPopupVisible ? this.store.dispatch(hideAuthPopup()) : this.store.dispatch(showAuthPopup());
       this.isRegisterPopupVisible = false;
     }
   }
@@ -33,21 +40,19 @@ export class AuthenticatePopupComponent {
 
   authenticateDone()
   {
-    this.isLoginPopupVisible = false;
-    this.isPopupVisible = false;
-    this.isPopupVisible = false;
     this.isButtonVisible = false;
+    this.store.dispatch(hideAuthPopup());
   }
 
   showRegisterPopup()
   {
-    this.isLoginPopupVisible = false;
+    this.store.dispatch(hideLoginPopup());
     this.isRegisterPopupVisible = true;
   }
 
   showLoginPopup()
   {
     this.isRegisterPopupVisible = false;
-    this.isLoginPopupVisible = true;
+    this.store.dispatch(showAuthPopup());
   }
 }
