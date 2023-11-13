@@ -26,7 +26,7 @@ public class User {
 
     @Column(nullable = false, unique = true)
     private String username;
-    
+
     @Column(nullable = false, unique = true)
     private String email;
 
@@ -41,5 +41,4 @@ public class User {
 
     @Column(name = "special_currency")
     private int specialCurrency;
-    
 }

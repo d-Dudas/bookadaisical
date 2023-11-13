@@ -111,7 +111,7 @@ CREATE TYPE bookadaisical.condition_books AS ENUM (
     'good',
     'acceptable'
 );
-	
+
 CREATE TYPE bookadaisical.trading_options AS ENUM (
     'all',
     'currency',
@@ -122,7 +122,7 @@ CREATE TYPE bookadaisical.trading_options AS ENUM (
 CREATE TABLE bookadaisical.images (
     id serial PRIMARY KEY,
     image_data bytea
-); 
+);
 
 CREATE TABLE bookadaisical.books (
     id serial PRIMARY KEY,

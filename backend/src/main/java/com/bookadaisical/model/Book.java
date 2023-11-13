@@ -4,14 +4,16 @@ import com.bookadaisical.enums.TargetAudience;
 
 public class Book {
     private int uniqueId;
+    private int uploader;
     private String title;
     private String author;
     private String description;
     private TargetAudience targetAudience;
 
-    public Book(int uniqueId, String title, String author, String description, TargetAudience targetAudience)
+    public Book(int uniqueId, int uploader, String title, String author, String description, TargetAudience targetAudience)
     {
         this.uniqueId = uniqueId;
+        this.uploader = uploader;
         this.title = title;
         this.author = author;
         this.description = description;
@@ -64,4 +66,11 @@ public class Book {
         this.uniqueId = uniqueId;
     }
 
+    public int getUploader() {
+        return uploader;
+    }
+
+    public void setUploader(int uploader) {
+        this.uploader = uploader;
+    }
 }

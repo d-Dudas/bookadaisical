@@ -32,10 +32,14 @@ export class NegotiatePageComponent {
     });
 
     this.route.paramMap.subscribe(params => { // TODO: handle error case
-      const bookId = params.get('uniqueId');
+      const bookId = params.get('bookId');
+      console.log("Book id:");
+      console.log(bookId);
       if(bookId !== null)
       {
-        this.bookService.getBookOwnerId(parseInt(bookId, 10)).subscribe(ownerId => {
+        this.bookService.getBookOwnerId(parseInt(bookId, 10)).subscribe((ownerId) => {
+          console.log("Owner id:");
+          console.log(ownerId);
           this.bookOwnerId = ownerId;
         });
       }
