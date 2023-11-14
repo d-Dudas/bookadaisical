@@ -24,7 +24,6 @@ export class LoginPopupComponent {
 
   submitLoginForm()
   {
-    console.log(this.loginFormData);
     this.accountService.sendLoginFormToBackend(this.loginFormData).subscribe({
       next:(response: any) =>
       {

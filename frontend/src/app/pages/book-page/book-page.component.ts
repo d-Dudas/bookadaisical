@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BookService } from '../../services/book.service';
 import { Store } from '@ngrx/store';
 import { selectIsAuthenticated } from 'src/app/account-management/auth.state';
-import { showAuthPopup } from 'src/app/account-management/auth.actions';
+import { setIntendedPath, showAuthPopup } from 'src/app/account-management/auth.actions';
 
 @Component({
   selector: 'app-book-page',
@@ -34,13 +34,17 @@ export class BookPageComponent implements OnInit {
   }
 
   onSwapClicked(): void {
-    console.log(this.store.select(selectIsAuthenticated).subscribe((authenticated) => {return authenticated}));
     let isAuthenticated;
+    let routePath: string;
+
     this.store.select(selectIsAuthenticated).subscribe((authenticated) => {isAuthenticated = authenticated});
+    routePath = '/negotiate/' + this.book?.uniqueId;
+
     if(isAuthenticated){
-      this.router.navigate(['/negotiate/' + this.book?.uniqueId]);
+      this.router.navigate([routePath]);
     } else {
       this.store.dispatch(showAuthPopup());
+      this.store.dispatch(setIntendedPath({ path: routePath }));
     }
   }
 }

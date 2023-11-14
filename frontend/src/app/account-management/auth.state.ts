@@ -4,18 +4,27 @@ import { User } from './user';
 export interface AuthState {
   isAuthenticated: boolean;
   user: User | null;
+}
+
+export interface AuthPopupState {
   isAuthPopupVisible: boolean;
   isLoginPopupVisible: boolean;
-} // TODO: remember intended path if login is blocking some route
+  intendedPath: string | boolean;
+}
 
 export const initialAuthState: AuthState = {
   isAuthenticated: false,
-  user: null,
-  isAuthPopupVisible: false,
-  isLoginPopupVisible: false
+  user: null
 };
 
+export const initialAuthPopupState: AuthPopupState = {
+  isAuthPopupVisible: false,
+  isLoginPopupVisible: false,
+  intendedPath: false
+}
+
 const getAuthFeatureState = createFeatureSelector<AuthState>('auth');
+const getAuthPopupFeatureState = createFeatureSelector<AuthPopupState>('authPopup');
 
 export const selectIsAuthenticated = createSelector(
   getAuthFeatureState,
@@ -28,11 +37,16 @@ export const selectUser = createSelector(
 );
 
 export const selectIsAuthPopupVisible = createSelector(
-  getAuthFeatureState,
+  getAuthPopupFeatureState,
   (state) => state.isAuthPopupVisible
 );
 
 export const selectIsLoginPopupVisible = createSelector(
-  getAuthFeatureState,
+  getAuthPopupFeatureState,
   (state) => state.isLoginPopupVisible
+);
+
+export const selectIntendedpath = createSelector(
+  getAuthPopupFeatureState,
+  (state) => state.intendedPath
 );

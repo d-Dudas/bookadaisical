@@ -9,7 +9,7 @@ import { AuthenticatePopupComponent } from './elements/navbar/authenticate-popup
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { UserInfoComponent } from './user-info/user-info.component';
-import { authReducer } from './account-management/auth.reducer';
+import { authPopupReducer, authReducer } from './account-management/auth.reducer';
 import { RegisterPopupComponent } from './elements/navbar/authenticate-popup/register-popup/register-popup.component';
 import { LoginPopupComponent } from './elements/navbar/authenticate-popup/login-popup/login-popup.component';
 import { NavbarComponent } from './elements/navbar/navbar.component';
@@ -44,6 +44,7 @@ import { NegotiatePageComponent } from './pages/negotiate-page/negotiate-page.co
     HttpClientModule,
     StoreModule.forRoot(authReducer),
     StoreModule.forFeature('auth', authReducer),
+    StoreModule.forFeature('authPopup', authPopupReducer),
     EffectsModule.forRoot([]),
     ReactiveFormsModule,
     NgxSliderModule
