@@ -7,7 +7,23 @@
 </head>
 <body>
     <app-navbar></app-navbar>
-    <h2>Book owner id: {{ bookOwnerId }}</h2>
-    <h2>Client id: {{ clientId }}</h2>
+    <div class="negotiation-main-container">
+        <div class="user1-books user-books">
+            <div class="user-books-header">
+                <h2>Initiator id: {{ initiatorId }}</h2>
+            </div>
+            <div class="user-books-content" >
+                <app-book-preview class="user-books-item" *ngFor="let item of initiatorItems" [book]="item.book"></app-book-preview>
+            </div>
+        </div>
+        <div class="user2-books user-books">
+            <div class="user-books-header">
+                <h2>Responder id: {{ responderId }}</h2>
+            </div>
+            <div class="user-books-content">
+                <app-book-preview class="user-books-item" *ngFor="let item of responderItems" [book]="item.book"></app-book-preview>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
