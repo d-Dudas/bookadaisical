@@ -24,7 +24,6 @@ export class RegisterPopupComponent {
     this.registerFormData = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(6)]],
       email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.required, Validators.pattern(/^07\d{8}$/)]],
       password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/)]],
       confirmPassword: ['', [Validators.required]]
     }, {
@@ -45,6 +44,12 @@ export class RegisterPopupComponent {
 
   submitRegisterForm()
   {
+    console.log("Is formdata valid?");
+    console.log(!this.registerFormData.valid);
+    if(!this.registerFormData.valid) {
+      console.log("Invalid form. Won't submit.");
+      return;
+    }
     this.accountService.sendRegisterFormToBackend(this.registerFormData.getRawValue()).subscribe({
       next:(response: any) =>
       {
@@ -66,7 +71,6 @@ export class RegisterPopupComponent {
     this.registerFormData = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(6)]],
       email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/)]],
     });
   }
