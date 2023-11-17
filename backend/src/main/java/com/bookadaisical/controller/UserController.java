@@ -13,10 +13,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bookadaisical.dto.requests.UserLoginDto;
+import com.bookadaisical.dto.requests.UserLoginTokenDto;
 import com.bookadaisical.dto.requests.UserRegisterDto;
+import com.bookadaisical.dto.responses.UserSlimDto;
 import com.bookadaisical.hardcodedValues.BooksProvider;
 import com.bookadaisical.model.Book;
 import com.bookadaisical.service.UserService;
+
+import io.micrometer.core.ipc.http.HttpSender.Response;
 
 import com.bookadaisical.hardcodedValues.BooksProvider;
 
@@ -58,5 +62,15 @@ public class UserController {
         }
 
         return ResponseEntity.badRequest().body("book_not_found");
+    }
+
+    @PostMapping(value = "/login-with-token")
+    public ResponseEntity<?> loginWithToken(@RequestBody UserLoginTokenDto userLoginTokenDto)
+    {
+        try {
+            return ResponseEntity.ok(userService.loginUserWithToken(userLoginTokenDto.getToken(), userLoginTokenDto.getKey()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }
