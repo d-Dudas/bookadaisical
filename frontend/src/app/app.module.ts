@@ -21,6 +21,7 @@ import { NgxSliderModule } from 'ngx-slider-v2';
 import { BookPageComponent } from './pages/book-page/book-page.component';
 import { SendMessageToBookOwnerPopupComponent } from './pages/book-page/send-message-to-book-owner-popup/send-message-to-book-owner-popup.component';
 import { NegotiatePageComponent } from './pages/negotiate-page/negotiate-page.component';
+import { ProblemPopupComponent } from './elements/problem-popup/problem-popup.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { NegotiatePageComponent } from './pages/negotiate-page/negotiate-page.co
     RootComponent,
     BookPageComponent,
     SendMessageToBookOwnerPopupComponent,
-    NegotiatePageComponent
+    NegotiatePageComponent,
+    ProblemPopupComponent
   ],
   imports: [
     BrowserModule,

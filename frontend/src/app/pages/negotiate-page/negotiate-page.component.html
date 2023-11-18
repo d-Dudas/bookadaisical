@@ -7,22 +7,49 @@
 </head>
 <body>
     <app-navbar></app-navbar>
+    <app-problem-popup
+        [isVisible]="problemDetected"
+        [message]="problemMessage"
+        (closePopupEvenet)="closeProblemPopup()">
+    </app-problem-popup>
     <div class="negotiation-main-container">
-        <div class="user1-books user-books">
-            <div class="user-books-header">
-                <h2>Initiator id: {{ initiatorId }}</h2>
+        <div class="negotiation-books-container">
+            <div class="user-books">
+                <div class="user-books-header">
+                    <h2>Initiator id: {{ initiatorId }}</h2>
+                </div>
+                <div class="user-books-content" >
+                    <app-book-preview
+                        class="user-books-item"
+                        *ngFor="let item of initiatorItems"
+                        [book]="item.book"
+                        [class.selectedInitiatorBook]="item.selected"
+                        (click)="selectBook(item)">
+                    </app-book-preview>
+                </div>
             </div>
-            <div class="user-books-content" >
-                <app-book-preview class="user-books-item" *ngFor="let item of initiatorItems" [book]="item.book"></app-book-preview>
+            <div class="user-books">
+                <div class="user-books-header">
+                    <h2>Responder id: {{ responderId }}</h2>
+                </div>
+                <div class="user-books-content">
+                    <div
+                        class="user-books-item"
+                        *ngFor="let item of responderItems"
+                        [class.selectedResponderBook]="item.selected"
+                        (click)="selectBook(item)">
+                        <app-book-preview
+                            [book]="item.book">
+                        </app-book-preview>
+                        <button (click)="openBookInNewTab(item.book.uniqueId)">Details</button>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="user2-books user-books">
-            <div class="user-books-header">
-                <h2>Responder id: {{ responderId }}</h2>
-            </div>
-            <div class="user-books-content">
-                <app-book-preview class="user-books-item" *ngFor="let item of responderItems" [book]="item.book"></app-book-preview>
-            </div>
+        <div class="negotiation-buttons-container">
+            <button>Not interested anymore</button>
+            <button>Accept offer</button>
+            <button (click)="sendOffer()">Send offer</button>
         </div>
     </div>
 </body>

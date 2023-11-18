@@ -8,16 +8,39 @@
     height: 70%;
     border: 1px solid grey;
     box-shadow: -0px 5px 10px 5px rgba(0, 0, 0, 0.5);
+}
+
+.negotiation-books-container
+{
+    width: 100%;
+    height: 90%;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
 }
 
+.negotiation-buttons-container
+{
+    width: 100%;
+    height: 10%;
+    padding: 1% 2%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.negotiation-buttons-container button
+{
+    width: 15%;
+    height: 100%;
+}
+
 .user-books
 {
     width: 48%;
-    height: 90%;
+    height: 100%;
     border: 1px solid red;
     box-shadow: 0px 2px 10px 2px rgba(0, 0, 0, 0.5);
     display: flex;
@@ -50,4 +73,15 @@
 {
     width: 100%;
     height: 30vh;
+    border: 1px solid grey;
+}
+
+.selectedResponderBook
+{
+    box-shadow: 0px 0px 2px 2px green;
+}
+
+.selectedInitiatorBook
+{
+    box-shadow: 0px 0px 2px 2px yellow;
 }
