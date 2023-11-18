@@ -13,12 +13,12 @@ export class AuthService {
 
   login(user: User) {
     console.log("setting user");
-    this.store.select(AuthState.selectIsAuthenticated).subscribe((is) => {console.log(is)});
     this.store.dispatch(login({ user }));
-    this.store.select(AuthState.selectIsAuthenticated).subscribe((is) => {console.log(is)});
-    this.store.select(AuthState.selectUser).subscribe((user) => {console.log(user)});
-    localStorage.setItem('loginToken', user.token);
-    localStorage.setItem('loginKey', user.key);
+    if(user.token && user.key)
+    {
+      localStorage.setItem('loginToken', user.token);
+      localStorage.setItem('loginKey', user.key);
+    }
   }
 
   logout() {

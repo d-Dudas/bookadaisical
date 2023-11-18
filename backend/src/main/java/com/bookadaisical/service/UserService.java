@@ -93,7 +93,11 @@ public class UserService implements IUserService {
         if(loginToken.isPresent())
         {
             // TODO: revalidate token
-            return this.createUserSlimDto(loginToken.get().getUser());
+            // UserSlimDto userSlimDto = this.createUserSlimDto(loginToken.get().getUser());
+            UserSlimDto userSlimDto = mapper.toUserSlimDto(loginToken.get().getUser());
+            // userSlimDto.setToken(loginToken.get().getToken());
+            // userSlimDto.setKey(loginToken.get().getKey());
+            return userSlimDto;
         }
         throw new Exception("invalid_token");
     }

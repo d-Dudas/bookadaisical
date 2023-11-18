@@ -10,7 +10,7 @@
     <app-user-info></app-user-info>
     <div class="popular-books-container">
         <div class="popular-books-content" *ngFor="let book of books">
-            <app-book-preview [book]="book"></app-book-preview>
+            <app-book-preview [book]="book" [routerLink]="['/books', book.uniqueId]"></app-book-preview>
         </div>
     </div>
 </body>

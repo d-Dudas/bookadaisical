@@ -25,5 +25,5 @@ public interface UserMapper {
 
     UserSlimDto toUserSlimDto(User user);
     User toUser(UserSlimDto userSlimDto);
-    
+
 }
