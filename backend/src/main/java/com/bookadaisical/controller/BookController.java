@@ -45,7 +45,7 @@ public class BookController {
         List<Book> books = BooksProvider.getHardcodedBooksList();
         for(Book book : books)
         {
-            if(book.getUniqueId() == uniqueId)
+            if(book.getId() == uniqueId)
                 return ResponseEntity.ok(book);
         }
 
