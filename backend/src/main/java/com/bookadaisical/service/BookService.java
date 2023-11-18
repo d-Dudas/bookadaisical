@@ -21,9 +21,7 @@ public class BookService implements IBookService {
 
     @Override
     public List<Book> getTopTenBooks() throws Exception {
-
-        return null;
+        List<Book> topTenMonthlyBooks = bookRepository.findTopTenBooks();
+        return topTenMonthlyBooks;
     }
-
-  
 }

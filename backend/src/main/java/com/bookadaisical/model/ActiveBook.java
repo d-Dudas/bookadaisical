@@ -1,6 +1,4 @@
-package com.bookadaisical.repository;
-
-import com.bookadaisical.model.Book;
+package com.bookadaisical.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,6 +19,6 @@ public class ActiveBook {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name = "book_id", nullable = false)
-    private Book book;
+    @JoinColumn(name = "book_id", referencedColumnName = "id", nullable = false)
+    private Book activeBook;
 }

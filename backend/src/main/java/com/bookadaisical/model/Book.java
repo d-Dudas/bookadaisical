@@ -1,16 +1,22 @@
 package com.bookadaisical.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import com.bookadaisical.enums.Condition;
 import com.bookadaisical.enums.TargetAudience;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,7 +27,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(schema = "bookadasical", name = "books")
+@Entity
+@Table(schema = "bookadaisical", name = "books")
 public class Book {
 
     @Id
@@ -54,10 +61,15 @@ public class Book {
     @Column(name = "year_of_publication")
     private int yearOfPublication;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "target_audience")
     private TargetAudience targetAudience;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "book_condition")
     private Condition bookCondition;
+
+    @OneToMany(mappedBy = "activeBook", cascade = CascadeType.ALL)
+    private List<ActiveBook> activeBooks;
 
 }
