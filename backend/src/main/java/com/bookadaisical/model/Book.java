@@ -38,14 +38,26 @@ public class Book {
 
     @Column(nullable = false)
     private String author;
+
+    @Column(name = "num_views")
     private int numViews;
+
+    @Column
     private String description;
     
-    @Column(nullable = false)
+    @Column(name = "created_on", nullable = false)
     private LocalDate createdOn;
+
+    @Column(name = "last_modified")
     private LocalDate lastModified;
+
+    @Column(name = "year_of_publication")
     private int yearOfPublication;
+
+    @Column(name = "target_audience")
     private TargetAudience targetAudience;
+
+    @Column(name = "book_condition")
     private Condition bookCondition;
-    
+
 }
