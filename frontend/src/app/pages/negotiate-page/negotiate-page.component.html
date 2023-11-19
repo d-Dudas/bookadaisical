@@ -8,8 +8,8 @@
 <body>
     <app-navbar></app-navbar>
     <app-problem-popup
-        [isVisible]="problemDetected"
-        [message]="problemMessage"
+        [isVisible]="problem.exists"
+        [message]="problem.message"
         (closePopupEvenet)="closeProblemPopup()">
     </app-problem-popup>
     <div class="negotiation-main-container">

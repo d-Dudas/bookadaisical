@@ -44,10 +44,7 @@ export class RegisterPopupComponent {
 
   submitRegisterForm()
   {
-    console.log("Is formdata valid?");
-    console.log(!this.registerFormData.valid);
     if(!this.registerFormData.valid) {
-      console.log("Invalid form. Won't submit.");
       return;
     }
     this.accountService.sendRegisterFormToBackend(this.registerFormData.getRawValue()).subscribe({
@@ -60,8 +57,6 @@ export class RegisterPopupComponent {
       },
       error:error =>
       {
-        console.log("Backend error:");
-        console.log(error);
       }
     })
   }

@@ -12,7 +12,6 @@ export class AuthService {
   constructor(private store: Store<AuthState.AuthState>) {}
 
   login(user: User) {
-    console.log("setting user");
     this.store.dispatch(login({ user }));
     if(user.token && user.key)
     {

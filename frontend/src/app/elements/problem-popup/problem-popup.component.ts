@@ -1,5 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
+export interface Problem {
+  exists: boolean,
+  message: string
+}
+
 @Component({
   selector: 'app-problem-popup',
   templateUrl: './problem-popup.component.html',

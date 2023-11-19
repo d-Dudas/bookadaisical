@@ -45,7 +45,7 @@ export class AuthenticatePopupComponent {
   {
     let intendedPath: string | boolean = false;
 
-    this.store.select(selectIntendedpath).subscribe((path) => {intendedPath = path; console.log(path)});
+    this.store.select(selectIntendedpath).subscribe((path) => {intendedPath = path;});
     this.store.dispatch(hideAuthPopup());
 
     if(intendedPath){

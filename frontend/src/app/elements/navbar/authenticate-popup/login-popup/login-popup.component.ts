@@ -26,7 +26,6 @@ export class LoginPopupComponent {
   {
     if(!this.isFormValid())
     {
-      console.log("Form is not valid. Won't submit.");
       return;
     }
     this.accountService.sendLoginFormToBackend(this.loginFormData).subscribe({
@@ -39,7 +38,6 @@ export class LoginPopupComponent {
       },
       error:error =>
       {
-        console.log("Backend error:");
         console.log(error);
       }
     })
@@ -47,7 +45,6 @@ export class LoginPopupComponent {
 
   isFormValid(): boolean
   {
-    // return form.form.valid &&
     return this.loginFormData.identifier != '' && this.loginFormData.password != '';
   }
 

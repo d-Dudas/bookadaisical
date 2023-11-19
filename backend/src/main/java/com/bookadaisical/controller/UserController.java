@@ -2,7 +2,6 @@ package com.bookadaisical.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,21 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bookadaisical.dto.requests.UserLoginDto;
 import com.bookadaisical.dto.requests.UserLoginTokenDto;
 import com.bookadaisical.dto.requests.UserRegisterDto;
-import com.bookadaisical.dto.responses.UserSlimDto;
 import com.bookadaisical.hardcodedValues.BooksProvider;
 import com.bookadaisical.model.Book;
 import com.bookadaisical.service.UserService;
-
-import io.micrometer.core.ipc.http.HttpSender.Response;
-
-import com.bookadaisical.hardcodedValues.BooksProvider;
 
 @RestController
 public class UserController {
 
     private final UserService userService;
 
-    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -64,7 +57,7 @@ public class UserController {
         return ResponseEntity.badRequest().body("book_not_found");
     }
 
-    @PostMapping(value = "/login-with-token")
+    @PostMapping(value = "/login-with-token", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> loginWithToken(@RequestBody UserLoginTokenDto userLoginTokenDto)
     {
         try {
