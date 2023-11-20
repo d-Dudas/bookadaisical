@@ -3,12 +3,12 @@ package com.bookadaisical.hardcodedValues;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bookadaisical.enums.TargetAudience;
 import com.bookadaisical.model.Book;
 
 public class BooksProvider {
     public static List<Book> getHardcodedBooksList(){
         List<Book> books = new ArrayList<>();
+        /* 
         books.add(new Book(1, 1, "book1", "author1", "description1", TargetAudience.ADULTS));
         books.add(new Book(2, 1, "book2", "author2", "description2", TargetAudience.CHILDREN));
         books.add(new Book(3, 1, "book3", "author3", "description3", TargetAudience.ADULTS));
@@ -22,7 +22,7 @@ public class BooksProvider {
         books.add(new Book(11, 2, "book11", "author11", "description11", TargetAudience.YOUNG_ADULTS));
         books.add(new Book(12, 2, "book12", "author12", "description12", TargetAudience.ADULTS));
         books.add(new Book(13, 2, "book13", "author13", "description13", TargetAudience.CHILDREN));
-
+        */
         return books;
     }
 }
