@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AuthService } from 'src/app/account-management/auth-service.service';
-import { User } from 'src/app/account-management/user';
+import { UserSlim } from 'src/app/elements/classes/userSlim';
 import { AccountService } from 'src/app/services/account.service';
 
 @Component({
@@ -31,7 +31,7 @@ export class LoginPopupComponent {
     this.accountService.sendLoginFormToBackend(this.loginFormData).subscribe({
       next:(response: any) =>
       {
-        const user: User = response as User;
+        const user: UserSlim = response as UserSlim;
         this.authService.login(user);
         this.clearLoginFormData();
         this.authenticateDoneEvent.emit();

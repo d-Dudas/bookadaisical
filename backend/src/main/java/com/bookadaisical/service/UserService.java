@@ -93,12 +93,21 @@ public class UserService implements IUserService {
         if(loginToken.isPresent())
         {
             // TODO: revalidate token
-            // UserSlimDto userSlimDto = this.createUserSlimDto(loginToken.get().getUser());
             UserSlimDto userSlimDto = mapper.toUserSlimDto(loginToken.get().getUser());
-            // userSlimDto.setToken(loginToken.get().getToken());
-            // userSlimDto.setKey(loginToken.get().getKey());
             return userSlimDto;
         }
         throw new Exception("invalid_token");
+    }
+
+    @Override
+    public User getUserDetails(int userId) throws Exception
+    {
+        Optional<User> user = userRepository.findById(userId);
+
+        if(user.isPresent())
+        {
+            return user.get();
+        }
+        throw new Exception("user_not_found");
     }
 }

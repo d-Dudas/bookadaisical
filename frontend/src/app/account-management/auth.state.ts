@@ -1,9 +1,9 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { User } from './user';
+import { UserSlim } from '../elements/classes/userSlim';
 
 export interface AuthState {
   isAuthenticated: boolean;
-  user: User | null;
+  user: UserSlim | null;
 }
 
 export interface AuthPopupState {

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookadaisical</title>
+</head>
+<body>
+    <app-navbar></app-navbar>
+    <app-account-settings-popup
+        [isAccountSettingsPopupVisible]="isAccountSettingsPopupVisible"
+        (closeAccountSettingsPopup)="closeAccountSettingsPopup()"
+        [user]="user"
+        ></app-account-settings-popup>
+    <h1>{{ user?.username }}</h1>
+    <div class="account-page-main-container">
+        <div class="user-details-container">
+            <div class="user-account-details-container">
+
+            </div>
+            <button
+                class="user-more-details-account"
+                *ngIf="isVisitorTheOwner"
+                (click)="openAccountSettingsPopup()"
+                >Details</button>
+            <div class="user-statistics-container">
+
+            </div>
+        </div>
+        <div class="user-history-detials">
+
+        </div>
+    </div>
+</body>
+</html>

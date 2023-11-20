@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { User } from '../elements/classes/user';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +11,7 @@ export class AccountService {
   private registerAccountAddress = '/register';
   private loginAddress = '/login';
   private loginWithTokenUrl = '/login-with-token';
+  private getUserDetailsURL: string = '/get-user-details'
 
   constructor(private http: HttpClient) { }
 
@@ -25,5 +28,10 @@ export class AccountService {
   loginWithToken(token: string, key: string)
   {
     return this.http.post(this.backendUrl + this.loginWithTokenUrl, {token, key});
+  }
+
+  getUserDetails(userId: number): Observable<User>
+  {
+    return this.http.get<User>(this.backendUrl + this.getUserDetailsURL + "/" + userId);
   }
 }

@@ -2,6 +2,8 @@ package com.bookadaisical.service.interfaces;
 
 import java.util.List;
 
+import org.hibernate.internal.ExceptionConverterImpl;
+
 import com.bookadaisical.dto.requests.UserLoginDto;
 import com.bookadaisical.dto.requests.UserRegisterDto;
 import com.bookadaisical.dto.responses.UserSlimDto;
@@ -12,4 +14,5 @@ public interface IUserService {
     User registerUser(UserRegisterDto userRegisterDto) throws Exception;
     UserSlimDto loginUser(UserLoginDto userLoginDto) throws Exception;
     UserSlimDto loginUserWithToken(String token, String key) throws Exception;
+    User getUserDetails(int userId) throws Exception;
 }

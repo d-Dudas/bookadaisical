@@ -1,7 +1,7 @@
 import { createAction, props } from '@ngrx/store';
-import { User } from './user';
+import { UserSlim } from '../elements/classes/userSlim';
 
-export const login = createAction('[Auth] Login', props<{ user: User }>());
+export const login = createAction('[Auth] Login', props<{ user: UserSlim }>());
 export const logout = createAction('[Auth] Logout');
 export const showAuthPopup = createAction('[Auth] ShowAuthPopup');
 export const hideAuthPopup = createAction('[Auth] HideAuthPopup');
