@@ -16,7 +16,6 @@ public class BookSearchFiltersDto {
     private Genre genre;
     //variable in the Book class
     private TargetAudience targetAudience;
-    //TODO implement class
     private ArtisticMovement artisticMovement;
     //variable in the Book class
     private Condition condition;
