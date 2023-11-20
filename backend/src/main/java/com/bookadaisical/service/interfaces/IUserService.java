@@ -8,8 +8,8 @@ import com.bookadaisical.dto.responses.UserSlimDto;
 import com.bookadaisical.model.User;
 
 public interface IUserService {
-    
     List<User> getAllUsers();
     User registerUser(UserRegisterDto userRegisterDto) throws Exception;
     UserSlimDto loginUser(UserLoginDto userLoginDto) throws Exception;
+    UserSlimDto loginUserWithToken(String token, String key) throws Exception;
 }

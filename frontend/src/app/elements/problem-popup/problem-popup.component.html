@@ -1,0 +1,8 @@
+<div class="problem-popup-background" *ngIf="isVisible">
+    <div class="problem-popup-container">
+        <div class="problem-popup-message-container">
+            <p class="problem-popup-message">{{ message }}</p>
+        </div>
+        <button class="problem-popup-button" (click)="closePopup()">Got it!</button>
+    </div>
+</div>

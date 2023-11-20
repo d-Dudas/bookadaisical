@@ -10,8 +10,9 @@ export class BookService {
   private backendUrl = 'http://localhost:8080';
   private getPopularBooksUrl = '/top-ten-books';
   private getFilteredBooksUrl = '/get-filtered-books';
-  private getBookByIdUrl = '/get-book';
+  private getBookByIdUrl = '/get-book-id';
   private getBookOwnerIdUrl = '/get-book-owner-id';
+  private getUserBooksUrl = '/get-user-books';
 
   constructor(private http: HttpClient)
   {
@@ -34,6 +35,11 @@ export class BookService {
 
   getBookOwnerId(bookId: number): Observable<number>
   {
-    return this.http.post<number>(this.backendUrl + this.getBookOwnerId, bookId);
+    return this.http.get<number>(this.backendUrl + this.getBookOwnerIdUrl + "/" + bookId.toString());
+  }
+
+  getUserBooks(userId: number): Observable<Book[]>
+  {
+    return this.http.get<Book[]>(this.backendUrl + this.getUserBooksUrl + "/" + userId.toString());
   }
 }

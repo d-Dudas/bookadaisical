@@ -111,7 +111,7 @@ CREATE TYPE bookadaisical.condition_books AS ENUM (
     'good',
     'acceptable'
 );
-	
+
 CREATE TYPE bookadaisical.trading_options AS ENUM (
     'all',
     'currency',
@@ -122,7 +122,7 @@ CREATE TYPE bookadaisical.trading_options AS ENUM (
 CREATE TABLE bookadaisical.images (
     id serial PRIMARY KEY,
     image_data bytea
-); 
+);
 
 CREATE TABLE bookadaisical.books (
     id serial PRIMARY KEY,
@@ -223,3 +223,23 @@ CREATE TABLE bookadaisical.price_points_books (
 	book_id int PRIMARY KEY REFERENCES bookadaisical.books(id),
 	amount float
 );
+
+CREATE TABLE bookadaisical.login_tokens (
+    id serial PRIMARY KEY,
+    user_id int REFERENCES bookadaisical.users(id),
+    token text,
+    key text,
+    last_validated_on timestamp NOT NULL DEFAULT NOW()
+);
+
+CREATE OR REPLACE FUNCTION delete_old_tokens()
+  RETURNS void AS
+$$
+BEGIN
+  DELETE FROM bookadaisical.login_tokens
+  WHERE created_on <= NOW() - INTERVAL '30 days';
+END;
+$$
+LANGUAGE plpgsql;
+
+SELECT cron.schedule('0 0 * * *', 'SELECT delete_old_tokens()');

@@ -8,4 +8,6 @@ import lombok.Setter;
 public class UserSlimDto {
     private int id;
     private String username;
+    private String token;
+    private String key;
 }

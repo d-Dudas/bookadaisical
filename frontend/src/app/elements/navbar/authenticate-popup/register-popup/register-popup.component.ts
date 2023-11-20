@@ -24,7 +24,6 @@ export class RegisterPopupComponent {
     this.registerFormData = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(6)]],
       email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.required, Validators.pattern(/^07\d{8}$/)]],
       password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/)]],
       confirmPassword: ['', [Validators.required]]
     }, {
@@ -45,6 +44,9 @@ export class RegisterPopupComponent {
 
   submitRegisterForm()
   {
+    if(!this.registerFormData.valid) {
+      return;
+    }
     this.accountService.sendRegisterFormToBackend(this.registerFormData.getRawValue()).subscribe({
       next:(response: any) =>
       {
@@ -55,8 +57,6 @@ export class RegisterPopupComponent {
       },
       error:error =>
       {
-        console.log("Backend error:");
-        console.log(error);
       }
     })
   }
@@ -66,7 +66,6 @@ export class RegisterPopupComponent {
     this.registerFormData = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(6)]],
       email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/)]],
     });
   }

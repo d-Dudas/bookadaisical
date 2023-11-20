@@ -13,10 +13,17 @@ export class AuthService {
 
   login(user: User) {
     this.store.dispatch(login({ user }));
+    if(user.token && user.key)
+    {
+      localStorage.setItem('loginToken', user.token);
+      localStorage.setItem('loginKey', user.key);
+    }
   }
 
   logout() {
     this.store.dispatch(logout());
+    localStorage.removeItem('loginToken');
+    localStorage.removeItem('loginKey');
   }
 
   isAuthenticated() {

@@ -9,6 +9,7 @@
     justify-content: center;
     backdrop-filter: blur(5px);
     flex-direction: column;
+    padding: 20px;
 }
 
 .login-form
@@ -18,4 +19,41 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
+}
+
+.login-form-input-container
+{
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+}
+
+.login-form-show-password-container
+{
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.dont-have-account-box
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dont-have-account-content
+{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.dont-have-account-content p
+{
+    text-align: center;
 }

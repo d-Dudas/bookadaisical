@@ -1,45 +1,53 @@
 <div class="register-popup-content" *ngIf="isRegisterPopupVisible">
     <form class="register-form" (ngSubmit)="submitRegisterForm()" #registerForm="ngForm" [formGroup]="registerFormData">
-        <input type="text" name="username" placeholder="Username" formControlName="username">
-        <div *ngIf="registerFormData.get('username')?.hasError('required') && registerFormData.get('username')?.touched">
-            Username is required.
+        <div class="register-username-container register-form-input-container">
+            <label for="username">Username</label>
+            <input type="text" name="username" formControlName="username">
+            <div *ngIf="registerFormData.get('username')?.hasError('required') && registerFormData.get('username')?.touched">
+                Username is required.
+            </div>
+            <div *ngIf="registerFormData.get('username')?.hasError('minlength') && registerFormData.get('username')?.touched">
+                Username must be at least 6 characters long.
+            </div>
         </div>
-        <div *ngIf="registerFormData.get('username')?.hasError('minlength') && registerFormData.get('username')?.touched">
-            Username must be at least 6 characters long.
+        <div class="register-email-container  register-form-input-container">
+            <label for="email">Email</label>
+            <input type="text" name="email" formControlName="email">
+            <div *ngIf="registerFormData.get('email')?.hasError('required') && registerFormData.get('email')?.touched">
+                Email is required.
+            </div>
+            <div *ngIf="registerFormData.get('email')?.hasError('email') && registerFormData.get('email')?.touched">
+                Invailid email format.
+            </div>
         </div>
-        <input type="text" name="email" placeholder="Email" formControlName="email">
-        <div *ngIf="registerFormData.get('email')?.hasError('required') && registerFormData.get('email')?.touched">
-            Email is required.
+        <div class="register-password-container register-form-input-container">
+            <label for="password">Password</label>
+            <input [type]="passwordInputType" name="password" formControlName="password">
+            <div *ngIf="registerFormData.get('password')?.hasError('required') && registerFormData.get('password')?.touched">
+                Password is required.
+            </div>
+            <div *ngIf="registerFormData.get('password')?.hasError('pattern') && registerFormData.get('password')?.touched">
+                <p>Password must:</p>
+                <ul>
+                    <li>be at least 8 characters long</li>
+                    <li>contain at least 1 upper case character</li>
+                    <li>contain at least 1 lower case character</li>
+                    <li>contain at least 1 number</li>
+                </ul>
+            </div>
         </div>
-        <div *ngIf="registerFormData.get('email')?.hasError('email') && registerFormData.get('email')?.touched">
-            Invailid email format.
+        <div class="register-confirm-password-container register-form-input-container">
+            <label for="confirmPassword">Confirm password</label>
+            <input [type]="passwordInputType" name="confirmPassword" formControlName="confirmPassword">
+            <div *ngIf="registerFormData.hasError('mismatch') && registerFormData.get('confirmPassword')?.touched">
+                Passwords do not match.
+            </div>
         </div>
-        <input type="text" name="phoneNumber" placeholder="Phone number" formControlName="phoneNumber">
-        <div *ngIf="registerFormData.get('phoneNumber')?.hasError('required') && registerFormData.get('phoneNumber')?.touched">
-            Phone number is required.
+        <div class="register-form-show-password-container">
+            <label for="showPassword">Show password</label>
+            <input type="checkbox" name="showPassword" (change)="togglePasswordVisibility()">
         </div>
-        <div *ngIf="registerFormData.get('phoneNumber')?.hasError('pattern') && registerFormData.get('phoneNumber')?.touched">
-            Invailid phone number.
-        </div>
-        <input [type]="passwordInputType" name="password" placeholder="Password" formControlName="password">
-        <div *ngIf="registerFormData.get('password')?.hasError('required') && registerFormData.get('password')?.touched">
-            Password is required.
-        </div>
-        <div *ngIf="registerFormData.get('password')?.hasError('pattern') && registerFormData.get('password')?.touched">
-            Password must:
-            <ul>
-                <li>be at least 8 characters long</li>
-                <li>contain at least 1 upper case character</li>
-                <li>contain at least 1 lower case character</li>
-                <li>contain at least 1 number</li>
-            </ul>
-        </div>
-        <input [type]="passwordInputType" name="confirmPassword" placeholder="Confirm password" formControlName="confirmPassword">
-        <div *ngIf="registerFormData.hasError('mismatch') && registerFormData.get('confirmPassword')?.touched">
-            Passwords do not match.
-        </div>
-        <input type="checkbox" (change)="togglePasswordVisibility()"> Show Password
-        <button type="submit" [disabled]="!registerFormData.valid">Submit</button>
+        <button type="submit">Submit</button>
     </form>
     <div class="dont-have-account-box">
         <div class="dont-have-account-content">
