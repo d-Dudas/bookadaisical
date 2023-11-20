@@ -53,7 +53,7 @@ public class UserController {
     {
         List<Book> books = BooksProvider.getHardcodedBooksList();
         for (Book book : books) {
-            if(book.getUniqueId() == bookId)
+            if(book.getId() == bookId)
                 return ResponseEntity.ok(book.getUploader());
         }
 

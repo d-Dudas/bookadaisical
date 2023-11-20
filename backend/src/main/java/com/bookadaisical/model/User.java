@@ -2,6 +2,8 @@ package com.bookadaisical.model;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -46,6 +48,7 @@ public class User {
     private int specialCurrency;
 
     @OneToMany(mappedBy = "uploader")
+    @JsonIgnore
     private Set<Book> uploadedBooks;
     
 }

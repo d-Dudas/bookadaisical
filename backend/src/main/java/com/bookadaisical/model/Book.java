@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.bookadaisical.enums.Condition;
 import com.bookadaisical.enums.TargetAudience;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -70,6 +71,7 @@ public class Book {
     private Condition bookCondition;
 
     @OneToMany(mappedBy = "activeBook", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<ActiveBook> activeBooks;
 
 }
