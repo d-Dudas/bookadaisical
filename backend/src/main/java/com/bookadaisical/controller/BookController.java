@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bookadaisical.dto.requests.SearchFiltersDto;
+import com.bookadaisical.dto.requests.BookSearchFiltersDto;
 import com.bookadaisical.enums.TargetAudience;
 import com.bookadaisical.model.Book;
 import com.bookadaisical.service.BookService;
@@ -40,7 +40,7 @@ public class BookController {
     }
 
     @PostMapping("/get-filtered-books")
-    public ResponseEntity<List<Book>> getFilteredBooks(@RequestBody SearchFiltersDto searchFilters)
+    public ResponseEntity<List<Book>> getFilteredBooks(@RequestBody BookSearchFiltersDto searchFilters)
     {
         List<Book> books = BooksProvider.getHardcodedBooksList();
         books = books.stream()

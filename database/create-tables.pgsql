@@ -19,14 +19,14 @@ CREATE TABLE bookadaisical.yet_to_be_validated_users (
 	id serial PRIMARY KEY,
 	user_id int REFERENCES bookadaisical.users(id)
 );
-
+-- DROP TYPE bookadaisical.target_audience_books;
 CREATE TYPE bookadaisical.target_audience_books AS ENUM (
     'ALL',
     'CHILDREN',
     'YOUNG_ADULTS',
     'ADULTS'
 );
-
+-- DROP TYPE bookadaisical.artistic_movement_books;
 CREATE TYPE bookadaisical.artistic_movement_books AS ENUM (
     'ALL',
     'ANCIENT_LITERATURE',
@@ -62,7 +62,7 @@ CREATE TYPE bookadaisical.artistic_movement_books AS ENUM (
     'DEPRIMISME',
     'GENERATION_2000'
 );
-
+-- DROP TYPE bookadaisical.genres;
 CREATE TYPE bookadaisical.genres AS ENUM (
     'ALL',
     'ALTERNATE_HISTORY',
@@ -107,7 +107,7 @@ CREATE TYPE bookadaisical.genres AS ENUM (
     'UTOPIAN',
     'WESTERN'
 );
-
+-- DROP TYPE bookadaisical.condition_books;
 CREATE TYPE bookadaisical.condition_books AS ENUM (
     'ALL',
     'NEW',
@@ -116,7 +116,7 @@ CREATE TYPE bookadaisical.condition_books AS ENUM (
     'GOOD',
     'ACCEPTABLE'
 );
-
+-- DROP TYPE bookadaisical.trading_options;
 CREATE TYPE bookadaisical.trading_options AS ENUM (
     'ALL',
     'CURRENCY',
@@ -139,6 +139,7 @@ CREATE TABLE bookadaisical.books (
     created_on timestamp NOT NULL DEFAULT NOW(),
     last_modified timestamp,
     year_of_publication int,
+    artistic_movement artistic_movement_books,
     target_audience bookadaisical.target_audience_books,
     book_condition bookadaisical.condition_books
 );

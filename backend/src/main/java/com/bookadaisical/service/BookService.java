@@ -26,7 +26,6 @@ public class BookService implements IBookService {
     @Transactional
     public List<Book> getTopTenBooks() throws Exception {
         List<Book> topTenMonthlyBooks = bookRepository.findTopTenBooks(PageRequest.of(0, 10));
-
         return topTenMonthlyBooks;
     }
 }

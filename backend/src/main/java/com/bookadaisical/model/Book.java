@@ -3,6 +3,7 @@ package com.bookadaisical.model;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.bookadaisical.enums.ArtisticMovement;
 import com.bookadaisical.enums.Condition;
 import com.bookadaisical.enums.TargetAudience;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -61,6 +62,10 @@ public class Book {
 
     @Column(name = "year_of_publication")
     private int yearOfPublication;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "artistic_movement")
+    private ArtisticMovement artisticMovement;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "target_audience")
