@@ -32,6 +32,38 @@ INSERT INTO bookadaisical.active_books (book_id)
 VALUES
 (6), (18), (2), (15), (7), (10), (12), (9), (11), (22), (16), (20), (3), (14), (21), (5), (8);
 
+INSERT INTO bookadaisical.genres_books (book_id, genre_name)
+VALUES (22, 'THRILLER'), (22, 'REALIST');
+
+INSERT INTO bookadaisical.genres_books (book_id, genre_name)
+VALUES (22, 'THRILLER'), (22, 'REALIST');
+
+INSERT INTO bookadaisical.genres_books (book_id, genre_name)
+VALUES (11, 'CLASSICS'), (11, 'ADVENTURE');
+
 -- Reset the id value back to 1, when deleting all rows inside a table
 -- SELECT setval(pg_get_serial_sequence('bookadaisical.books', 'id'), 1, false);
 -- DELETE FROM bookadaisical.books;
+
+SELECT * FROM bookadaisical.books b
+JOIN bookadaisical.active_books ab ON b.id = ab.book_id
+JOIN bookadaisical.genres_books gb ON gb.book_id = ab.book_id
+WHERE (gb.genre_name = 'REALIST' OR gb.genre_name = 'ALL')
+  AND (b.target_audience = 'ADULTS' OR b.target_audience = 'ALL')
+  AND (b.artistic_movement = 'ENLIGHTENMENT' OR b.artistic_movement = 'ALL')
+  AND (b.book_condition = 'GOOD' OR b.book_condition = 'ALL')
+  AND b.year_of_publication < 2023
+  AND b.year_of_publication > 1950
+  AND (POSITION(LOWER('donna') IN LOWER(b.title)) != 0 OR POSITION(LOWER('donna') IN LOWER(b.author)) != 0 OR POSITION(LOWER('agea') IN LOWER(b.description)) != 0);
+
+  SELECT * FROM bookadaisical.books b
+JOIN bookadaisical.active_books ab ON b.id = ab.book_id
+JOIN bookadaisical.genres_books gb ON gb.book_id = ab.book_id
+WHERE (gb.genre_name = ? OR gb.genre_name = 'ALL')
+  AND (b.target_audience = ? OR b.target_audience = 'ALL')
+  AND (b.artistic_movement = ? OR b.artistic_movement = 'ALL')
+  AND (b.book_condition = ? OR b.book_condition = 'ALL')
+  AND b.year_of_publication < ?
+  AND b.year_of_publication > ?
+  AND (POSITION(LOWER(?) IN LOWER(b.title)) != 0 OR POSITION(LOWER(?) IN LOWER(b.author)) != 0 OR POSITION(LOWER(?) IN LOWER(b.description)) != 0);
+

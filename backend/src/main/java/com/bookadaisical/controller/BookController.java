@@ -40,16 +40,13 @@ public class BookController {
     }
 
     @PostMapping("/get-filtered-books")
-    public ResponseEntity<List<Book>> getFilteredBooks(@RequestBody BookSearchFiltersDto searchFilters)
+    public ResponseEntity<?> getFilteredBooks(@RequestBody BookSearchFiltersDto searchFilters)
     {
-        List<Book> books = BooksProvider.getHardcodedBooksList();
-        books = books.stream()
-            .filter(b -> (searchFilters.getTargetAudience() == b.getTargetAudience()
-                      || searchFilters.getTargetAudience() == TargetAudience.ALL)
-                      && (b.getTitle().contains(searchFilters.getContains())
-                      || searchFilters.getContains().equals(""))
-            ).toList();
-        return ResponseEntity.ok(books);
+        try {
+            return new ResponseEntity<>(bookService.getFilteredBooks(searchFilters), HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("error: " + e.getMessage());
+        }
     }
 
     @PostMapping("/get-book-id")
