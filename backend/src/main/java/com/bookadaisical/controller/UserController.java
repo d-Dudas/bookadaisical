@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bookadaisical.dto.requests.ChangeUsernameDto;
 import com.bookadaisical.dto.requests.UserLoginDto;
 import com.bookadaisical.dto.requests.UserLoginTokenDto;
 import com.bookadaisical.dto.requests.UserRegisterDto;
@@ -72,6 +73,16 @@ public class UserController {
     {
         try {
             return ResponseEntity.ok(userService.getUserDetails(userId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = "/change-username")
+    public ResponseEntity<?> changeUsername(@RequestBody ChangeUsernameDto changeUsernameDto)
+    {
+        try {
+            return ResponseEntity.ok(userService.changeUsername(changeUsernameDto.getUserId(), changeUsernameDto.getNewUsername()));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

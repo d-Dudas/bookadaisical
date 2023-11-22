@@ -5,16 +5,23 @@
         <div class="change-account-settings-container">
             <div class="change-account-settings">
                 <button (click)="triggerUsernameForm()">change username</button>
-                <form class="change-username-form drop-down-form" (ngSubmit)="submitChangeUsernameForm()" #changeUsernameForm="ngForm" [formGroup]="changeUsernameFormData">
-                    <label for="username">Username</label>
-                    <input type="text" name="username" formControlName="username">
-                    <div *ngIf="changeUsernameFormData.get('username')?.hasError('required') && changeUsernameFormData.get('username')?.touched">
-                        Username is required.
-                    </div>
-                    <div *ngIf="changeUsernameFormData.get('username')?.hasError('minlength') && changeUsernameFormData.get('username')?.touched">
-                        Username must be at least 6 characters long.
-                    </div>
-                </form>
+                <div
+                    class="change-username-form-container"
+                    *ngIf="isChangeUsernameFormVisible">
+                    <form class="change-username-form" (ngSubmit)="submitChangeUsernameForm()" #changeUsernameForm="ngForm" [formGroup]="changeUsernameFormData">
+                        <label for="username">Username</label>
+                        <input type="text" name="username" formControlName="username">
+                        <div *ngIf="changeUsernameFormData.get('username')?.hasError('required') && changeUsernameFormData.get('username')?.touched">
+                            Username is required.
+                        </div>
+                        <div *ngIf="changeUsernameFormData.get('username')?.hasError('minlength') && changeUsernameFormData.get('username')?.touched">
+                            Username must be at least 6 characters long.
+                        </div>
+                        <button
+                            (click)="submitChangeUsernameForm()">
+                            Change</button>
+                    </form>
+                </div>
             </div>
             <div class="change-account-settings">
                 <button>change email</button>

@@ -110,4 +110,34 @@ public class UserService implements IUserService {
         }
         throw new Exception("user_not_found");
     }
+
+    @Override
+    public User changeUsername(int userId, String newUsername) throws Exception
+    {
+        Optional<User> user;
+        System.out.println("Id: " + userId + " | newUsername: " + newUsername);
+
+        user = userRepository.findByUsername(newUsername);
+        if(user.isPresent())
+        {
+            throw new Exception("username_already_exists");
+        }
+
+        user = userRepository.findById(userId);
+
+        if(user.isPresent())
+        {
+            System.out.println("Before update");
+            userRepository.updateUsername(userId, newUsername);
+            System.out.println("After update");
+            user = userRepository.findById(userId);
+
+            if(user.isPresent() && user.get().getUsername().equals(newUsername))
+            {
+                return user.get();
+            }
+            throw new Exception("unsuccesful_update");
+        }
+        throw new Exception("user_not_found");
+    }
 }

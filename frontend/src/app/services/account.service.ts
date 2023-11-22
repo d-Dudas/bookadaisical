@@ -11,7 +11,8 @@ export class AccountService {
   private registerAccountAddress = '/register';
   private loginAddress = '/login';
   private loginWithTokenUrl = '/login-with-token';
-  private getUserDetailsURL: string = '/get-user-details'
+  private getUserDetailsUrl: string = '/get-user-details';
+  private changeUsernameUrl: string = '/change-username';
 
   constructor(private http: HttpClient) { }
 
@@ -32,6 +33,11 @@ export class AccountService {
 
   getUserDetails(userId: number): Observable<User>
   {
-    return this.http.get<User>(this.backendUrl + this.getUserDetailsURL + "/" + userId);
+    return this.http.get<User>(this.backendUrl + this.getUserDetailsUrl + "/" + userId);
+  }
+
+  changeUsername(userId: number, newUsername: string): Observable<User>
+  {
+    return this.http.post<User>(this.backendUrl + this.changeUsernameUrl, {userId, newUsername});
   }
 }

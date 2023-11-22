@@ -15,4 +15,5 @@ public interface IUserService {
     UserSlimDto loginUser(UserLoginDto userLoginDto) throws Exception;
     UserSlimDto loginUserWithToken(String token, String key) throws Exception;
     User getUserDetails(int userId) throws Exception;
+    User changeUsername(int userId, String newUsername) throws Exception;
 }

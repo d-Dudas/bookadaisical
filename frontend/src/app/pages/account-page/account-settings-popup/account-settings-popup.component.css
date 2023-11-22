@@ -25,7 +25,6 @@
     align-items: center;
     justify-content: space-between;
     padding: 20px;
-    /* overflow-y: scroll; */
 }
 
 .change-account-settings
@@ -36,14 +35,31 @@
     align-items: center;
 }
 
-.drop-down-form
+.change-username-form-container
 {
-    animation: dropdown 2s;
-    height: 100%;
+    border: 1px solid black;
+    height: 10vh;
+    animation: expandDown 0.2s ease-out;
+    transition: 1s;
+    overflow: hidden;
 }
 
-@keyframes dropdown
+.change-username-form
 {
-    from {height: 0px;}
-    to {height: 100%;}
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 10px;
+}
+
+@keyframes expandDown
+{
+    0% {
+        height: 0;
+    }
+    100% {
+        height: 10vh;
+    }
 }

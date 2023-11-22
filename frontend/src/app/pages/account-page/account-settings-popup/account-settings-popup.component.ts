@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/elements/classes/user';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-account-settings-popup',
@@ -16,7 +17,8 @@ export class AccountSettingsPopupComponent {
 
   isChangeUsernameFormVisible: boolean = false;
 
-  constructor(private formBuilder: FormBuilder)
+  constructor(private formBuilder: FormBuilder,
+      private accountService: AccountService)
   {
     this.changeUsernameFormData = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(6)]]
@@ -38,6 +40,17 @@ export class AccountSettingsPopupComponent {
 
   submitChangeUsernameForm(): void
   {
-    console.log(this.changeUsernameFormData);
+    console.log(this.changeUsernameFormData.value.username);
+    if(this.user !== null)
+    {
+      this.accountService.changeUsername(this.user.id, this.changeUsernameFormData.value.username).subscribe({
+        next: user => {
+          this.user = user;
+        },
+        error: error => {
+          console.log(error);
+        }
+      })
+    }
   }
 }
