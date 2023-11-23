@@ -17,8 +17,7 @@
                         <div *ngIf="changeUsernameFormData.get('username')?.hasError('minlength') && changeUsernameFormData.get('username')?.touched">
                             Username must be at least 6 characters long.
                         </div>
-                        <button
-                            (click)="submitChangeUsernameForm()">
+                        <button>
                             Change</button>
                     </form>
                 </div>

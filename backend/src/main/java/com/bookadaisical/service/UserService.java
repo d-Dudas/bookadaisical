@@ -8,8 +8,8 @@ import java.util.Optional;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-import org.hibernate.grammars.hql.HqlParser.DateTimeContext;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bookadaisical.dto.requests.UserLoginDto;
 import com.bookadaisical.dto.requests.UserRegisterDto;
@@ -111,6 +111,7 @@ public class UserService implements IUserService {
         throw new Exception("user_not_found");
     }
 
+    @Transactional
     @Override
     public User changeUsername(int userId, String newUsername) throws Exception
     {
@@ -124,19 +125,11 @@ public class UserService implements IUserService {
         }
 
         user = userRepository.findById(userId);
-
         if(user.isPresent())
         {
-            System.out.println("Before update");
             userRepository.updateUsername(userId, newUsername);
-            System.out.println("After update");
-            user = userRepository.findById(userId);
-
-            if(user.isPresent() && user.get().getUsername().equals(newUsername))
-            {
-                return user.get();
-            }
-            throw new Exception("unsuccesful_update");
+            user.get().setUsername(newUsername);
+            return user.get();
         }
         throw new Exception("user_not_found");
     }
