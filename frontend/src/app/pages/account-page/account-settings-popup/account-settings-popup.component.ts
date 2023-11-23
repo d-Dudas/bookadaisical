@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControlOptions, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { User } from 'src/app/elements/classes/user';
 import { AccountService } from 'src/app/services/account.service';
@@ -17,8 +17,14 @@ export class AccountSettingsPopupComponent {
   @Output() closeAccountSettingsPopup = new EventEmitter<void>();
 
   changeUsernameFormData: FormGroup;
+  changeEmailFormData: FormGroup;
+  changePasswordFormData: FormGroup;
+  isPasswordVisisble: boolean = false;
+  passwordInputType: string = this.isPasswordVisisble ? "text" : "password";
 
   isChangeUsernameFormVisible: boolean = false;
+  isChangeEmailFormVisible: boolean = false;
+  isChangePasswordFormVisible: boolean = false;
 
   constructor(private formBuilder: FormBuilder,
       private accountService: AccountService,
@@ -27,6 +33,28 @@ export class AccountSettingsPopupComponent {
     this.changeUsernameFormData = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(6)]]
     });
+
+    this.changeEmailFormData = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]]
+    });
+
+    this.changePasswordFormData = this.formBuilder.group({
+      password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/)]],
+      confirmPassword: ['', [Validators.required]]
+    }, {
+      validators: this.passwordMatchValidator
+    } as AbstractControlOptions);
+  }
+
+  passwordMatchValidator(group: FormGroup): ValidationErrors | null {
+    const password = group.get('password')?.value;
+    const confirmPassword = group.get('confirmPassword')?.value;
+
+    if (password === confirmPassword) {
+      return null;
+    } else {
+      return { mismatch: true };
+    }
   }
 
   closePopup(event: MouseEvent)
@@ -44,12 +72,12 @@ export class AccountSettingsPopupComponent {
 
   submitChangeUsernameForm(): void
   {
-    console.log(this.changeUsernameFormData.value.username);
+    if(!this.changeUsernameFormData.valid) return;
     if(this.user !== null)
     {
       this.accountService.changeUsername(this.user.id, this.changeUsernameFormData.value.username).subscribe({
         next: user1 => {
-          let user = new UserSlim(user1.id, user1.username, "", "");
+          let user = new UserSlim(user1.id, user1.username);
           this.store.dispatch(login({ user }));
           window.location.reload();
         },
@@ -58,5 +86,57 @@ export class AccountSettingsPopupComponent {
         }
       })
     }
+  }
+
+  triggerEmailForm(): void
+  {
+    this.isChangeEmailFormVisible = !this.isChangeEmailFormVisible;
+  }
+
+  submitChangeEmailForm(): void
+  {
+    if(!this.changeEmailFormData.valid) return;
+    if(this.user !== null)
+    {
+      this.accountService.changeEmail(this.user.id, this.changeEmailFormData.value.email).subscribe({
+        next: user1 => {
+          let user = new UserSlim(user1.id, user1.username);
+          this.store.dispatch(login({ user }));
+          window.location.reload();
+        },
+        error: error => {
+          console.log(error);
+        }
+      })
+    }
+  }
+
+  triggerPasswordForm(): void
+  {
+    this.isChangePasswordFormVisible = !this.isChangePasswordFormVisible;
+  }
+
+  submitChangePasswordForm(): void
+  {
+    if(!this.changePasswordFormData.valid) return;
+    if(this.user !== null)
+    {
+      this.accountService.changePassword(this.user.id, this.changePasswordFormData.value.password).subscribe({
+        next: user1 => {
+          let user = new UserSlim(user1.id, user1.username);
+          this.store.dispatch(login({ user }));
+          window.location.reload();
+        },
+        error: error => {
+          console.log(error);
+        }
+      })
+    }
+  }
+
+  togglePasswordVisibility()
+  {
+    this.isPasswordVisisble = !this.isPasswordVisisble;
+    this.passwordInputType = this.isPasswordVisisble ? "text" : "password";
   }
 }

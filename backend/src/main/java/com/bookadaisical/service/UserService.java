@@ -5,6 +5,7 @@ import com.bookadaisical.utils.Hasher;
 
 import java.util.List;
 import java.util.Optional;
+import java.sql.Timestamp;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
@@ -16,6 +17,11 @@ import com.bookadaisical.dto.requests.UserRegisterDto;
 import com.bookadaisical.dto.responses.UserSlimDto;
 import com.bookadaisical.dto.responses.UserTokenDto;
 import com.bookadaisical.dto.responses.interfaces.IUserDto;
+import com.bookadaisical.exceptions.EmailAlreadyAssociatedWithAnAccountException;
+import com.bookadaisical.exceptions.InvalidPasswordException;
+import com.bookadaisical.exceptions.InvalidTokenException;
+import com.bookadaisical.exceptions.UserNotFoundException;
+import com.bookadaisical.exceptions.UsernameAlreadyAssociatedWithAnAccountException;
 import com.bookadaisical.mapper.UserMapper;
 import com.bookadaisical.model.LoginToken;
 import com.bookadaisical.model.User;
@@ -43,18 +49,24 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User registerUser(UserRegisterDto userRegisterDto) throws Exception {
+    public UserSlimDto registerUser(UserRegisterDto userRegisterDto) throws Exception {
         User user = mapper.toUser(userRegisterDto);
         Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
         if (existingUser.isPresent()) {
-            throw new Exception(String.format("User with username \"%s\" is already registered", user.getUsername()));
+            throw new UsernameAlreadyAssociatedWithAnAccountException();
         }
         existingUser = userRepository.findByEmail(user.getEmail());
         if (existingUser.isPresent()) {
-            throw new Exception(String.format("User with email \"%s\" is already registered", user.getEmail()));
+            throw new EmailAlreadyAssociatedWithAnAccountException();
         }
         userRepository.save(user);
-        return userRepository.findByUsername(user.getUsername()).get();
+
+        existingUser = userRepository.findByUsername(user.getUsername());
+        if(existingUser.isPresent())
+        {
+            return mapper.toUserSlimDto(existingUser.get());
+        }
+        throw new UnknownError();
     }
 
     private void saveLoginToken(User user, UserTokenDto userTokenDto)
@@ -87,12 +99,13 @@ public class UserService implements IUserService {
 
         Optional<User> checkIdentifier = userRepository.findByUsernameOrEmail(userLoginDto.getIdentifier(), userLoginDto.getIdentifier());
         if (checkIdentifier.isPresent() && !checkIdentifier.get().getPassword().equals(userLoginDto.getPassword())) {
-            throw new Exception("Invalid password");
+            throw new InvalidPasswordException();
         } else {
-            throw new Exception("User not found");
+            throw new UserNotFoundException();
         }
     }
 
+    @Transactional
     @Override
     public UserSlimDto loginUserWithToken(String token, String key) throws Exception
     {
@@ -100,11 +113,10 @@ public class UserService implements IUserService {
 
         if(loginToken.isPresent())
         {
-            // TODO: revalidate token
-            UserSlimDto userSlimDto = mapper.toUserSlimDto(loginToken.get().getUser());
-            return userSlimDto;
+            loginTokenRepository.revalidateToken(token);
+            return mapper.toUserSlimDto(loginToken.get().getUser());
         }
-        throw new Exception("invalid_token");
+        throw new InvalidTokenException();
     }
 
     @Override
@@ -116,20 +128,19 @@ public class UserService implements IUserService {
         {
             return user.get();
         }
-        throw new Exception("user_not_found");
+        throw new UserNotFoundException();
     }
 
     @Transactional
     @Override
-    public User changeUsername(int userId, String newUsername) throws Exception
+    public UserSlimDto changeUsername(int userId, String newUsername) throws Exception
     {
         Optional<User> user;
-        System.out.println("Id: " + userId + " | newUsername: " + newUsername);
 
         user = userRepository.findByUsername(newUsername);
         if(user.isPresent())
         {
-            throw new Exception("username_already_exists");
+            throw new UsernameAlreadyAssociatedWithAnAccountException();
         }
 
         user = userRepository.findById(userId);
@@ -137,8 +148,45 @@ public class UserService implements IUserService {
         {
             userRepository.updateUsername(userId, newUsername);
             user.get().setUsername(newUsername);
-            return user.get();
+            return mapper.toUserSlimDto(user.get());
         }
-        throw new Exception("user_not_found");
+        throw new UserNotFoundException();
+    }
+
+    @Transactional
+    @Override
+    public UserSlimDto changeEmail(int userId, String newEmail) throws Exception
+    {
+        Optional<User> user;
+
+        user = userRepository.findByEmail(newEmail);
+        if(user.isPresent())
+        {
+            throw new EmailAlreadyAssociatedWithAnAccountException();
+        }
+
+        user = userRepository.findById(userId);
+        if(user.isPresent())
+        {
+            userRepository.updateEmail(userId, newEmail);
+            user.get().setEmail(newEmail);
+            return mapper.toUserSlimDto(user.get());
+        }
+        throw new UserNotFoundException();
+    }
+
+    @Transactional
+    @Override
+    public UserSlimDto changePassword(int userId, String newPassword) throws Exception
+    {
+        Optional<User> user;
+
+        user = userRepository.findById(userId);
+        if(user.isPresent())
+        {
+            userRepository.updatePassword(userId, newPassword);
+            return mapper.toUserSlimDto(user.get());
+        }
+        throw new UserNotFoundException();
     }
 }

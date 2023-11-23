@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bookadaisical.dto.requests.ChangeEmailDto;
+import com.bookadaisical.dto.requests.ChangePasswordDto;
 import com.bookadaisical.dto.requests.ChangeUsernameDto;
 import com.bookadaisical.dto.requests.UserLoginDto;
 import com.bookadaisical.dto.requests.UserLoginTokenDto;
@@ -33,7 +35,7 @@ public class UserController {
         try {
             return new ResponseEntity<>(userService.registerUser(userRegisterDto), HttpStatus.OK);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("error: " + e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -42,7 +44,7 @@ public class UserController {
         try {
             return new ResponseEntity<>(userService.loginUser(userLoginDto), HttpStatus.OK);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("error: " + e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -83,6 +85,26 @@ public class UserController {
     {
         try {
             return ResponseEntity.ok(userService.changeUsername(changeUsernameDto.getUserId(), changeUsernameDto.getNewUsername()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = "/change-email")
+    public ResponseEntity<?> changeEmail(@RequestBody ChangeEmailDto changeEmailDto)
+    {
+        try {
+            return ResponseEntity.ok(userService.changeEmail(changeEmailDto.getUserId(), changeEmailDto.getNewEmail()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = "/change-password")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordDto changePasswordDto)
+    {
+        try {
+            return ResponseEntity.ok(userService.changePassword(changePasswordDto.getUserId(), changePasswordDto.getNewPassword()));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

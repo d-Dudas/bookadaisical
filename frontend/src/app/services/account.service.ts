@@ -13,6 +13,8 @@ export class AccountService {
   private loginWithTokenUrl = '/login-with-token';
   private getUserDetailsUrl: string = '/get-user-details';
   private changeUsernameUrl: string = '/change-username';
+  private changeEmailUrl: string = '/change-email';
+  private changePasswordUrl: string = '/change-password';
 
   constructor(private http: HttpClient) { }
 
@@ -39,5 +41,15 @@ export class AccountService {
   changeUsername(userId: number, newUsername: string): Observable<User>
   {
     return this.http.post<User>(this.backendUrl + this.changeUsernameUrl, {userId, newUsername});
+  }
+
+  changeEmail(userId: number, newEmail: string): Observable<User>
+  {
+    return this.http.post<User>(this.backendUrl + this.changeEmailUrl, {userId, newEmail});
+  }
+
+  changePassword(userId: number, newPassword: string): Observable<User>
+  {
+    return this.http.post<User>(this.backendUrl + this.changePasswordUrl, {userId, newPassword});
   }
 }
