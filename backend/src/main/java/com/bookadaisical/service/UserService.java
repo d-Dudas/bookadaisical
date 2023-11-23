@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bookadaisical.dto.requests.UserLoginDto;
 import com.bookadaisical.dto.requests.UserRegisterDto;
 import com.bookadaisical.dto.responses.UserSlimDto;
+import com.bookadaisical.dto.responses.UserTokenDto;
+import com.bookadaisical.dto.responses.interfaces.IUserDto;
 import com.bookadaisical.mapper.UserMapper;
 import com.bookadaisical.model.LoginToken;
 import com.bookadaisical.model.User;
@@ -55,28 +57,34 @@ public class UserService implements IUserService {
         return userRepository.findByUsername(user.getUsername()).get();
     }
 
-    private UserSlimDto createUserSlimDto(User user)
+    private void saveLoginToken(User user, UserTokenDto userTokenDto)
     {
-        UserSlimDto userSlimDto = mapper.toUserSlimDto(user);
-        LocalTime currentTime = LocalTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        String formattedTime = currentTime.format(formatter);
-        userSlimDto.setToken(Hasher.hash(userSlimDto.getUsername() + formattedTime));
-        userSlimDto.setKey(Hasher.hash(formattedTime + userSlimDto.getToken() + userSlimDto.getUsername()));
-        System.out.println("Key:" + userSlimDto.getKey());
+        LoginToken loginToken = new LoginToken(user, userTokenDto.getToken(), userTokenDto.getKey());
+        loginTokenRepository.save(loginToken);
+    }
 
-        return userSlimDto;
+    private UserTokenDto createUserTokenDto(User user)
+    {
+        UserTokenDto userTokenDto = mapper.toUserTokenDto(user);
+        String formattedTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+
+        userTokenDto.setToken(Hasher.hash(userTokenDto.getUsername() + formattedTime));
+        userTokenDto.setKey(Hasher.hash(formattedTime + userTokenDto.getToken()));
+
+        saveLoginToken(user, userTokenDto);
+
+        return userTokenDto;
     }
 
     @Override
-    public UserSlimDto loginUser(UserLoginDto userLoginDto) throws Exception {
+    public IUserDto loginUser(UserLoginDto userLoginDto) throws Exception {
         Optional<User> user = userRepository.findByUsernameOrEmailAndPassword(userLoginDto.getIdentifier(), userLoginDto.getPassword());
         if (user.isPresent()) {
-            UserSlimDto userSlimDto = this.createUserSlimDto(user.get());
-            LoginToken loginToken = new LoginToken(user.get(), userSlimDto.getToken(), userSlimDto.getKey());
-            loginTokenRepository.save(loginToken);
-            return userSlimDto;
+            return userLoginDto.isRememberMe() ?
+                    createUserTokenDto(user.get()) :
+                    mapper.toUserSlimDto(user.get());
         }
+
         Optional<User> checkIdentifier = userRepository.findByUsernameOrEmail(userLoginDto.getIdentifier(), userLoginDto.getIdentifier());
         if (checkIdentifier.isPresent() && !checkIdentifier.get().getPassword().equals(userLoginDto.getPassword())) {
             throw new Exception("Invalid password");

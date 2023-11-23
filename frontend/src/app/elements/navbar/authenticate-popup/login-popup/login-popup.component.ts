@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { AuthService } from 'src/app/account-management/auth-service.service';
 import { UserSlim } from 'src/app/elements/classes/userSlim';
+import { UserToken } from 'src/app/elements/classes/userToken';
 import { AccountService } from 'src/app/services/account.service';
 
 @Component({
@@ -14,7 +16,8 @@ export class LoginPopupComponent {
   @Output() showRegisterPopupEvent = new EventEmitter<void>();
   loginFormData = {
     identifier: '',
-    password: ''
+    password: '',
+    rememberMe: false
   };
   isPasswordVisisble: boolean = false;
   passwordInputType: string = this.isPasswordVisisble ? "text" : "password";
@@ -31,8 +34,17 @@ export class LoginPopupComponent {
     this.accountService.sendLoginFormToBackend(this.loginFormData).subscribe({
       next:(response: any) =>
       {
-        const user: UserSlim = response as UserSlim;
-        this.authService.login(user);
+        if(response.token !== null)
+        {
+          const user: UserToken = response as UserToken;
+          this.authService.loginAndSaveToken(user);
+        }
+        else
+        {
+          const user: UserSlim = response as UserSlim;
+          this.authService.login(user);
+        }
+
         this.clearLoginFormData();
         this.authenticateDoneEvent.emit();
       },
@@ -52,7 +64,8 @@ export class LoginPopupComponent {
   {
     this.loginFormData = {
       identifier: '',
-      password: ''
+      password: '',
+      rememberMe: false
     };
   }
 
@@ -65,5 +78,10 @@ export class LoginPopupComponent {
   {
     this.isPasswordVisisble = !this.isPasswordVisisble;
     this.passwordInputType = this.isPasswordVisisble ? "text" : "password";
+  }
+
+  toggleRememberMe()
+  {
+    this.loginFormData.rememberMe = !this.loginFormData.rememberMe;
   }
 }

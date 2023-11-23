@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 import { login, logout } from './auth.actions';
 import * as AuthState from '../account-management/auth.state'
 import { UserSlim } from '../elements/classes/userSlim';
+import { UserToken } from '../elements/classes/userToken';
 
 @Injectable({
   providedIn: 'root'
@@ -13,11 +14,13 @@ export class AuthService {
 
   login(user: UserSlim) {
     this.store.dispatch(login({ user }));
-    if(user.token && user.key)
-    {
-      localStorage.setItem('loginToken', user.token);
-      localStorage.setItem('loginKey', user.key);
-    }
+  }
+
+  loginAndSaveToken(user: UserToken)
+  {
+    this.store.dispatch(login({ user }));
+    localStorage.setItem('loginToken', user.token);
+    localStorage.setItem('loginKey', user.key);
   }
 
   logout() {
