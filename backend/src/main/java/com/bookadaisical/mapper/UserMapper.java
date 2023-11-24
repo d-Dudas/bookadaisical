@@ -6,6 +6,7 @@ import org.mapstruct.Mapping;
 
 import com.bookadaisical.dto.requests.UserLoginDto;
 import com.bookadaisical.dto.requests.UserRegisterDto;
+import com.bookadaisical.dto.responses.UserDto;
 import com.bookadaisical.dto.responses.UserSlimDto;
 import com.bookadaisical.dto.responses.UserTokenDto;
 import com.bookadaisical.model.User;
@@ -39,4 +40,5 @@ public interface UserMapper {
     @Mapping(target = "specialCurrency", ignore = true)
     User toUser(UserTokenDto userTokenDto);
 
+    UserDto toUserDto(User user);
 }

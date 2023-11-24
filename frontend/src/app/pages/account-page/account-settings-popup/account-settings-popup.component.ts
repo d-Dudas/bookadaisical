@@ -67,6 +67,10 @@ export class AccountSettingsPopupComponent {
 
   triggerUsernameForm(): void
   {
+    this.changeUsernameFormData.reset({
+      username: ''
+    });
+
     this.isChangeUsernameFormVisible = !this.isChangeUsernameFormVisible;
   }
 
@@ -90,6 +94,10 @@ export class AccountSettingsPopupComponent {
 
   triggerEmailForm(): void
   {
+    this.changeEmailFormData.reset({
+      email: ''
+    });
+
     this.isChangeEmailFormVisible = !this.isChangeEmailFormVisible;
   }
 
@@ -113,6 +121,11 @@ export class AccountSettingsPopupComponent {
 
   triggerPasswordForm(): void
   {
+    this.changePasswordFormData.reset({
+      password: '',
+      confirmPassword: ''
+    });
+
     this.isChangePasswordFormVisible = !this.isChangePasswordFormVisible;
   }
 

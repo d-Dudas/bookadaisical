@@ -16,7 +16,14 @@
     <div class="account-page-main-container">
         <div class="user-details-container">
             <div class="user-account-details-container">
-
+                <div class="user-email">
+                    <p>Email: {{ user?.email }}</p>
+                </div>
+                <div class="user-points-details">
+                    <p>Current points: {{ user?.currentPoints }}</p>
+                    <p>Total points: {{ user?.totalPoints }}</p>
+                    <p>Special currecny: {{ user?.specialCurrency }}</p>
+                </div>
             </div>
             <button
                 class="user-more-details-account"
@@ -24,7 +31,6 @@
                 (click)="openAccountSettingsPopup()"
                 >Details</button>
             <div class="user-statistics-container">
-
             </div>
         </div>
         <div class="user-history-detials">

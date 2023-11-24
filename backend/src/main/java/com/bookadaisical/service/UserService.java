@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.bookadaisical.dto.requests.UserLoginDto;
 import com.bookadaisical.dto.requests.UserRegisterDto;
+import com.bookadaisical.dto.responses.UserDto;
 import com.bookadaisical.dto.responses.UserSlimDto;
 import com.bookadaisical.dto.responses.UserTokenDto;
 import com.bookadaisical.dto.responses.interfaces.IUserDto;
@@ -125,13 +126,13 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User getUserDetails(int userId) throws Exception
+    public UserDto getUserDetails(int userId) throws Exception
     {
         Optional<User> user = userRepository.findById(userId);
 
         if(user.isPresent())
         {
-            return user.get();
+            return mapper.toUserDto(user.get());
         }
         throw new UserNotFoundException();
     }

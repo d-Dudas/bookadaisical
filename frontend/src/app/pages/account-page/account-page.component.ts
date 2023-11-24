@@ -14,7 +14,7 @@ export class AccountPageComponent {
 
   public user: User | null = null;
   public isVisitorTheOwner: boolean = false;
-  public isAccountSettingsPopupVisible = true;
+  public isAccountSettingsPopupVisible = false;
 
   constructor(private accountService: AccountService,
               private route: ActivatedRoute,
@@ -25,6 +25,7 @@ export class AccountPageComponent {
     this.accountService.getUserDetails(userId).subscribe({
       next: user => {
         this.user = user;
+        console.log(this.user);
         this.verifyIfVisitorIsTheOwner();
       },
       error: () => {
