@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { AuthService } from 'src/app/account-management/auth-service.service';
 import { UserSlim } from 'src/app/elements/classes/userSlim';
 import { UserToken } from 'src/app/elements/classes/userToken';

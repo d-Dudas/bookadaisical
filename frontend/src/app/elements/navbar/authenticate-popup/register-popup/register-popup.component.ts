@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AbstractControlOptions, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/account-management/auth-service.service';
 import { UserSlim } from 'src/app/elements/classes/userSlim';
+import { UserToken } from 'src/app/elements/classes/userToken';
 import { AccountService } from 'src/app/services/account.service';
 
 @Component({
@@ -25,13 +26,14 @@ export class RegisterPopupComponent {
       username: ['', [Validators.required, Validators.minLength(6)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/)]],
-      confirmPassword: ['', [Validators.required]]
+      confirmPassword: ['', [Validators.required]],
+      rememberMe: [false]
     }, {
       validators: this.passwordMatchValidator
     } as AbstractControlOptions);
   }
 
-  passwordMatchValidator(group: FormGroup): ValidationErrors | null {
+  private passwordMatchValidator(group: FormGroup): ValidationErrors | null {
     const password = group.get('password')?.value;
     const confirmPassword = group.get('confirmPassword')?.value;
 
@@ -50,27 +52,36 @@ export class RegisterPopupComponent {
     this.accountService.sendRegisterFormToBackend(this.registerFormData.getRawValue()).subscribe({
       next:(response: any) =>
       {
-        const user: UserSlim = response as UserSlim;
-        this.authService.login(user);
+        if(response.token !== null)
+        {
+          const user: UserToken = response as UserToken;
+          this.authService.loginAndSaveToken(user);
+        }
+        else
+        {
+          const user: UserSlim = response as UserSlim;
+          this.authService.login(user);
+        }
+
         this.clearRegisterFormData();
         this.authenticateDoneEvent.emit();
       },
       error:error =>
       {
+        console.log(error);
       }
     })
   }
 
-  clearRegisterFormData()
+  private clearRegisterFormData(): void
   {
-    this.registerFormData = this.formBuilder.group({
-      username: ['', [Validators.required, Validators.minLength(6)]],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/)]],
-      confirmPassword: ['', [Validators.required]]
-    }, {
-      validators: this.passwordMatchValidator
-    } as AbstractControlOptions);
+    this.registerFormData.reset({
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      rememberMe: false
+    })
   }
 
   showLoginPopup()
@@ -82,5 +93,11 @@ export class RegisterPopupComponent {
   {
     this.isPasswordVisisble = !this.isPasswordVisisble;
     this.passwordInputType = this.isPasswordVisisble ? "text" : "password";
+  }
+
+  toggleRememberMe(event: any)
+  {
+    const isChecked = event.target.checked;
+    this.registerFormData.get('rememberMe')?.setValue(isChecked);
   }
 }

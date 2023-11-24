@@ -8,13 +8,13 @@
             <label for="password">Password</label>
             <input [type]="passwordInputType" name="password" [(ngModel)]="loginFormData.password" #password="ngModel">
         </div>
-        <div class="login-form-remember-me-container">
-            <label for="rememberMe">Remember me</label>
-            <input type="checkbox" name="rememberMe" (change)="toggleRememberMe()">
-        </div>
         <div class="login-form-show-password-container">
             <label for="showPassword">Show password</label>
             <input type="checkbox" name="showPassword" (change)="togglePasswordVisibility()">
+        </div>
+        <div class="login-form-remember-me-container">
+            <label for="rememberMe">Remember me</label>
+            <input type="checkbox" name="rememberMe" (change)="toggleRememberMe()">
         </div>
         <button type="submit">Submit</button>
     </form>

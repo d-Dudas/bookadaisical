@@ -5,7 +5,6 @@ import com.bookadaisical.utils.Hasher;
 
 import java.util.List;
 import java.util.Optional;
-import java.sql.Timestamp;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
@@ -43,32 +42,6 @@ public class UserService implements IUserService {
         this.loginTokenRepository = loginTokenRepository;
     }
 
-    @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
-
-    @Override
-    public UserSlimDto registerUser(UserRegisterDto userRegisterDto) throws Exception {
-        User user = mapper.toUser(userRegisterDto);
-        Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
-        if (existingUser.isPresent()) {
-            throw new UsernameAlreadyAssociatedWithAnAccountException();
-        }
-        existingUser = userRepository.findByEmail(user.getEmail());
-        if (existingUser.isPresent()) {
-            throw new EmailAlreadyAssociatedWithAnAccountException();
-        }
-        userRepository.save(user);
-
-        existingUser = userRepository.findByUsername(user.getUsername());
-        if(existingUser.isPresent())
-        {
-            return mapper.toUserSlimDto(existingUser.get());
-        }
-        throw new UnknownError();
-    }
-
     private void saveLoginToken(User user, UserTokenDto userTokenDto)
     {
         LoginToken loginToken = new LoginToken(user, userTokenDto.getToken(), userTokenDto.getKey());
@@ -86,6 +59,38 @@ public class UserService implements IUserService {
         saveLoginToken(user, userTokenDto);
 
         return userTokenDto;
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public IUserDto registerUser(UserRegisterDto userRegisterDto) throws Exception {
+
+        User user = mapper.toUser(userRegisterDto);
+        Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
+        if (existingUser.isPresent()) {
+            throw new UsernameAlreadyAssociatedWithAnAccountException();
+        }
+
+        existingUser = userRepository.findByEmail(user.getEmail());
+        if (existingUser.isPresent()) {
+            throw new EmailAlreadyAssociatedWithAnAccountException();
+        }
+
+        userRepository.save(user);
+
+        existingUser = userRepository.findByUsername(user.getUsername());
+        if(existingUser.isPresent())
+        {
+
+            return userRegisterDto.isRememberMe() ?
+                    createUserTokenDto(existingUser.get()) :
+                    mapper.toUserSlimDto(existingUser.get());
+        }
+        throw new UnknownError();
     }
 
     @Override
