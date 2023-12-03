@@ -1,6 +1,6 @@
 package com.bookadaisical.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.bookadaisical.enums.ArtisticMovement;
@@ -55,10 +55,10 @@ public class Book {
     private String description;
     
     @Column(name = "created_on", nullable = false)
-    private LocalDate createdOn;
+    private LocalDateTime createdOn;
 
     @Column(name = "last_modified")
-    private LocalDate lastModified;
+    private LocalDateTime lastModified;
 
     @Column(name = "year_of_publication")
     private int yearOfPublication;
@@ -78,5 +78,9 @@ public class Book {
     @OneToMany(mappedBy = "activeBook", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<ActiveBook> activeBooks;
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<GenreBook> genreBooks;
 
 }

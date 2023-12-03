@@ -9,11 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.bookadaisical.dto.requests.BookDto;
-import com.bookadaisical.enums.ArtisticMovement;
-import com.bookadaisical.enums.Condition;
-import com.bookadaisical.enums.Genre;
-import com.bookadaisical.enums.TargetAudience;
+import com.bookadaisical.dto.requests.BookResponseDto;
 import com.bookadaisical.model.Book;
 
 @Repository
@@ -25,7 +21,21 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
         "EXTRACT(MONTH FROM CURRENT_DATE) AND EXTRACT(YEAR FROM b.createdOn) = EXTRACT(YEAR FROM CURRENT_DATE) ORDER BY b.numViews DESC")
     List<Book> findTopTenBooks(PageRequest pageRequest);
 
-    @Query(nativeQuery = true, value =
+    @Query(nativeQuery = true, value = 
+    "SELECT b.id AS id, " +
+    "b.title AS title, " +
+    "b.author AS author, " +
+    "b.num_views AS numViews, " +
+    "b.description AS description, " +
+    "b.created_on AS createdOn," +
+    "gb.genre_name AS genre " +
+    "FROM bookadaisical.books b " +
+    "JOIN bookadaisical.active_books ab ON b.id = ab.book_id " +
+    "JOIN bookadaisical.genres_books gb ON gb.book_id = ab.book_id " +
+    "WHERE (gb.genre_name = CAST(:genreName AS bookadaisical.genres) OR CAST(:genreName AS bookadaisical.genres) = 'ALL')")
+    List<BookResponseDto> findAllByGenreNativeQuery(@Param("genreName") String genreName);
+
+    /*@Query(nativeQuery = true, value =
     "SELECT DISTINCT " +
     "b.title AS title, " +
     "b.author AS author, " +
@@ -38,7 +48,7 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     "JOIN bookadaisical.genres_books gb ON gb.book_id = ab.book_id " +
     "WHERE (gb.genre_name = CAST(:genreName AS bookadaisical.genres) OR CAST(:genreName AS bookadaisical.genres) = 'ALL')")
     List<Object[]> findAllByGenreNativeQuery(@Param("genreName") String genreName);
-
+    */
 
 
     /*@Query("SELECT b FROM Book b " +

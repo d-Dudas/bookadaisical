@@ -45,6 +45,11 @@ VALUES (11, 'CLASSICS'), (11, 'ADVENTURE');
 -- SELECT setval(pg_get_serial_sequence('bookadaisical.books', 'id'), 1, false);
 -- DELETE FROM bookadaisical.books;
 
+SELECT b.id, b.title, b.author, b.num_views, b.description, b.created_on FROM bookadaisical.books b
+JOIN bookadaisical.active_books ab ON b.id = ab.book_id
+JOIN bookadaisical.genres_books gb ON gb.book_id = ab.book_id
+WHERE ('ALL' = 'ALL' OR gb.genre_name = 'ALL');
+
 SELECT * FROM bookadaisical.books b
 JOIN bookadaisical.active_books ab ON b.id = ab.book_id
 JOIN bookadaisical.genres_books gb ON gb.book_id = ab.book_id
@@ -67,3 +72,4 @@ WHERE (gb.genre_name = ? OR gb.genre_name = 'ALL')
   AND b.year_of_publication > ?
   AND (POSITION(LOWER(?) IN LOWER(b.title)) != 0 OR POSITION(LOWER(?) IN LOWER(b.author)) != 0 OR POSITION(LOWER(?) IN LOWER(b.description)) != 0);
 
+SELECT * FROM bookadaisical.images;
