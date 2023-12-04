@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AccountService } from '../services/account.service';
 import { AuthService } from '../account-management/auth-service.service';
-import { User } from '../account-management/user';
+import { UserSlim } from '../elements/classes/userSlim';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +20,7 @@ export class RootComponent {
     {
       this.accountService.loginWithToken(loginToken, loginKey).subscribe({
         next: (response: any) => {
-          const user: User = response as User;
+          const user: UserSlim = response as UserSlim;
           this.authService.login(user);
         },
         error:error => {

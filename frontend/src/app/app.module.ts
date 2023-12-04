@@ -22,6 +22,8 @@ import { BookPageComponent } from './pages/book-page/book-page.component';
 import { SendMessageToBookOwnerPopupComponent } from './pages/book-page/send-message-to-book-owner-popup/send-message-to-book-owner-popup.component';
 import { NegotiatePageComponent } from './pages/negotiate-page/negotiate-page.component';
 import { ProblemPopupComponent } from './elements/problem-popup/problem-popup.component';
+import { AccountPageComponent } from './pages/account-page/account-page.component';
+import { AccountSettingsPopupComponent } from './pages/account-page/account-settings-popup/account-settings-popup.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,9 @@ import { ProblemPopupComponent } from './elements/problem-popup/problem-popup.co
     BookPageComponent,
     SendMessageToBookOwnerPopupComponent,
     NegotiatePageComponent,
-    ProblemPopupComponent
+    ProblemPopupComponent,
+    AccountPageComponent,
+    AccountSettingsPopupComponent
   ],
   imports: [
     BrowserModule,

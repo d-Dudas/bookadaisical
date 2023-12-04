@@ -47,6 +47,10 @@
             <label for="showPassword">Show password</label>
             <input type="checkbox" name="showPassword" (change)="togglePasswordVisibility()">
         </div>
+        <div class="register-form-remember-me-container">
+            <label for="rememberMe">Remember me</label>
+            <input type="checkbox" name="rememberMe" (change)="toggleRememberMe($event)">
+        </div>
         <button type="submit">Submit</button>
     </form>
     <div class="dont-have-account-box">

@@ -8,12 +8,20 @@ import java.util.Optional;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-import org.hibernate.grammars.hql.HqlParser.DateTimeContext;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bookadaisical.dto.requests.UserLoginDto;
 import com.bookadaisical.dto.requests.UserRegisterDto;
+import com.bookadaisical.dto.responses.UserDto;
 import com.bookadaisical.dto.responses.UserSlimDto;
+import com.bookadaisical.dto.responses.UserTokenDto;
+import com.bookadaisical.dto.responses.interfaces.IUserDto;
+import com.bookadaisical.exceptions.EmailAlreadyAssociatedWithAnAccountException;
+import com.bookadaisical.exceptions.InvalidPasswordException;
+import com.bookadaisical.exceptions.InvalidTokenException;
+import com.bookadaisical.exceptions.UserNotFoundException;
+import com.bookadaisical.exceptions.UsernameAlreadyAssociatedWithAnAccountException;
 import com.bookadaisical.mapper.UserMapper;
 import com.bookadaisical.model.LoginToken;
 import com.bookadaisical.model.User;
@@ -35,56 +43,75 @@ public class UserService implements IUserService {
         this.loginTokenRepository = loginTokenRepository;
     }
 
+    private void saveLoginToken(User user, UserTokenDto userTokenDto)
+    {
+        LoginToken loginToken = new LoginToken(user, userTokenDto.getToken(), userTokenDto.getKey());
+        loginTokenRepository.save(loginToken);
+    }
+
+    private UserTokenDto createUserTokenDto(User user)
+    {
+        UserTokenDto userTokenDto = mapper.toUserTokenDto(user);
+        String formattedTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+
+        userTokenDto.setToken(Hasher.hash(userTokenDto.getUsername() + formattedTime));
+        userTokenDto.setKey(Hasher.hash(formattedTime + userTokenDto.getToken()));
+
+        saveLoginToken(user, userTokenDto);
+
+        return userTokenDto;
+    }
+
     @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
     @Override
-    public User registerUser(UserRegisterDto userRegisterDto) throws Exception {
+    public IUserDto registerUser(UserRegisterDto userRegisterDto) throws Exception {
+
         User user = mapper.toUser(userRegisterDto);
         Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
         if (existingUser.isPresent()) {
-            throw new Exception(String.format("User with username \"%s\" is already registered", user.getUsername()));
+            throw new UsernameAlreadyAssociatedWithAnAccountException();
         }
+
         existingUser = userRepository.findByEmail(user.getEmail());
         if (existingUser.isPresent()) {
-            throw new Exception(String.format("User with email \"%s\" is already registered", user.getEmail()));
+            throw new EmailAlreadyAssociatedWithAnAccountException();
         }
+
         userRepository.save(user);
-        return userRepository.findByUsername(user.getUsername()).get();
-    }
 
-    private UserSlimDto createUserSlimDto(User user)
-    {
-        UserSlimDto userSlimDto = mapper.toUserSlimDto(user);
-        LocalTime currentTime = LocalTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        String formattedTime = currentTime.format(formatter);
-        userSlimDto.setToken(Hasher.hash(userSlimDto.getUsername() + formattedTime));
-        userSlimDto.setKey(Hasher.hash(formattedTime + userSlimDto.getToken() + userSlimDto.getUsername()));
-        System.out.println("Key:" + userSlimDto.getKey());
+        existingUser = userRepository.findByUsername(user.getUsername());
+        if(existingUser.isPresent())
+        {
 
-        return userSlimDto;
+            return userRegisterDto.isRememberMe() ?
+                    createUserTokenDto(existingUser.get()) :
+                    mapper.toUserSlimDto(existingUser.get());
+        }
+        throw new UnknownError();
     }
 
     @Override
-    public UserSlimDto loginUser(UserLoginDto userLoginDto) throws Exception {
+    public IUserDto loginUser(UserLoginDto userLoginDto) throws Exception {
         Optional<User> user = userRepository.findByUsernameOrEmailAndPassword(userLoginDto.getIdentifier(), userLoginDto.getPassword());
         if (user.isPresent()) {
-            UserSlimDto userSlimDto = this.createUserSlimDto(user.get());
-            LoginToken loginToken = new LoginToken(user.get(), userSlimDto.getToken(), userSlimDto.getKey());
-            loginTokenRepository.save(loginToken);
-            return userSlimDto;
+            return userLoginDto.isRememberMe() ?
+                    createUserTokenDto(user.get()) :
+                    mapper.toUserSlimDto(user.get());
         }
+
         Optional<User> checkIdentifier = userRepository.findByUsernameOrEmail(userLoginDto.getIdentifier(), userLoginDto.getIdentifier());
         if (checkIdentifier.isPresent() && !checkIdentifier.get().getPassword().equals(userLoginDto.getPassword())) {
-            throw new Exception("Invalid password");
+            throw new InvalidPasswordException();
         } else {
-            throw new Exception("User not found");
+            throw new UserNotFoundException();
         }
     }
 
+    @Transactional
     @Override
     public UserSlimDto loginUserWithToken(String token, String key) throws Exception
     {
@@ -92,13 +119,80 @@ public class UserService implements IUserService {
 
         if(loginToken.isPresent())
         {
-            // TODO: revalidate token
-            // UserSlimDto userSlimDto = this.createUserSlimDto(loginToken.get().getUser());
-            UserSlimDto userSlimDto = mapper.toUserSlimDto(loginToken.get().getUser());
-            // userSlimDto.setToken(loginToken.get().getToken());
-            // userSlimDto.setKey(loginToken.get().getKey());
-            return userSlimDto;
+            loginTokenRepository.revalidateToken(token);
+            return mapper.toUserSlimDto(loginToken.get().getUser());
         }
-        throw new Exception("invalid_token");
+        throw new InvalidTokenException();
+    }
+
+    @Override
+    public UserDto getUserDetails(int userId) throws Exception
+    {
+        Optional<User> user = userRepository.findById(userId);
+
+        if(user.isPresent())
+        {
+            return mapper.toUserDto(user.get());
+        }
+        throw new UserNotFoundException();
+    }
+
+    @Transactional
+    @Override
+    public UserSlimDto changeUsername(int userId, String newUsername) throws Exception
+    {
+        Optional<User> user;
+
+        user = userRepository.findByUsername(newUsername);
+        if(user.isPresent())
+        {
+            throw new UsernameAlreadyAssociatedWithAnAccountException();
+        }
+
+        user = userRepository.findById(userId);
+        if(user.isPresent())
+        {
+            userRepository.updateUsername(userId, newUsername);
+            user.get().setUsername(newUsername);
+            return mapper.toUserSlimDto(user.get());
+        }
+        throw new UserNotFoundException();
+    }
+
+    @Transactional
+    @Override
+    public UserSlimDto changeEmail(int userId, String newEmail) throws Exception
+    {
+        Optional<User> user;
+
+        user = userRepository.findByEmail(newEmail);
+        if(user.isPresent())
+        {
+            throw new EmailAlreadyAssociatedWithAnAccountException();
+        }
+
+        user = userRepository.findById(userId);
+        if(user.isPresent())
+        {
+            userRepository.updateEmail(userId, newEmail);
+            user.get().setEmail(newEmail);
+            return mapper.toUserSlimDto(user.get());
+        }
+        throw new UserNotFoundException();
+    }
+
+    @Transactional
+    @Override
+    public UserSlimDto changePassword(int userId, String newPassword) throws Exception
+    {
+        Optional<User> user;
+
+        user = userRepository.findById(userId);
+        if(user.isPresent())
+        {
+            userRepository.updatePassword(userId, newPassword);
+            return mapper.toUserSlimDto(user.get());
+        }
+        throw new UserNotFoundException();
     }
 }

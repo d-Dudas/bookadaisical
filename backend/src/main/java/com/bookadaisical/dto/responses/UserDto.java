@@ -7,7 +7,11 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class UserSlimDto implements IUserDto {
+public class UserDto implements IUserDto {
     private int id;
     private String username;
+    private String email;
+    private int currentPoints;
+    private int totalPoints;
+    private int specialCurrency;
 }

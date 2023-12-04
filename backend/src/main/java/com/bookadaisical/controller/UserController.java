@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bookadaisical.dto.requests.ChangeEmailDto;
+import com.bookadaisical.dto.requests.ChangePasswordDto;
+import com.bookadaisical.dto.requests.ChangeUsernameDto;
 import com.bookadaisical.dto.requests.UserLoginDto;
 import com.bookadaisical.dto.requests.UserLoginTokenDto;
 import com.bookadaisical.dto.requests.UserRegisterDto;
@@ -32,7 +35,7 @@ public class UserController {
         try {
             return new ResponseEntity<>(userService.registerUser(userRegisterDto), HttpStatus.OK);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("error: " + e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -41,7 +44,7 @@ public class UserController {
         try {
             return new ResponseEntity<>(userService.loginUser(userLoginDto), HttpStatus.OK);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("error: " + e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -62,6 +65,46 @@ public class UserController {
     {
         try {
             return ResponseEntity.ok(userService.loginUserWithToken(userLoginTokenDto.getToken(), userLoginTokenDto.getKey()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping(value = "/get-user-details/{userId}")
+    public ResponseEntity<?> getUserDeatils(@PathVariable("userId") int userId)
+    {
+        try {
+            return ResponseEntity.ok(userService.getUserDetails(userId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = "/change-username")
+    public ResponseEntity<?> changeUsername(@RequestBody ChangeUsernameDto changeUsernameDto)
+    {
+        try {
+            return ResponseEntity.ok(userService.changeUsername(changeUsernameDto.getUserId(), changeUsernameDto.getNewUsername()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = "/change-email")
+    public ResponseEntity<?> changeEmail(@RequestBody ChangeEmailDto changeEmailDto)
+    {
+        try {
+            return ResponseEntity.ok(userService.changeEmail(changeEmailDto.getUserId(), changeEmailDto.getNewEmail()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = "/change-password")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordDto changePasswordDto)
+    {
+        try {
+            return ResponseEntity.ok(userService.changePassword(changePasswordDto.getUserId(), changePasswordDto.getNewPassword()));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

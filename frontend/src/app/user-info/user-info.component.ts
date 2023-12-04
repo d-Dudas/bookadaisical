@@ -1,8 +1,8 @@
 // TODO: remove this temporary component later
 import { Component } from '@angular/core';
-import { User } from '../account-management/user';
 import { Store } from '@ngrx/store';
 import { selectIsAuthenticated, selectUser } from '../account-management/auth.state';
+import { UserSlim } from '../elements/classes/userSlim';
 
 @Component({
   selector: 'app-user-info',
@@ -11,7 +11,7 @@ import { selectIsAuthenticated, selectUser } from '../account-management/auth.st
 })
 export class UserInfoComponent {
   isLoggedIn = false;
-  user: User | null = null;
+  user: UserSlim | null = null;
 
   constructor(private store: Store) {
     this.store.select(selectIsAuthenticated).subscribe((isAuthenticated) =>

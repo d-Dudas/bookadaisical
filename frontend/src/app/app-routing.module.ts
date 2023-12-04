@@ -4,12 +4,14 @@ import { LandingPageComponent } from './pages/landing-page/landing-page.componen
 import { SearchPageComponent } from './pages/search-page/search-page.component';
 import { BookPageComponent } from './pages/book-page/book-page.component';
 import { NegotiatePageComponent } from './pages/negotiate-page/negotiate-page.component';
+import { AccountPageComponent } from './pages/account-page/account-page.component';
 
 const routes: Routes = [
   {path: 'home', component: LandingPageComponent},
   {path: 'search', component: SearchPageComponent},
   {path: 'books/:uniqueId', component: BookPageComponent},
   {path: 'negotiate/:bookId', component: NegotiatePageComponent},
+  {path: 'account/:userId', component: AccountPageComponent},
 
   {path: '', redirectTo: '/home', pathMatch: 'full'}
 ];

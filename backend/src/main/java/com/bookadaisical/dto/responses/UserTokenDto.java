@@ -7,7 +7,9 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class UserSlimDto implements IUserDto {
+public class UserTokenDto implements IUserDto {
     private int id;
     private String username;
+    private String token;
+    private String key;
 }

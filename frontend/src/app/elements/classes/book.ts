@@ -1,11 +1,12 @@
-import { User } from "../../account-management/user";
+
 import { BookPurpose } from "../../utils/enums/book-purpose";
+import { UserSlim } from "./userSlim";
 
 export class Book {
     uniqueId: number | undefined;
     title: string | undefined;
     author: string | undefined;
-    uploader: User | undefined;
+    uploader: UserSlim | undefined;
     ISBN: string | undefined;
     images: string[] | undefined;
     views: number | undefined;
