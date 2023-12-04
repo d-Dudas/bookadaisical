@@ -30,7 +30,7 @@ public class BookService implements IBookService {
         List<Book> topTenMonthlyBooks = bookRepository.findTopTenBooks(PageRequest.of(0, 10));
         return topTenMonthlyBooks;
     }
-
+    
     @Override
     public List<BookResponseDto> getFilteredBooks(BookSearchFiltersDto bookSearchFiltersDto) throws Exception {
 
