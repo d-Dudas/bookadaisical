@@ -45,9 +45,15 @@ VALUES (11, 'CLASSICS'), (11, 'ADVENTURE');
 -- SELECT setval(pg_get_serial_sequence('bookadaisical.books', 'id'), 1, false);
 -- DELETE FROM bookadaisical.books;
 
-SELECT b.id, b.title, b.author, b.num_views, b.description, b.created_on FROM bookadaisical.books b
+SELECT DISTINCT b.id, b.title, b.author, b.uploader AS userId, u.username, b.num_views AS numViews, 
+b.target_audience AS targetAudience, b.artistic_movement AS artisticMovement, b.book_condition AS condition, 
+pcb.amount, ppb.amount, b.description, b.created_on 
+FROM bookadaisical.books b
 JOIN bookadaisical.active_books ab ON b.id = ab.book_id
 JOIN bookadaisical.genres_books gb ON gb.book_id = ab.book_id
+JOIN bookadaisical.users u ON u.id = b.uploader
+LEFT JOIN bookadaisical.price_currency_books pcb ON b.id = pcb.book_id
+LEFT JOIN bookadaisical.price_points_books ppb ON b.id = ppb.book_id
 WHERE ('ALL' = 'ALL' OR gb.genre_name = 'ALL');
 
 SELECT * FROM bookadaisical.books b
@@ -72,4 +78,28 @@ WHERE (gb.genre_name = ? OR gb.genre_name = 'ALL')
   AND b.year_of_publication > ?
   AND (POSITION(LOWER(?) IN LOWER(b.title)) != 0 OR POSITION(LOWER(?) IN LOWER(b.author)) != 0 OR POSITION(LOWER(?) IN LOWER(b.description)) != 0);
 
+SELECT * FROM bookadaisical.books;
+SELECT * FROM bookadaisical.images_books;
 SELECT * FROM bookadaisical.images;
+SELECT * FROM bookadaisical.users;
+SELECT * FROM bookadaisical.trading_options_books;
+
+
+INSERT INTO bookadaisical.images_books (book_id, image_id)
+VALUES (22, 3);
+INSERT INTO bookadaisical.images_books (book_id, image_id)
+VALUES (11, 4);
+
+INSERT INTO bookadaisical.trading_options_books (book_id, trading_option)
+VALUES (22, 'CURRENCY');
+
+INSERT INTO bookadaisical.trading_options_books (book_id, trading_option)
+VALUES (11, 'POINTS');
+INSERT INTO bookadaisical.trading_options_books (book_id, trading_option)
+VALUES (11, 'SWAP');
+
+INSERT INTO bookadaisical.price_currency_books (book_id, amount)
+VALUES (22, 32);
+
+INSERT INTO bookadaisical.price_points_books (book_id, amount)
+VALUES (11, 10);

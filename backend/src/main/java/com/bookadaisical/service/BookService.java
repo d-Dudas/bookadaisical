@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.bookadaisical.dto.requests.BookResponseDto;
+import com.bookadaisical.dto.requests.BookResponseProjection;
 import com.bookadaisical.dto.requests.BookSearchFiltersDto;
 import com.bookadaisical.model.Book;
 import com.bookadaisical.repository.BookRepository;
@@ -32,7 +33,7 @@ public class BookService implements IBookService {
     }
     
     @Override
-    public List<BookResponseDto> getFilteredBooks(BookSearchFiltersDto bookSearchFiltersDto) throws Exception {
+    public List<BookResponseProjection> getFilteredBooks(BookSearchFiltersDto bookSearchFiltersDto) throws Exception {
 
         int idIndex = 0;
         int titleIndex = 1;
@@ -47,7 +48,7 @@ public class BookService implements IBookService {
 
         //List<BookResponseDto> filteredByGenreBooks = bookRepository.findAllByGenreNativeQuery(bookSearchFiltersDto.getGenre().toString());
 
-        List<BookResponseDto> filteredByGenreBooks = bookRepository.findAllByGenreNativeQuery(bookSearchFiltersDto.getGenre().toString());
+        List<BookResponseProjection> filteredByGenreBooks = bookRepository.findAllByGenreNativeQuery(bookSearchFiltersDto.getGenre().toString());
         
         /*List<BookResponseDto> filteredByGenreBooksFin = filteredByGenreBooks.stream().map(fullDetailBookRaw -> new BookResponseDto(
             (int) fullDetailBookRaw[idIndex],

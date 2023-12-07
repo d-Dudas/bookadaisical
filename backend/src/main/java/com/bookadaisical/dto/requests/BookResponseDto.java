@@ -2,29 +2,27 @@ package com.bookadaisical.dto.requests;
 
 import java.time.LocalDateTime;
 
-import com.bookadaisical.enums.Genre;
+import com.bookadaisical.dto.responses.UserSlimDto;
+import com.bookadaisical.enums.ArtisticMovement;
+import com.bookadaisical.enums.Condition;
+import com.bookadaisical.enums.TargetAudience;
 
-public interface BookResponseDto {
+import lombok.Data;
+
+@Data
+public class BookResponseDto implements BookResponseProjection {
     
-    ///Integer id; // Book
-    ///String title; // Book
-    ///String author; // Book
-    // UserSlimDto uploader; // User
-    // ISBN
-    // images
-    ///Integer numViews; // Book
-    // purpose
-    // priceCurrency
-    // pricePoints
-    ///String description; // Book
-    ///LocalDateTime createdOn; // Change Timestamp to LocalDateTime
-
-    Long getId();
-    String getTitle();
-    String getAuthor();
-    Integer getNumViews();
-    String getDescription();
-    LocalDateTime getCreatedOn();
-    Genre getGenre();   
+    Long bookId;
+    String title;
+    String author;
+    UserSlimDto userSlimDto;
+    Integer numViews;
+    TargetAudience targetAudience;
+    Condition condition;
+    ArtisticMovement artisticMovement;
+    Float currency;
+    Integer points;
+    String description;
+    LocalDateTime createdOn;
 
 }

@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.bookadaisical.dto.requests.BookResponseDto;
+import com.bookadaisical.dto.requests.BookResponseProjection;
 import com.bookadaisical.model.Book;
 
 @Repository
@@ -22,18 +22,27 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     List<Book> findTopTenBooks(PageRequest pageRequest);
 
     @Query(nativeQuery = true, value = 
-    "SELECT b.id AS id, " +
+    "SELECT b.id AS bookId, " +
     "b.title AS title, " +
     "b.author AS author, " +
+    "b.uploader AS userSlimDto_userId, " +
+    "u.username As userSlimDto_username, " +
     "b.num_views AS numViews, " +
+    "b.target_audience AS targetAudience, " +
+    "b.book_condition AS condition, " +
+    "b.artistic_movement AS artisticMovement, " +
+    "pcb.amount AS currency, " +
+    "ppb.amount AS points, " +
     "b.description AS description, " +
-    "b.created_on AS createdOn," +
-    "gb.genre_name AS genre " +
+    "b.created_on AS createdOn " +
     "FROM bookadaisical.books b " +
     "JOIN bookadaisical.active_books ab ON b.id = ab.book_id " +
     "JOIN bookadaisical.genres_books gb ON gb.book_id = ab.book_id " +
+    "JOIN bookadaisical.users u ON u.id = b.uploader " +
+    "LEFT JOIN bookadaisical.price_currency_books pcb ON b.id = pcb.book_id " +
+    "LEFT JOIN bookadaisical.price_points_books ppb ON b.id = ppb.book_id " +
     "WHERE (gb.genre_name = CAST(:genreName AS bookadaisical.genres) OR CAST(:genreName AS bookadaisical.genres) = 'ALL')")
-    List<BookResponseDto> findAllByGenreNativeQuery(@Param("genreName") String genreName);
+    List<BookResponseProjection> findAllByGenreNativeQuery(@Param("genreName") String genreName);
 
     /*@Query(nativeQuery = true, value =
     "SELECT DISTINCT " +
