@@ -28,7 +28,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { ChatComponent } from './chat/chat.component';
+import { ChatComponent } from './elements/chat/chat.component';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatCardModule} from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -47,7 +50,7 @@ import { ChatComponent } from './chat/chat.component';
     ProblemPopupComponent,
     AccountPageComponent,
     AccountSettingsPopupComponent,
-    ChatComponent
+    ChatComponent,
   ],
   imports: [
     BrowserModule,
@@ -63,7 +66,10 @@ import { ChatComponent } from './chat/chat.component';
     BrowserAnimationsModule,
     MatButtonModule,
     MatIconModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCardModule
   ],
   providers: [Book],
   bootstrap: [RootComponent]
