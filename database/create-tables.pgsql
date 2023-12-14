@@ -1,24 +1,21 @@
 CREATE SCHEMA bookadaisical;
 
+-- uuid-ossp extension install
+-- SELECT * FROM pg_extension WHERE extname = 'uuid-ossp';
+-- CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 CREATE TABLE bookadaisical.users (
-	id serial PRIMARY KEY,
+	id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
 	username text NOT NULL UNIQUE,
 	email text NOT NULL UNIQUE,
 	password text NOT NULL,
 	current_points int DEFAULT 0,
 	total_points int DEFAULT 0,
-	special_currency int DEFAULT 0
+	special_currency int DEFAULT 0,
+    is_admin boolean DEFAULT false,
+    is_validated boolean DEFAULT false
 );
 
-CREATE TABLE bookadaisical.admins (
-	id serial PRIMARY KEY,
-	user_id int REFERENCES bookadaisical.users(id)
-);
-
-CREATE TABLE bookadaisical.yet_to_be_validated_users (
-	id serial PRIMARY KEY,
-	user_id int REFERENCES bookadaisical.users(id)
-);
 -- DROP TYPE bookadaisical.target_audience_books;
 CREATE TYPE bookadaisical.target_audience_books AS ENUM (
     'ALL',
@@ -125,13 +122,15 @@ CREATE TYPE bookadaisical.trading_options AS ENUM (
 );
 
 CREATE TABLE bookadaisical.images (
-    id serial PRIMARY KEY,
-    image_data bytea
+    id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+    image_data bytea,
+    image_name text,
+    book_id uuid REFERENCES bookadaisical.books(id)
 );
 
 CREATE TABLE bookadaisical.books (
-    id serial PRIMARY KEY,
-    uploader int REFERENCES bookadaisical.users(id),
+    id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+    uploader uuid REFERENCES bookadaisical.users(id),
     title text NOT NULL,
     author text NOT NULL,
     num_views int,
@@ -141,44 +140,35 @@ CREATE TABLE bookadaisical.books (
     year_of_publication int,
     artistic_movement artistic_movement_books,
     target_audience bookadaisical.target_audience_books,
-    book_condition bookadaisical.condition_books
+    book_condition bookadaisical.condition_books,
+    is_active boolean DEFAULT true
 );
 
-CREATE TABLE bookadaisical.images_books (
-    book_id int REFERENCES bookadaisical.books(id),
-    image_id int REFERENCES bookadaisical.images(id),
-    PRIMARY KEY (book_id, image_id)
-);
-
-CREATE TABLE bookadaisical.active_books (
-    id serial PRIMARY KEY,
-    book_id int REFERENCES bookadaisical.books(id)
-);
 
 CREATE TABLE bookadaisical.genres_books (
-	book_id INT REFERENCES bookadaisical.books(id),
+	book_id uuid REFERENCES bookadaisical.books(id),
     genre_name bookadaisical.genres,
     PRIMARY KEY (book_id, genre_name)
 );
 
 CREATE TABLE bookadaisical.trading_options_books (
-	book_id INT REFERENCES bookadaisical.books(id),
+	book_id uuid REFERENCES bookadaisical.books(id),
     trading_option bookadaisical.trading_options,
     PRIMARY KEY (book_id, trading_option)
 );
 
 CREATE TABLE bookadaisical.book_trades (
-	id serial PRIMARY KEY,
-	sender int REFERENCES bookadaisical.users(id),
-	receiver int REFERENCES bookadaisical.users(id),
-	book_id int REFERENCES bookadaisical.books(id),
+	id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+	sender uuid REFERENCES bookadaisical.users(id),
+	receiver uuid REFERENCES bookadaisical.users(id),
+	book_id uuid REFERENCES bookadaisical.books(id),
 	trade_timestamp timestamp NOT NULL DEFAULT NOW(),
 	trading_option bookadaisical.trading_options_books
 );
 
 CREATE TABLE bookadaisical.articles (
-	id serial PRIMARY KEY,
-	author int REFERENCES bookadaisical.users(id),
+	id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+	author uuid REFERENCES bookadaisical.users(id),
 	title text,
 	num_views int,
 	created_on timestamp NOT NULL DEFAULT NOW(),
@@ -186,31 +176,31 @@ CREATE TABLE bookadaisical.articles (
 );
 
 CREATE TABLE bookadaisical.articles_books (
-	article_id int REFERENCES bookadaisical.articles(id),
-	book_id int REFERENCES bookadaisical.books(id),
+	article_id uuid REFERENCES bookadaisical.articles(id),
+	book_id uuid REFERENCES bookadaisical.books(id),
     PRIMARY KEY (article_id, book_id)
 );
 
 CREATE TABLE bookadaisical.article_comments (
-	id serial PRIMARY KEY,
-	author int REFERENCES bookadaisical.users(id),
-	article int REFERENCES bookadaisical.articles(id),
+	id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+	author uuid REFERENCES bookadaisical.users(id),
+	article uuid REFERENCES bookadaisical.articles(id),
 	created_on timestamp NOT NULL DEFAULT NOW(),
 	last_modified timestamp
 );
 
 CREATE TABLE bookadaisical.points_transferred (
-	id serial PRIMARY KEY,
-	sender int REFERENCES bookadaisical.users(id),
-	receiver int REFERENCES bookadaisical.users(id),
+	id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+	sender uuid REFERENCES bookadaisical.users(id),
+	receiver uuid REFERENCES bookadaisical.users(id),
 	amount int,
 	sent_at timestamp NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE bookadaisical.chat (
-	id serial PRIMARY KEY,
-	sender int REFERENCES bookadaisical.users(id),
-	receiver int REFERENCES bookadaisical.users(id),
+	id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+	sender uuid REFERENCES bookadaisical.users(id),
+	receiver uuid REFERENCES bookadaisical.users(id),
 	message text,
 	sent_at timestamp NOT NULL DEFAULT NOW()
 );
@@ -221,18 +211,18 @@ CREATE TABLE bookadaisical.reward_for_trading (
 );
 
 CREATE TABLE bookadaisical.price_currency_books (
-	book_id int PRIMARY KEY REFERENCES bookadaisical.books(id),
+	book_id uuid PRIMARY KEY REFERENCES bookadaisical.books(id),
 	amount float
 );
 
 CREATE TABLE bookadaisical.price_points_books (
-	book_id int PRIMARY KEY REFERENCES bookadaisical.books(id),
+	book_id uuid PRIMARY KEY REFERENCES bookadaisical.books(id),
 	amount float
 );
 
 CREATE TABLE bookadaisical.login_tokens (
-    id serial PRIMARY KEY,
-    user_id int REFERENCES bookadaisical.users(id),
+    id uuid DEFAULT uuid_generate_v4() PRIMARY KEY,
+    user_id uuid REFERENCES bookadaisical.users(id),
     token text,
     key text,
     last_validated_on timestamp NOT NULL DEFAULT NOW()

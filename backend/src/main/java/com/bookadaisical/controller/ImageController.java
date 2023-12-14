@@ -1,5 +1,7 @@
 package com.bookadaisical.controller;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,9 +26,9 @@ public class ImageController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadImage(@RequestParam("image") MultipartFile file) {
+    public ResponseEntity<String> uploadImage(@RequestParam("bookId") UUID bookId, @RequestParam("image") MultipartFile file) {
         try {
-            String uploadImage = imageService.saveImage(file);
+            String uploadImage = imageService.saveImage(bookId, file);
             return ResponseEntity.ok(uploadImage);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Failed to upload image");
@@ -34,7 +36,7 @@ public class ImageController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getImage(@PathVariable Long id) {
+    public ResponseEntity<?> getImage(@PathVariable UUID id) {
         try {
             byte[] imageData = imageService.getImageById(id);
             return ResponseEntity.status(HttpStatus.OK)

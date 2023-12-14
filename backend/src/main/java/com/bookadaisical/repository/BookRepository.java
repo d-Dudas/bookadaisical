@@ -2,6 +2,7 @@ package com.bookadaisical.repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,40 +10,22 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.bookadaisical.dto.requests.BookResponseProjection;
 import com.bookadaisical.model.Book;
 
 @Repository
-public interface BookRepository extends JpaRepository<Book, Integer> {
+public interface BookRepository extends JpaRepository<Book, UUID> {
 
-    Optional<Book> findById(int id);
+    Optional<Book> findById(UUID id);
 
-    @Query("SELECT b FROM Book b JOIN b.activeBooks ab WHERE EXTRACT(MONTH FROM b.createdOn) = " +
-        "EXTRACT(MONTH FROM CURRENT_DATE) AND EXTRACT(YEAR FROM b.createdOn) = EXTRACT(YEAR FROM CURRENT_DATE) ORDER BY b.numViews DESC")
+    @Query(value = "SELECT * FROM bookadaisical.books", nativeQuery = true)
     List<Book> findTopTenBooks(PageRequest pageRequest);
 
-    @Query(nativeQuery = true, value = 
-    "SELECT b.id AS bookId, " +
-    "b.title AS title, " +
-    "b.author AS author, " +
-    "b.uploader AS userSlimDto_userId, " +
-    "u.username As userSlimDto_username, " +
-    "b.num_views AS numViews, " +
-    "b.target_audience AS targetAudience, " +
-    "b.book_condition AS condition, " +
-    "b.artistic_movement AS artisticMovement, " +
-    "pcb.amount AS currency, " +
-    "ppb.amount AS points, " +
-    "b.description AS description, " +
-    "b.created_on AS createdOn " +
-    "FROM bookadaisical.books b " +
-    "JOIN bookadaisical.active_books ab ON b.id = ab.book_id " +
-    "JOIN bookadaisical.genres_books gb ON gb.book_id = ab.book_id " +
-    "JOIN bookadaisical.users u ON u.id = b.uploader " +
-    "LEFT JOIN bookadaisical.price_currency_books pcb ON b.id = pcb.book_id " +
-    "LEFT JOIN bookadaisical.price_points_books ppb ON b.id = ppb.book_id " +
-    "WHERE (gb.genre_name = CAST(:genreName AS bookadaisical.genres) OR CAST(:genreName AS bookadaisical.genres) = 'ALL')")
-    List<BookResponseProjection> findAllByGenreNativeQuery(@Param("genreName") String genreName);
+    @Query(value = "SELECT * FROM bookadaisical.books", nativeQuery = true)
+    List<Book> findAllByGenreNativeQuery();
+    //List<Book> findAllByGenreNativeQuery(@Param("genreName") String genreName);
+
+    @Query("SELECT b FROM Book b WHERE b.uploader.id = :userId")
+    List<Book> findAllBooksByUploaderId(@Param("userId") UUID userId);
 
     /*@Query(nativeQuery = true, value =
     "SELECT DISTINCT " +
@@ -79,9 +62,4 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
                                 @Param("yearOfPublicationNotBiggerThen") int yearOfPublicationNotBiggerThen,
                                 @Param("yearOfPublicationNotLessThen") int yearOfPublicationNotLessThen,
                                 @Param("searchTerm") String searchTerm);*/
-
-
-
-
-
 }

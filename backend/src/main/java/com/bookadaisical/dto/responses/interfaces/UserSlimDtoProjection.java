@@ -1,6 +1,8 @@
 package com.bookadaisical.dto.responses.interfaces;
 
+import java.util.UUID;
+
 public interface UserSlimDtoProjection {
-    Long getUserId();
+    UUID getUserId();
     String getUsername();
 }

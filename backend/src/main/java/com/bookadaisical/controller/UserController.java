@@ -1,6 +1,7 @@
 package com.bookadaisical.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -49,11 +50,11 @@ public class UserController {
     }
 
     @GetMapping(value = "/get-book-owner-id/{bookId}")
-    public ResponseEntity<?> getBookOwnerId(@PathVariable("bookId") int bookId)
+    public ResponseEntity<?> getBookOwnerId(@PathVariable("bookId") String bookId)
     {
         List<Book> books = BooksProvider.getHardcodedBooksList();
         for (Book book : books) {
-            if(book.getId() == bookId)
+            if(book.getId().equals(bookId))
                 return ResponseEntity.ok(book.getUploader());
         }
 
@@ -71,7 +72,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/get-user-details/{userId}")
-    public ResponseEntity<?> getUserDeatils(@PathVariable("userId") int userId)
+    public ResponseEntity<?> getUserDeatils(@PathVariable("userId") UUID userId)
     {
         try {
             return ResponseEntity.ok(userService.getUserDetails(userId));

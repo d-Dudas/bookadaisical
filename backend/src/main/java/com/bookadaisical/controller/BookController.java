@@ -1,6 +1,8 @@
 package com.bookadaisical.controller;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,9 @@ import com.bookadaisical.dto.requests.BookSearchFiltersDto;
 import com.bookadaisical.model.Book;
 import com.bookadaisical.service.BookService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 // Temporary import
 import com.bookadaisical.hardcodedValues.BooksProvider;
 
@@ -24,9 +29,20 @@ public class BookController {
 
     private final BookService bookService;
 
+    private static final Logger log = LoggerFactory.getLogger(BookController.class);
+
     @Autowired
     public BookController(BookService bookService) {
         this.bookService = bookService;
+    }
+
+    @GetMapping("/all-books")
+    public ResponseEntity<?> GetAllBooks() {
+        try {
+            return new ResponseEntity<>(bookService.getAllBooks(), HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("error: " + e.getMessage());
+        }
     }
 
     @GetMapping("/top-ten-books")
@@ -49,12 +65,12 @@ public class BookController {
     }
 
     @PostMapping("/get-book-id")
-    public ResponseEntity<Book> getBookById(@RequestBody int uniqueId)
+    public ResponseEntity<Book> getBookById(@RequestBody UUID uniqueId)
     {
         List<Book> books = BooksProvider.getHardcodedBooksList();
         for(Book book : books)
         {
-            if(book.getId() == uniqueId)
+            if(book.getId().equals(uniqueId))
                 return ResponseEntity.ok(book);
         }
 
@@ -62,12 +78,10 @@ public class BookController {
     }
 
     @GetMapping(value = "/get-user-books/{userId}")
-    public ResponseEntity<List<Book>> getUserBooks(@PathVariable("userId") int userId)
+    public ResponseEntity<List<Book>> getUserBooks(@PathVariable("userId") UUID userId)
     {
-        List<Book> books = BooksProvider.getHardcodedBooksList();
-        books = books.stream()
-                    .filter(book -> book.getUploader().getId() == userId)
-                    .collect(Collectors.toList());
-        return ResponseEntity.ok(books);
+        List<Book> userBooks = bookService.getBooksByUserId(userId);
+        log.info("User ID: {}", userId);
+        return ResponseEntity.ok(userBooks);
     }
 }

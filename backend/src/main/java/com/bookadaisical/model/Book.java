@@ -1,12 +1,13 @@
 package com.bookadaisical.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.bookadaisical.enums.ArtisticMovement;
 import com.bookadaisical.enums.Condition;
 import com.bookadaisical.enums.TargetAudience;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -21,12 +22,10 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -34,9 +33,9 @@ import lombok.Setter;
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(nullable = false)
-    private int id;
+    private UUID id;
 
     @ManyToOne
     @JoinColumn(name = "uploader", referencedColumnName = "id", nullable = false)
@@ -75,12 +74,28 @@ public class Book {
     @Column(name = "book_condition")
     private Condition bookCondition;
 
-    @OneToMany(mappedBy = "activeBook", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<ActiveBook> activeBooks;
+    @Column(name = "is_active", nullable = false)
+    private boolean isActive;
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<GenreBook> genreBooks;
+    @OneToMany(mappedBy = "book", cascade =  CascadeType.ALL, orphanRemoval = true)
+    private List<Image> images = new ArrayList<>();
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
+    }
+
+    public void addImage(Image image) {
+        images.add(image);
+        image.setBook(this);
+    }
+
+    public void removeImage(Image image) {
+        images.remove(image);
+        image.setBook(null);
+    }
 
 }

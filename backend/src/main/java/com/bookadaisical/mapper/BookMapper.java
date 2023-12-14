@@ -20,7 +20,6 @@ public interface BookMapper {
     @Mapping(target = "createdOn", ignore = true)
     @Mapping(target = "lastModified", ignore = true)
     @Mapping(target = "yearOfPublication", ignore = true)
-    @Mapping(target = "activeBooks", ignore = true)
     Book toBook(BookSearchFiltersDto bookSearchFiltersDto);
 
 }

@@ -1,6 +1,7 @@
 package com.bookadaisical.dto.requests;
 
 import java.util.List;
+import java.util.UUID;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,8 +9,8 @@ import lombok.Setter;
 @Setter
 @Getter
 public class NegotiationOfferDto {
-    private Integer initiatorId;
-    private Integer responderId;
-    private List<Integer> initiatorSelectedBooks;
-    private List<Integer> responderSelectedBooks;
+    private UUID initiatorId;
+    private UUID responderId;
+    private List<UUID> initiatorSelectedBooks;
+    private List<UUID> responderSelectedBooks;
 }

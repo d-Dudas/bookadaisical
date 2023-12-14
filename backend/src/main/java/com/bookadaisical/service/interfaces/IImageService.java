@@ -1,8 +1,10 @@
 package com.bookadaisical.service.interfaces;
 
+import java.util.UUID;
+
 import org.springframework.web.multipart.MultipartFile;
 
 public interface IImageService {
-    String saveImage(MultipartFile file) throws Exception;
-    public byte[] getImageById(Long id);
+    String saveImage(UUID bookId, MultipartFile file) throws Exception;
+    public byte[] getImageById(UUID id);
 }

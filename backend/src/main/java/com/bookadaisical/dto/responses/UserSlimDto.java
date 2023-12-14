@@ -1,12 +1,13 @@
 package com.bookadaisical.dto.responses;
 
+import java.util.UUID;
+
 import com.bookadaisical.dto.responses.interfaces.IUserDto;
-import com.bookadaisical.dto.responses.interfaces.UserSlimDtoProjection;
 
 import lombok.Data;
 
 @Data
-public class UserSlimDto implements UserSlimDtoProjection, IUserDto {
-    private Long userId;
-    private String username;
+public class UserSlimDto implements IUserDto {
+    UUID userId;
+    String username;
 }

@@ -23,4 +23,5 @@ public interface LoginTokenRepository extends JpaRepository<LoginToken, Integer>
     @Modifying
     @Query("UPDATE LoginToken SET lastValidatedOn = CURRENT_TIMESTAMP WHERE token = :token")
     void revalidateToken(@Param("token") String token);
+    
 }

@@ -1,6 +1,7 @@
 package com.bookadaisical.model;
 
 import java.util.Set;
+import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -25,9 +26,9 @@ import lombok.Setter;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(nullable = false)
-    private int id;
+    private UUID id;
 
     @Column(nullable = false, unique = true)
     private String username;
@@ -46,6 +47,9 @@ public class User {
 
     @Column(name = "special_currency")
     private int specialCurrency;
+
+    @Column(name = "is_admin")
+    private boolean isAdmin;
 
     @OneToMany(mappedBy = "uploader")
     @JsonIgnore

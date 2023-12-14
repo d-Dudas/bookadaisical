@@ -1,13 +1,12 @@
 package com.bookadaisical.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import com.bookadaisical.dto.requests.BookResponseDto;
-import com.bookadaisical.dto.requests.BookResponseProjection;
 import com.bookadaisical.dto.requests.BookSearchFiltersDto;
 import com.bookadaisical.model.Book;
 import com.bookadaisical.repository.BookRepository;
@@ -31,9 +30,15 @@ public class BookService implements IBookService {
         List<Book> topTenMonthlyBooks = bookRepository.findTopTenBooks(PageRequest.of(0, 10));
         return topTenMonthlyBooks;
     }
+
+    @Override
+    public List<Book> getAllBooks() {
+        List<Book> allBooks = bookRepository.findAll();
+        return allBooks;
+    }
     
     @Override
-    public List<BookResponseProjection> getFilteredBooks(BookSearchFiltersDto bookSearchFiltersDto) throws Exception {
+    public List<Book> getFilteredBooks(BookSearchFiltersDto bookSearchFiltersDto) throws Exception {
 
         int idIndex = 0;
         int titleIndex = 1;
@@ -48,17 +53,9 @@ public class BookService implements IBookService {
 
         //List<BookResponseDto> filteredByGenreBooks = bookRepository.findAllByGenreNativeQuery(bookSearchFiltersDto.getGenre().toString());
 
-        List<BookResponseProjection> filteredByGenreBooks = bookRepository.findAllByGenreNativeQuery(bookSearchFiltersDto.getGenre().toString());
+        List<Book> filteredByGenreBooks = bookRepository.findAllByGenreNativeQuery();
+        //List<Book> filteredByGenreBooks = bookRepository.findAllByGenreNativeQuery(bookSearchFiltersDto.getGenre().toString());
         
-        /*List<BookResponseDto> filteredByGenreBooksFin = filteredByGenreBooks.stream().map(fullDetailBookRaw -> new BookResponseDto(
-            (int) fullDetailBookRaw[idIndex],
-            (String) fullDetailBookRaw[titleIndex],
-            (String) fullDetailBookRaw[authorIndex],
-            (int) fullDetailBookRaw[numViewsIndex],
-            (String) fullDetailBookRaw[descriptionIndex],
-            ((java.sql.Timestamp) fullDetailBookRaw[createdOnIndex]).toLocalDateTime()  
-        )).collect(Collectors.toList());
-        return filteredByGenreBooksFin;*/
         return filteredByGenreBooks;
 
         /*List<Book> filteredBooks = 
@@ -71,6 +68,11 @@ public class BookService implements IBookService {
                                         bookSearchFiltersDto.getContains());*/                                   
         //return filteredBooks;
         
+    }
+
+    @Override
+    public List<Book> getBooksByUserId(UUID userId) {
+        return bookRepository.findAllBooksByUploaderId(userId);
     }
 
 }
