@@ -34,13 +34,7 @@ public class Chat {
     @Column(name = "sent_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime sentAt;
 
-    // Chat(User sender, User receiver, String message)
-    // {
-    //     this.sender = sender;
-    //     this.receiver = receiver;
-    //     this.message = message;
-    //     this.sentAt = new Timestamp(System.currentTimeMillis());
-    // }
+    public Chat(){}
 
     public Chat(User sender, User receiver, String message, LocalDateTime sentAt)
     {

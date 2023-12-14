@@ -1,12 +1,7 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { UserSlim } from '../classes/userSlim';
-
-interface Message {
-  senderId: number;
-  receiverId: number;
-  message: string;
-  sentAt: string;
-}
+import { Message } from '../interfaces/message';
+import { ChatService } from 'src/app/services/chat.service';
 
 @Component({
   selector: 'app-chat',
@@ -21,20 +16,27 @@ export class ChatComponent {
   private webSocket!: WebSocket;
   messages: Message[] = [];
   message: string = "";
+  private messagesPerPage: number = 10;
 
-  constructor() {}
+  constructor(private chatService: ChatService) {}
 
   ngOnInit(){
-    console.log(this.sender);
-    console.log(this.receiver);
-    this.webSocket = new WebSocket('ws://localhost:8080/chat?userId='+this.sender.id);
+    this.webSocket = new WebSocket('ws://localhost:8080/chat?userId=' + this.sender.id);
+
     this.webSocket.onmessage = (event) => {
       let data = JSON.parse(event.data);
-      console.log(data);
       let response: Message = this.processMessageData(data);
-      console.log(response);
       this.messages.push(response);
     }
+
+    this.chatService.getChatHistory(this.sender.id, this.receiver.id).subscribe(
+      (chats) => {
+        this.messages = chats;
+      },
+      (error) => {
+        console.error('Error fetching chat history:', error);
+      }
+    );
   }
 
   formatSentAt(dateArray: number[]): string {
@@ -62,7 +64,7 @@ export class ChatComponent {
       message: this.message,
       sentAt: new Date().toISOString()
     }
-    console.log(message);
+
     this.webSocket.send(JSON.stringify(message));
     this.messages.push(message);
     this.message = "";
@@ -80,6 +82,21 @@ export class ChatComponent {
     try {
       this.messageFlowContainer.nativeElement.scrollTop = this.messageFlowContainer.nativeElement.scrollHeight;
     } catch(err) { }
+  }
+
+  onScroll(): void {
+    const container = this.messageFlowContainer.nativeElement;
+    if (container.scrollTop === 0) {
+      // Load more messages
+      // const currentPage = this.messages.length / this.messagesPerPage; // Determine the current page
+      // this.chatService.getChatHistory(this.sender.id, this.receiver.id, currentPage, this.messagesPerPage)
+      //   .subscribe(moreMessages => {
+      //     this.messages = [...moreMessages, ...this.messages];
+      //   });
+      console.log("On top");
+    }
+
+    container.scrolltop = container.scrollHeight;
   }
 
 }

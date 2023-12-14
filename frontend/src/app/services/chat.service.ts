@@ -1,26 +1,20 @@
-// import { Injectable } from '@angular/core';
-// import * as io from 'socket.io-client';
-// import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Message } from '../elements/interfaces/message';
+// import { MessageDto } from './message-dto'; // Adjust the path as needed
 
-// @Injectable({
-//   providedIn: 'root'
-// })
+@Injectable({
+  providedIn: 'root'
+})
 export class ChatService {
-  // private socket = io('http://localhost:8080');
 
-  constructor() { }
+  private chatHistoryUrl = 'http://localhost:8080/chat/history'; // Adjust as needed
 
-  // sendMessage(message: string){
-  //   this.socket.emit('new-message', message);
-  // }
+  constructor(private http: HttpClient) { }
 
-  // getMessages() {
-  //   let observable = new Observable<{ user: String, message: String }>(observer => {
-  //     this.socket.on('new-message', (data) => {
-  //       observer.next(data);
-  //     });
-  //     return () => { this.socket.disconnect(); };  
-  //   });
-  //   return observable;
-  // }
+  getChatHistory(user1Id: number, user2Id: number): Observable<Message[]> {
+    const params = { user1Id: user1Id.toString(), user2Id: user2Id.toString() };
+    return this.http.get<Message[]>(this.chatHistoryUrl, { params });
+  }
 }

@@ -14,7 +14,7 @@ import { AccountService } from 'src/app/services/account.service';
 })
 export class AccountPageComponent {
   public user: User | null = null;
-  public visitor!: UserSlim;
+  public visitor: UserSlim | null = null;
   public isVisitorTheOwner: boolean = false;
   public isAccountSettingsPopupVisible = false;
 
@@ -27,7 +27,6 @@ export class AccountPageComponent {
     this.accountService.getUserDetails(userId).subscribe({
       next: user => {
         this.user = user;
-        console.log(this.user);
         this.verifyIfVisitorIsTheOwner();
       },
       error: () => {
@@ -95,7 +94,15 @@ export class AccountPageComponent {
 
       return userSlim;
     }
+    let emptyUser: UserSlim = {id: 0, username: ""};
+    return emptyUser;
+  }
 
+  getVisitor(): UserSlim {
+    if(this.visitor !== null)
+    {
+      return this,this.visitor;
+    }
     let emptyUser: UserSlim = {id: 0, username: ""};
     return emptyUser;
   }

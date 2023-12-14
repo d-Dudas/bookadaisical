@@ -14,7 +14,7 @@
             </div>
         </form>
     </div>
-    <div class="message-flow" #messageFlowContainer>
+    <div class="message-flow" #messageFlowContainer (scroll)="onScroll()">
         <mat-card *ngFor="let message of messages.reverse()"
                     class="message-card"
                     [class.sender]="isSender(message)"
