@@ -27,6 +27,7 @@ export class ChatComponent {
       let data = JSON.parse(event.data);
       let response: Message = this.processMessageData(data);
       this.messages.push(response);
+      this.scrollToBottom();
     }
 
     this.chatService.getChatHistory(this.sender.id, this.receiver.id).subscribe(
@@ -74,19 +75,26 @@ export class ChatComponent {
     return message.senderId === this.sender.id;
   }
 
-  ngAfterViewChecked() {
-    this.scrollToBottom();
-  }
+  // ngAfterViewChecked() {
+  //   this.scrollToBottom();
+  // }
 
   private scrollToBottom(): void {
     try {
+      console.log("Hello");
       this.messageFlowContainer.nativeElement.scrollTop = this.messageFlowContainer.nativeElement.scrollHeight;
     } catch(err) { }
   }
 
   onScroll(): void {
     const container = this.messageFlowContainer.nativeElement;
-    if (container.scrollTop === 0) {
+    console.log("ScrollTop:");
+    console.log(container.scrollTop);
+    console.log("ScrollHeight:");
+    console.log(container.scrollHeight);
+    console.log("ScrollToBottom:");
+    console.log(container.scrollToBottom);
+    if (container.scrol === container.scrollHeight) {
       // Load more messages
       // const currentPage = this.messages.length / this.messagesPerPage; // Determine the current page
       // this.chatService.getChatHistory(this.sender.id, this.receiver.id, currentPage, this.messagesPerPage)
@@ -96,7 +104,7 @@ export class ChatComponent {
       console.log("On top");
     }
 
-    container.scrolltop = container.scrollHeight;
+    // container.scrolltop = container.scrollHeight;
   }
 
 }
