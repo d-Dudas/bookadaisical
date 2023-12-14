@@ -1,5 +1,6 @@
 package com.bookadaisical.utils;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.WebSocketHandler;
@@ -12,12 +13,20 @@ import com.bookadaisical.handlers.ChatWebSocketHandler;
 @Configuration
 @EnableWebSocket
 public class WebSocketConfig implements WebSocketConfigurer {
-    @Override
-    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(chatWebSocketHandler(), "/chat").setAllowedOrigins("*");
+
+    private final ChatWebSocketHandler chatWebSocketHandler;
+
+    @Autowired
+    public WebSocketConfig(ChatWebSocketHandler chatWebSocketHandler) {
+        this.chatWebSocketHandler = chatWebSocketHandler;
     }
 
-    @Bean WebSocketHandler chatWebSocketHandler() {
-        return new ChatWebSocketHandler();
+    @Override
+    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+        registry.addHandler(chatWebSocketHandler, "/chat").setAllowedOrigins("*");
     }
+
+    // @Bean WebSocketHandler chatWebSocketHandler() {
+    //     return new ChatWebSocketHandler();
+    // }
 }

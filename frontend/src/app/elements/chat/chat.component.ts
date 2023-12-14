@@ -1,4 +1,5 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { UserSlim } from '../classes/userSlim';
 
 interface Message {
   senderId: number;
@@ -14,14 +15,19 @@ interface Message {
 })
 export class ChatComponent {
   @ViewChild('messageFlowContainer') private messageFlowContainer!: ElementRef;
-  sender: number = 1;
-  receiver: number = 2;
-  private webSocket: WebSocket;
+  @Input() sender!: UserSlim;
+  @Input() receiver!: UserSlim;
+
+  private webSocket!: WebSocket;
   messages: Message[] = [];
   message: string = "";
 
-  constructor() {
-    this.webSocket = new WebSocket('ws://localhost:8080/chat');
+  constructor() {}
+
+  ngOnInit(){
+    console.log(this.sender);
+    console.log(this.receiver);
+    this.webSocket = new WebSocket('ws://localhost:8080/chat?userId='+this.sender.id);
     this.webSocket.onmessage = (event) => {
       let data = JSON.parse(event.data);
       console.log(data);
@@ -51,20 +57,19 @@ export class ChatComponent {
     if(this.message === "") return;
 
     let message: Message = {
-      senderId: 1,
-      receiverId: 2,
+      senderId: this.sender.id,
+      receiverId: this.receiver.id,
       message: this.message,
       sentAt: new Date().toISOString()
     }
     console.log(message);
     this.webSocket.send(JSON.stringify(message));
     this.messages.push(message);
-    // this.messages.push();
     this.message = "";
   }
 
   isSender(message: Message): boolean{
-    return message.senderId === this.sender;
+    return message.senderId === this.sender.id;
   }
 
   ngAfterViewChecked() {

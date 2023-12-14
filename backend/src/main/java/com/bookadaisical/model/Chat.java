@@ -1,6 +1,7 @@
 package com.bookadaisical.model;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,13 +32,21 @@ public class Chat {
     private String message;
 
     @Column(name = "sent_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private Timestamp sentAt;
+    private LocalDateTime sentAt;
 
-    Chat(User sender, User receiver, String message)
+    // Chat(User sender, User receiver, String message)
+    // {
+    //     this.sender = sender;
+    //     this.receiver = receiver;
+    //     this.message = message;
+    //     this.sentAt = new Timestamp(System.currentTimeMillis());
+    // }
+
+    public Chat(User sender, User receiver, String message, LocalDateTime sentAt)
     {
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
-        this.sentAt = new Timestamp(System.currentTimeMillis());
+        this.sentAt = sentAt;
     }
 }

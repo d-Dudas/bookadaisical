@@ -38,6 +38,7 @@
                 mat-raised-button
                 extended
                 type="button"
+                *ngIf="user?.id !== visitor.id"
                 (click)="drawer.toggle()">
                 <mat-icon>message</mat-icon>
                 Message</button>
@@ -46,7 +47,7 @@
         </div>
         <mat-drawer-container autosize></mat-drawer-container>
         <mat-drawer #drawer class="chat-sidebar" mode="push" position="end">
-            <app-chat></app-chat>
+            <app-chat *ngIf="user !== undefined && visitor !== undefined" [receiver]="getUser()" [sender]="visitor"></app-chat>
         </mat-drawer>
         <div class="user-history-detials">
 

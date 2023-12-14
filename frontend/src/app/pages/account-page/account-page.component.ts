@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { selectIsAuthenticated, selectUser } from 'src/app/account-management/auth.state';
 import { User } from 'src/app/elements/classes/user';
+import { UserSlim } from 'src/app/elements/classes/userSlim';
 import { AccountService } from 'src/app/services/account.service';
 
 @Component({
@@ -13,6 +14,7 @@ import { AccountService } from 'src/app/services/account.service';
 })
 export class AccountPageComponent {
   public user: User | null = null;
+  public visitor!: UserSlim;
   public isVisitorTheOwner: boolean = false;
   public isAccountSettingsPopupVisible = false;
 
@@ -63,6 +65,7 @@ export class AccountPageComponent {
               if(user !== null)
               {
                 this.isVisitorTheOwner = user.id == this.user?.id;
+                this.visitor = user;
               }
             }
           });
@@ -79,5 +82,21 @@ export class AccountPageComponent {
   closeAccountSettingsPopup()
   {
     this.isAccountSettingsPopupVisible = false;
+  }
+
+  getUser(): UserSlim {
+    if(this.user !== null)
+    {
+      let user: User = this.user;
+      let userSlim: UserSlim = {
+        id: user.id,
+        username: user.username
+      }
+
+      return userSlim;
+    }
+
+    let emptyUser: UserSlim = {id: 0, username: ""};
+    return emptyUser;
   }
 }
