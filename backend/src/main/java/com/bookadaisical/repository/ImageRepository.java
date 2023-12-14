@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 import com.bookadaisical.model.Image;
 
 @Repository
-public interface ImageRepository extends JpaRepository<Image, Long> {
+public interface ImageRepository extends JpaRepository<Image, UUID> {
     Optional<Image> findById(UUID id);
 }

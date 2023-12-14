@@ -8,6 +8,6 @@ import lombok.Data;
 
 @Data
 public class UserSlimDto implements IUserDto {
-    UUID userId;
+    UUID id;
     String username;
 }

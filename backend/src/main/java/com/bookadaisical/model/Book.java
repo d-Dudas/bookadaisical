@@ -2,15 +2,21 @@ package com.bookadaisical.model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import com.bookadaisical.enums.ArtisticMovement;
 import com.bookadaisical.enums.Condition;
+import com.bookadaisical.enums.Genre;
 import com.bookadaisical.enums.TargetAudience;
+import com.bookadaisical.enums.TradingOption;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -33,7 +39,7 @@ import lombok.NoArgsConstructor;
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)
     private UUID id;
 
@@ -79,6 +85,18 @@ public class Book {
 
     @OneToMany(mappedBy = "book", cascade =  CascadeType.ALL, orphanRemoval = true)
     private List<Image> images = new ArrayList<>();
+
+    @Enumerated(EnumType.STRING)
+    @ElementCollection(targetClass = Genre.class)
+    @CollectionTable(name = "genres_books", joinColumns = @JoinColumn(name = "book_id"))
+    @Column(name = "genre_name")
+    private Set<Genre> genres = new HashSet<>();
+
+    @Enumerated(EnumType.STRING)
+    @ElementCollection(targetClass = TradingOption.class)
+    @CollectionTable(name = "trading_options_books", joinColumns = @JoinColumn(name = "book_id"))
+    @Column(name = "trading_option")
+    private Set<TradingOption> tradingOptions = new HashSet<>();
 
     public List<Image> getImages() {
         return images;

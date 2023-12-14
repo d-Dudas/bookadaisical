@@ -17,7 +17,7 @@ import java.util.UUID;
 @Table(name = "login_tokens", schema = "bookadaisical")
 public class LoginToken {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)
     private UUID id;
 

@@ -7,12 +7,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import com.bookadaisical.model.LoginToken;
 import com.bookadaisical.model.User;
 
 @Repository
-public interface LoginTokenRepository extends JpaRepository<LoginToken, Integer> {
+public interface LoginTokenRepository extends JpaRepository<LoginToken, UUID> {
 
     Optional<LoginToken> findByToken(String token);
     Optional<LoginToken> findByUser(User user);

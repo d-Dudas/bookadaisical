@@ -63,7 +63,7 @@ SELECT * FROM bookadaisical.books;
 SELECT * FROM bookadaisical.images;
 SELECT * FROM bookadaisical.users;
 SELECT * FROM bookadaisical.trading_options_books;
-
+SELECT * FROM bookadaisical.genres_books;
 
 INSERT INTO bookadaisical.images_books (book_id, image_id)
 VALUES ('b5137779-1cf4-4746-b7a3-963a8a6cdb09', 'c0b5f54b-19cd-4953-9425-674c5e7d674b');
