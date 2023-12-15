@@ -90,7 +90,6 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
         Optional<User> sender = userRepository.findById(messageDto.getSenderId());
         Optional<User> receiver = userRepository.findById(messageDto.getReceiverId());
-        // Chat chat = new Chat(sender,)
         if(sender.isPresent() && receiver.isPresent())
         {
             System.out.println("INF messsage saved");

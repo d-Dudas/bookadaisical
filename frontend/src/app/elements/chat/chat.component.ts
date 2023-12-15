@@ -2,6 +2,7 @@ import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { UserSlim } from '../classes/userSlim';
 import { Message } from '../interfaces/message';
 import { ChatService } from 'src/app/services/chat.service';
+import { elementAt } from 'rxjs';
 
 @Component({
   selector: 'app-chat',
@@ -16,7 +17,8 @@ export class ChatComponent {
   private webSocket!: WebSocket;
   messages: Message[] = [];
   message: string = "";
-  private messagesPerPage: number = 10;
+  private messagesPerPage: number = 15;
+  private messagePage = 0;
 
   constructor(private chatService: ChatService) {}
 
@@ -30,9 +32,9 @@ export class ChatComponent {
       this.scrollToBottom();
     }
 
-    this.chatService.getChatHistory(this.sender.id, this.receiver.id).subscribe(
+    this.chatService.getChatHistory(this.sender.id, this.receiver.id, this.messagePage, this.messagesPerPage).subscribe(
       (chats) => {
-        this.messages = chats;
+        this.messages = chats.content;
       },
       (error) => {
         console.error('Error fetching chat history:', error);
@@ -67,7 +69,7 @@ export class ChatComponent {
     }
 
     this.webSocket.send(JSON.stringify(message));
-    this.messages.push(message);
+    this.messages = [message, ...this.messages];
     this.message = "";
   }
 
@@ -75,36 +77,23 @@ export class ChatComponent {
     return message.senderId === this.sender.id;
   }
 
-  // ngAfterViewChecked() {
-  //   this.scrollToBottom();
-  // }
-
   private scrollToBottom(): void {
     try {
-      console.log("Hello");
       this.messageFlowContainer.nativeElement.scrollTop = this.messageFlowContainer.nativeElement.scrollHeight;
     } catch(err) { }
   }
 
   onScroll(): void {
     const container = this.messageFlowContainer.nativeElement;
-    console.log("ScrollTop:");
-    console.log(container.scrollTop);
-    console.log("ScrollHeight:");
-    console.log(container.scrollHeight);
-    console.log("ScrollToBottom:");
-    console.log(container.scrollToBottom);
-    if (container.scrol === container.scrollHeight) {
-      // Load more messages
-      // const currentPage = this.messages.length / this.messagesPerPage; // Determine the current page
-      // this.chatService.getChatHistory(this.sender.id, this.receiver.id, currentPage, this.messagesPerPage)
-      //   .subscribe(moreMessages => {
-      //     this.messages = [...moreMessages, ...this.messages];
-      //   });
-      console.log("On top");
-    }
+    const atTop = container.scrollHeight + container.scrollTop === container.clientHeight;
 
-    // container.scrolltop = container.scrollHeight;
+    if (atTop) {
+      this.messagePage += 1;
+      this.chatService.getChatHistory(this.sender.id, this.receiver.id, this.messagePage, this.messagesPerPage)
+        .subscribe(moreMessages => {
+          this.messages = [...this.messages, ...moreMessages.content];
+        });
+    }
   }
 
 }

@@ -1,9 +1,9 @@
 package com.bookadaisical.controller;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,11 +22,12 @@ public class ChatController {
     }
 
     @GetMapping("/chat/history")
-    public List<MessageDto> getChatHistory(@RequestParam int user1Id, @RequestParam int user2Id) {
-        List<Chat> chats = chatRepository.findChatsBetweenUsers(user1Id, user2Id);
-        return chats.stream()
-                    .map(this::convertToDto)
-                    .collect(Collectors.toList());
+    public Page<MessageDto> getChatHistory(@RequestParam int user1Id, @RequestParam int user2Id,
+                                           @RequestParam(defaultValue = "0") int page,
+                                           @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Chat> chatPage = chatRepository.findChatsBetweenUsers(user1Id, user2Id, pageable);
+        return chatPage.map(this::convertToDto);
     }
 
     private MessageDto convertToDto(Chat chat) {
