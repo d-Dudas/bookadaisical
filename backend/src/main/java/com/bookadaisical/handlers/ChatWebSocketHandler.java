@@ -3,6 +3,8 @@ package com.bookadaisical.handlers;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.bookadaisical.dto.MessageDto;
+import com.bookadaisical.exceptions.UriNotFoundException;
+import com.bookadaisical.exceptions.UserNotFoundException;
 import com.bookadaisical.model.Chat;
 import com.bookadaisical.model.User;
 import com.bookadaisical.repository.ChatRepository;
@@ -13,7 +15,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import org.springframework.web.socket.WebSocketSession;
 @Component
 public class ChatWebSocketHandler extends TextWebSocketHandler {
 
+    private final ObjectMapper objectMapper;
     private final ChatRepository chatRepository;
     private final UserRepository userRepository;
     private final Map<Integer, WebSocketSession> sessions = new ConcurrentHashMap<>();
@@ -33,11 +35,17 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     public ChatWebSocketHandler(ChatRepository chatRepository, UserRepository userRepository) {
         this.chatRepository = chatRepository;
         this.userRepository = userRepository;
+        this.objectMapper = new ObjectMapper()
+                            .registerModule(new JavaTimeModule());
     }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         URI uri = session.getUri();
+        if(uri == null) {
+            throw new UriNotFoundException();
+        }
+
         String query = uri.getQuery();
         String[] queryParams = query.split("&");
 
@@ -49,58 +57,55 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
             }
         }
 
-        System.out.println("INF User id: " + userId);
-
-        if(userId != null) {
-            sessions.put(userId, session);
-            System.out.println("INF Sessions: " + sessions.size());
+        if(userId == null) {
+            session.close(CloseStatus.BAD_DATA);
+            return;
         }
+
+        sessions.put(userId, session);
     }
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
+        MessageDto messageDto = parseMessage(message);
 
-        MessageDto messageDto;
-        try{
-            messageDto = objectMapper.readValue(message.getPayload(), MessageDto.class);
+        User sender = validateUser(messageDto.getSenderId());
+        User receiver = validateUser(messageDto.getReceiverId());
+
+        saveMessage(sender, receiver, messageDto);
+
+        sendMessageToReceiver(receiver.getId(), messageDto);
+    }
+
+    private MessageDto parseMessage(TextMessage message) throws IOException {
+        try {
+            return objectMapper.readValue(message.getPayload(), MessageDto.class);
         } catch (IOException e) {
             e.printStackTrace();
-            return;
+            throw e;
         }
+    }
 
-        System.out.println(messageDto.toString());
+    private User validateUser(Integer userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+    }
 
-        WebSocketSession receiverSession = sessions.get(messageDto.getReceiverId());
-        if(receiverSession != null) {
-            System.out.println("INF User found.");
-            String jsonMessage;
-            try {
-                jsonMessage = objectMapper.writeValueAsString(messageDto);
-            } catch (IOException e) {
-                e.printStackTrace();
-                // Handle serialization error or send error response
-                return;
-            }
+    private void saveMessage(User sender, User receiver, MessageDto messageDto) {
+        Chat chat = new Chat(sender, receiver, messageDto.getMessage(), messageDto.getSentAt());
+        chatRepository.save(chat);
+    }
+
+    private void sendMessageToReceiver(Integer receiverId, MessageDto messageDto) throws IOException {
+        WebSocketSession receiverSession = sessions.get(receiverId);
+        if (receiverSession != null) {
+            String jsonMessage = objectMapper.writeValueAsString(messageDto);
             receiverSession.sendMessage(new TextMessage(jsonMessage));
-        } else {
-            System.out.println("WRN User NOT found.");
-        }
-
-        Optional<User> sender = userRepository.findById(messageDto.getSenderId());
-        Optional<User> receiver = userRepository.findById(messageDto.getReceiverId());
-        if(sender.isPresent() && receiver.isPresent())
-        {
-            System.out.println("INF messsage saved");
-            Chat chat = new Chat(sender.get(), receiver.get(), messageDto.getMessage(), messageDto.getSentAt());
-            chatRepository.save(chat);
         }
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         sessions.values().remove(session);
-        System.out.println("INF Sessions: " + sessions.size());
     }
 }

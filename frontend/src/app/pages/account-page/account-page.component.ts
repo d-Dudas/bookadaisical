@@ -101,7 +101,7 @@ export class AccountPageComponent {
   getVisitor(): UserSlim {
     if(this.visitor !== null)
     {
-      return this,this.visitor;
+      return this.visitor;
     }
     let emptyUser: UserSlim = {id: 0, username: ""};
     return emptyUser;

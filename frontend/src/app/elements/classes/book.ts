@@ -2,11 +2,11 @@
 import { BookPurpose } from "../../utils/enums/book-purpose";
 import { UserSlim } from "./userSlim";
 
-export class Book {
+export interface Book {
     uniqueId: number | undefined;
     title: string | undefined;
     author: string | undefined;
-    uploader: UserSlim | undefined;
+    uploader: number;
     ISBN: string | undefined;
     images: string[] | undefined;
     views: number | undefined;

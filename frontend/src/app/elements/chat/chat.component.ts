@@ -13,6 +13,7 @@ export class ChatComponent {
   @ViewChild('messageFlowContainer') private messageFlowContainer!: ElementRef;
   @Input() sender!: UserSlim;
   @Input() receiver!: UserSlim;
+  @Input() defaultMessage: string = "";
 
   private webSocket!: WebSocket;
   messages: Message[] = [];
@@ -23,17 +24,19 @@ export class ChatComponent {
   constructor(private chatService: ChatService) {}
 
   ngOnInit(){
+    this.message = this.defaultMessage;
     this.webSocket = new WebSocket('ws://localhost:8080/chat?userId=' + this.sender.id);
 
     this.webSocket.onmessage = (event) => {
       let data = JSON.parse(event.data);
       let response: Message = this.processMessageData(data);
-      this.messages.push(response);
+      this.messages = [response, ...this.messages];
       this.scrollToBottom();
     }
 
     this.chatService.getChatHistory(this.sender.id, this.receiver.id, this.messagePage, this.messagesPerPage).subscribe(
       (chats) => {
+        console.log(chats.content);
         this.messages = chats.content;
       },
       (error) => {
@@ -65,13 +68,32 @@ export class ChatComponent {
       senderId: this.sender.id,
       receiverId: this.receiver.id,
       message: this.message,
-      sentAt: new Date().toISOString()
+      sentAt: this.getLocalIsoTimeString()
     }
+
+    console.log(message.sentAt);
 
     this.webSocket.send(JSON.stringify(message));
     this.messages = [message, ...this.messages];
     this.message = "";
   }
+
+  private getLocalIsoTimeString(): string {
+    const now = new Date();
+    const timezoneOffsetInMs = now.getTimezoneOffset() * 60000;
+    const localTime = new Date(now.getTime() - timezoneOffsetInMs);
+
+    const pad = (num: any) => String(num).padStart(2, '0');
+
+    // Format: YYYY-MM-DDTHH:mm:ss.sss
+    return localTime.getFullYear() + '-' +
+           pad(localTime.getMonth() + 1) + '-' +
+           pad(localTime.getDate()) + 'T' +
+           pad(localTime.getHours()) + ':' +
+           pad(localTime.getMinutes()) + ':' +
+           pad(localTime.getSeconds()) + '.' +
+           String(localTime.getMilliseconds()).padStart(3, '0');
+}
 
   isSender(message: Message): boolean{
     return message.senderId === this.sender.id;

@@ -71,7 +71,7 @@ import {MatCardModule} from '@angular/material/card';
     MatInputModule,
     MatCardModule
   ],
-  providers: [Book],
+  providers: [],
   bootstrap: [RootComponent]
 })
 export class AppModule { }
