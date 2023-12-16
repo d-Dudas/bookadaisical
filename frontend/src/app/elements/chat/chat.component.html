@@ -3,14 +3,13 @@
         <form (ngSubmit)="sendMessage()" class="message-input-form">
             <mat-form-field class="message-input-field">
                 <mat-label>Message</mat-label>
-                <!-- <input matInput [(ngModel)]="message" name="message" mexLength="256"> -->
-                <textarea matInput 
-              matTextareaAutosize 
-              matAutosizeMinRows="1" 
-              matAutosizeMaxRows="5" 
-              [(ngModel)]="message" 
-              name="message" 
-              maxLength="256"></textarea>
+                <textarea matInput
+                        matTextareaAutosize
+                        matAutosizeMinRows="1"
+                        matAutosizeMaxRows="5"
+                        [(ngModel)]="message"
+                        name="message"
+                        maxLength="256"></textarea>
                 <mat-hint align="start"><strong>Don't disclose personal info</strong> </mat-hint>
                 <mat-hint align="end">{{message.length}} / 256</mat-hint>
             </mat-form-field>

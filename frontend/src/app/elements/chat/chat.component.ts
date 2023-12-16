@@ -36,7 +36,6 @@ export class ChatComponent {
 
     this.chatService.getChatHistory(this.sender.id, this.receiver.id, this.messagePage, this.messagesPerPage).subscribe(
       (chats) => {
-        console.log(chats.content);
         this.messages = chats.content;
       },
       (error) => {
@@ -46,13 +45,11 @@ export class ChatComponent {
   }
 
   formatSentAt(dateArray: number[]): string {
-    console.log(dateArray);
     const date = new Date(dateArray[0], dateArray[1] - 1, dateArray[2], dateArray[3], dateArray[4], dateArray[5], dateArray[6] / 1000000);
     return date.toISOString();
   }
 
   processMessageData(data: any): Message {
-    console.log(data);
     return {
       senderId: data.senderId,
       receiverId: data.receiverId,
@@ -70,8 +67,6 @@ export class ChatComponent {
       message: this.message,
       sentAt: this.getLocalIsoTimeString()
     }
-
-    console.log(message.sentAt);
 
     this.webSocket.send(JSON.stringify(message));
     this.messages = [message, ...this.messages];
@@ -93,7 +88,7 @@ export class ChatComponent {
            pad(localTime.getMinutes()) + ':' +
            pad(localTime.getSeconds()) + '.' +
            String(localTime.getMilliseconds()).padStart(3, '0');
-}
+  }
 
   isSender(message: Message): boolean{
     return message.senderId === this.sender.id;
@@ -117,5 +112,4 @@ export class ChatComponent {
         });
     }
   }
-
 }
