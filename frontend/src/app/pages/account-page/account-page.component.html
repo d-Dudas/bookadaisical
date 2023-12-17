@@ -13,7 +13,7 @@
         [user]="user"
         ></app-account-settings-popup>
     <h1>{{ user?.username }}</h1>
-    <div class="account-page-main-container">
+    <div class="account-page-main-container" mat-drawer-container>
         <div class="user-details-container">
             <div class="user-account-details-container">
                 <div class="user-email">
@@ -26,13 +26,29 @@
                 </div>
             </div>
             <button
+                mat-raised-button
+                extended
+                color="primary"
                 class="user-more-details-account"
                 *ngIf="isVisitorTheOwner"
-                (click)="openAccountSettingsPopup()"
-                >Details</button>
+                (click)="openAccountSettingsPopup()">
+                <mat-icon>info</mat-icon>
+                Details</button>
+            <button
+                mat-raised-button
+                extended
+                type="button"
+                *ngIf="user?.id !== visitor?.id"
+                (click)="drawer.toggle()">
+                <mat-icon>message</mat-icon>
+                Message</button>
             <div class="user-statistics-container">
             </div>
         </div>
+        <mat-drawer-container autosize></mat-drawer-container>
+        <mat-drawer #drawer class="chat-sidebar" mode="push" position="end">
+            <app-chat *ngIf="user !== null && visitor !== null" [receiver]="getUser()" [sender]="getVisitor()"></app-chat>
+        </mat-drawer>
         <div class="user-history-detials">
 
         </div>

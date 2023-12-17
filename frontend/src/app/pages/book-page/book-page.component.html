@@ -11,8 +11,26 @@
     <h2>{{book?.author}}</h2>
     <h3>{{book?.description}}</h3>
     <h3>{{book?.uniqueId}}</h3>
-    <app-send-message-to-book-owner-popup></app-send-message-to-book-owner-popup>
-    <!-- <button [routerLink]="['/negotiate', book?.uniqueId]">Swap</button> -->
-    <button (click)="onSwapClicked()">Swap</button>
+    <button
+        mat-raised-button
+        extended
+        type="button"
+        *ngIf="visitor?.id !== uploader?.id"
+        (click)="drawer.toggle(); onBuyClicked();">
+        <mat-icon>chat</mat-icon>
+        Buy</button>
+    <mat-drawer-container autosize></mat-drawer-container>
+    <mat-drawer #drawer class="chat-sidebar" mode="push" position="end">
+        <app-chat *ngIf="uploader !== null && visitor !== null" [receiver]="getReceiver()" [sender]="getVisitor()" [defaultMessage]="getDefaultMessage()"></app-chat>
+    </mat-drawer>
+    <button
+        mat-raised-button
+        extended
+        type="button"
+        style="background-color: lightblue;"
+        *ngIf="visitor?.id !== uploader?.id"
+        (click)="onSwapClicked()">
+        <mat-icon>swap_horiz</mat-icon>
+        Swap</button>
 </body>
 </html>

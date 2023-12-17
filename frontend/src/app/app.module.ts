@@ -24,6 +24,14 @@ import { NegotiatePageComponent } from './pages/negotiate-page/negotiate-page.co
 import { ProblemPopupComponent } from './elements/problem-popup/problem-popup.component';
 import { AccountPageComponent } from './pages/account-page/account-page.component';
 import { AccountSettingsPopupComponent } from './pages/account-page/account-settings-popup/account-settings-popup.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { ChatComponent } from './elements/chat/chat.component';
+import {MatInputModule} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatCardModule} from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -41,7 +49,8 @@ import { AccountSettingsPopupComponent } from './pages/account-page/account-sett
     NegotiatePageComponent,
     ProblemPopupComponent,
     AccountPageComponent,
-    AccountSettingsPopupComponent
+    AccountSettingsPopupComponent,
+    ChatComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,9 +62,16 @@ import { AccountSettingsPopupComponent } from './pages/account-page/account-sett
     StoreModule.forFeature('authPopup', authPopupReducer),
     EffectsModule.forRoot([]),
     ReactiveFormsModule,
-    NgxSliderModule
+    NgxSliderModule,
+    BrowserAnimationsModule,
+    MatButtonModule,
+    MatIconModule,
+    MatSidenavModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCardModule
   ],
-  providers: [Book],
+  providers: [],
   bootstrap: [RootComponent]
 })
 export class AppModule { }

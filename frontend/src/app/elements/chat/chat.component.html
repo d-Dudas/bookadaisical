@@ -1,0 +1,40 @@
+<div class="chat-main-container">
+    <div class="message-input-container">
+        <form (ngSubmit)="sendMessage()" class="message-input-form">
+            <mat-form-field class="message-input-field">
+                <mat-label>Message</mat-label>
+                <textarea matInput
+                        matTextareaAutosize
+                        matAutosizeMinRows="1"
+                        matAutosizeMaxRows="5"
+                        [(ngModel)]="message"
+                        name="message"
+                        maxLength="256"></textarea>
+                <mat-hint align="start"><strong>Don't disclose personal info</strong> </mat-hint>
+                <mat-hint align="end">{{message.length}} / 256</mat-hint>
+            </mat-form-field>
+            <div class="message-send-button-container">
+                <button mat-mini-fab aria-label="Send message" color="primary" type="submit" class="message-send-button">
+                    <mat-icon>send</mat-icon>
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="message-flow" #messageFlowContainer (scroll)="onScroll()">
+        <mat-card *ngFor="let message of messages"
+                    class="message-card"
+                    [class.sender]="isSender(message)"
+                    [class.receiver]="!isSender(message)">
+            <mat-card-content>
+                {{message.message}}
+            </mat-card-content>
+            <mat-card-footer align="right">
+                <span class="timestamp">{{ message.sentAt | date: 'shortTime':'UTC' }}</span>
+            </mat-card-footer>
+        </mat-card>
+    </div>
+    <div class="messages-header">
+        <mat-icon>person</mat-icon>
+        <p class="messages-header-username">{{receiver.username}}</p>
+    </div>
+</div>
