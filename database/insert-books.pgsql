@@ -127,10 +127,10 @@ LEFT JOIN bookadaisical.price_points_books ppb ON b.id = ppb.book_id;
 -- DROP VIEW bookadaisical.book_response;
 
 -- get top ten books
-SELECT * FROM bookadaisical.book_response br
-WHERE EXTRACT(MONTH FROM br.created_on) = EXTRACT(MONTH FROM (CURRENT_DATE))
-AND EXTRACT(YEAR FROM br.created_on) = EXTRACT(YEAR FROM CURRENT_DATE) 
-ORDER BY br.num_views DESC LIMIT 10;
+SELECT * FROM bookadaisical.books b
+WHERE EXTRACT(MONTH FROM b.created_on) = EXTRACT(MONTH FROM (CURRENT_DATE))
+AND EXTRACT(YEAR FROM b.created_on) = EXTRACT(YEAR FROM CURRENT_DATE) 
+ORDER BY b.num_views DESC LIMIT 10;
 
 SELECT * FROM bookadaisical.book_response br
 JOIN bookadaisical.genres_books gb ON br.book_id = gb.book_id

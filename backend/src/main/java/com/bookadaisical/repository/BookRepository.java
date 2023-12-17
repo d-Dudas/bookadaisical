@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,8 +16,9 @@ public interface BookRepository extends JpaRepository<Book, UUID> {
 
     Optional<Book> findById(UUID id);
 
-    @Query(value = "SELECT * FROM bookadaisical.books", nativeQuery = true)
-    List<Book> findTopTenBooks(PageRequest pageRequest);
+    @Query("SELECT b FROM Book b WHERE MONTH(b.createdOn) = MONTH(CURRENT_DATE) " +
+    "AND YEAR(b.createdOn) = YEAR(CURRENT_DATE) ORDER BY b.numViews DESC LIMIT 10")
+    List<Book> findTopTenBooks();
 
     @Query(value = "SELECT * FROM bookadaisical.books", nativeQuery = true)
     List<Book> findAllByGenreNativeQuery();

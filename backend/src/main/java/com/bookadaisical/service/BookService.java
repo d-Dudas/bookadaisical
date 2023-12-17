@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.bookadaisical.dto.requests.BookSearchFiltersDto;
@@ -27,7 +26,7 @@ public class BookService implements IBookService {
     @Override
     @Transactional
     public List<Book> getTopTenBooks() throws Exception {
-        List<Book> topTenMonthlyBooks = bookRepository.findTopTenBooks(PageRequest.of(0, 10));
+        List<Book> topTenMonthlyBooks = bookRepository.findTopTenBooks();
         return topTenMonthlyBooks;
     }
 
