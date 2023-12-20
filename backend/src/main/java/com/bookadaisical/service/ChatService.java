@@ -1,5 +1,7 @@
 package com.bookadaisical.service;
 
+import java.util.UUID;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +25,7 @@ public class ChatService implements IChatService {
         this.userRepository = userRepository;
     }
 
-    public Page<MessageDto> getChatHistoryOfTwoUsers(int user1Id, int user2Id, int page, int pageSize) throws UserNotFoundException{
+    public Page<MessageDto> getChatHistoryOfTwoUsers(UUID user1Id, UUID user2Id, int page, int pageSize) throws UserNotFoundException{
         validateUserExists(user1Id);
         validateUserExists(user2Id);
 
@@ -32,7 +34,7 @@ public class ChatService implements IChatService {
         return chatPage.map(this::convertToDto);
     }
 
-    private void validateUserExists(int userId) throws UserNotFoundException {
+    private void validateUserExists(UUID userId) throws UserNotFoundException {
         if(!userRepository.existsById(userId)) {
             throw new UserNotFoundException();
         }

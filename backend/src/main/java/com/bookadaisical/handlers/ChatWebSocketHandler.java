@@ -15,6 +15,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     private final ObjectMapper objectMapper;
     private final ChatRepository chatRepository;
     private final UserRepository userRepository;
-    private final Map<Integer, WebSocketSession> sessions = new ConcurrentHashMap<>();
+    private final Map<UUID, WebSocketSession> sessions = new ConcurrentHashMap<>();
 
     @Autowired
     public ChatWebSocketHandler(ChatRepository chatRepository, UserRepository userRepository) {
@@ -49,10 +50,10 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         String query = uri.getQuery();
         String[] queryParams = query.split("&");
 
-        Integer userId = null;
+        UUID userId = null;
         for(String param : queryParams) {
             if(param.startsWith("userId=")) {
-                userId = Integer.parseInt(param.split("=")[1]);
+                userId = UUID.fromString(param.split("=")[1]);
                 break;
             }
         }
@@ -86,7 +87,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         }
     }
 
-    private User validateUser(Integer userId) {
+    private User validateUser(UUID userId) {
         return userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
     }
@@ -96,7 +97,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         chatRepository.save(chat);
     }
 
-    private void sendMessageToReceiver(Integer receiverId, MessageDto messageDto) throws IOException {
+    private void sendMessageToReceiver(UUID receiverId, MessageDto messageDto) throws IOException {
         WebSocketSession receiverSession = sessions.get(receiverId);
         if (receiverSession != null) {
             String jsonMessage = objectMapper.writeValueAsString(messageDto);

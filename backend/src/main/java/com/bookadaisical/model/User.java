@@ -25,6 +25,14 @@ import lombok.Setter;
 @Table(schema = "bookadaisical", name = "users")
 public class User {
 
+    // only for developement purposes
+    public User(String username, String email, String password)
+    {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(nullable = false)
@@ -54,5 +62,4 @@ public class User {
     @OneToMany(mappedBy = "uploader")
     @JsonIgnore
     private Set<Book> uploadedBooks;
-    
 }
