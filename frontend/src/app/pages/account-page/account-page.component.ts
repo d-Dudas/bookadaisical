@@ -23,8 +23,8 @@ export class AccountPageComponent {
               private router: Router,
               private store: Store)
   {
-    const userId: number = this.getUserIdFromUrl();
-    this.accountService.getUserDetails(userId).subscribe({
+    const username: string = this.getUserIdFromUrl();
+    this.accountService.getUserDetails(username).subscribe({
       next: user => {
         this.user = user;
         this.verifyIfVisitorIsTheOwner();
@@ -35,22 +35,22 @@ export class AccountPageComponent {
     });
   }
 
-  getUserIdFromUrl(): number
+  getUserIdFromUrl(): string
   {
-    let userId: number = -1;
+    let username: string = "";
     this.route.paramMap.subscribe({
       next: params => {
-        const userIdString: string | null = params.get('userId');
-        if(userIdString !== null)
+        const tempUsername: string | null = params.get('userId');
+        if(tempUsername !== null)
         {
-          userId = parseInt(userIdString, 10);
+          username = tempUsername;
         } else {
           this.router.navigate(["/home"]);
         }
       }
     });
 
-    return userId;
+    return username;
   }
 
   verifyIfVisitorIsTheOwner()
@@ -63,7 +63,7 @@ export class AccountPageComponent {
             next: (user) => {
               if(user !== null)
               {
-                this.isVisitorTheOwner = user.id == this.user?.id;
+                this.isVisitorTheOwner = user.username == this.user?.username;
                 this.visitor = user;
               }
             }
@@ -88,13 +88,12 @@ export class AccountPageComponent {
     {
       let user: User = this.user;
       let userSlim: UserSlim = {
-        id: user.id,
         username: user.username
       }
 
       return userSlim;
     }
-    let emptyUser: UserSlim = {id: 0, username: ""};
+    let emptyUser: UserSlim = {username: ""};
     return emptyUser;
   }
 
@@ -103,7 +102,7 @@ export class AccountPageComponent {
     {
       return this.visitor;
     }
-    let emptyUser: UserSlim = {id: 0, username: ""};
+    let emptyUser: UserSlim = {username: ""};
     return emptyUser;
   }
 }

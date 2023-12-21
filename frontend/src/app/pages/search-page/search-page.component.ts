@@ -4,8 +4,8 @@ import { Book } from 'src/app/elements/classes/book';
 import { BookService } from 'src/app/services/book.service';
 import { ArtisticMovement } from 'src/app/utils/enums/artistic-movement';
 import { Condition } from 'src/app/utils/enums/condition';
+import { Genres } from 'src/app/utils/enums/genres';
 import { TargetAudience } from 'src/app/utils/enums/target-audience';
-import { WritingGenres } from 'src/app/utils/enums/writing-genres';
 
 @Component({
   selector: 'app-search-page',
@@ -14,7 +14,7 @@ import { WritingGenres } from 'src/app/utils/enums/writing-genres';
 })
 export class SearchPageComponent {
   books: Book[] = [];
-  genreOptions = Object.values(WritingGenres);
+  genreOptions = Object.values(Genres);
   targetAudienceOptions = Object.values(TargetAudience);
   artisticMovementOptions = Object.values(ArtisticMovement);
   conditionOptions = Object.values(Condition);

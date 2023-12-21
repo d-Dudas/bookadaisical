@@ -31,14 +31,13 @@ public class Image {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+    @Column(nullable = false)
     private UUID id;
 
     @Lob
     @JdbcTypeCode(Types.LONGVARBINARY)
     private byte[] imageData;
 
-    @Column(name = "image_name")
     private String imageName;
 
     @ManyToOne

@@ -18,9 +18,9 @@ interface NegotiateItem {
   styleUrls: ['./negotiate-page.component.css']
 })
 export class NegotiatePageComponent {
-  bookId: number | undefined;
-  initiatorId: number = -1;
-  responderId: number = -1;
+  bookId: string = "";
+  initiatorUsername: string = "";
+  responderUsername: string = "";
   initiatorItems: NegotiateItem[] = [];
   responderItems: NegotiateItem[] = [];
   problemDetected: boolean = false;
@@ -46,9 +46,9 @@ export class NegotiatePageComponent {
       if(isAuthenticated)
       {
         this.store.select(selectUser).subscribe((user) => {
-          if(user?.id !== undefined)
+          if(user?.username !== undefined)
           {
-            this.initiatorId = user?.id;
+            this.initiatorUsername = user?.username;
             this.getInitiatorBooks();
           }
         });
@@ -65,9 +65,9 @@ export class NegotiatePageComponent {
       const bookIdString = params.get('bookId');
       if(bookIdString !== null)
       {
-        this.bookId = parseInt(bookIdString, 10);
-        this.bookService.getBookOwnerId(this.bookId).subscribe((ownerId) => {
-          this.responderId = ownerId;
+        this.bookId = bookIdString;
+        this.bookService.getBookOwnerUsername(this.bookId).subscribe((ownerId) => {
+          this.responderUsername = ownerId;
           this.getResponderBooks();
         });
       }
@@ -75,8 +75,8 @@ export class NegotiatePageComponent {
   }
 
   getInitiatorBooks(): void {
-    if(this.initiatorId === undefined) return;
-    this.bookService.getUserBooks(this.initiatorId).subscribe((initiatorBooks) => {
+    if(this.initiatorUsername === undefined) return;
+    this.bookService.getUserBooks(this.initiatorUsername).subscribe((initiatorBooks) => {
       for (const book of initiatorBooks) {
         this.initiatorItems.push({book, selected: false});
       }
@@ -84,10 +84,10 @@ export class NegotiatePageComponent {
   }
 
   getResponderBooks(): void {
-    if(this.responderId === undefined) return;
-    this.bookService.getUserBooks(this.responderId).subscribe((responderBooks) => {
+    if(this.responderUsername === undefined) return;
+    this.bookService.getUserBooks(this.responderUsername).subscribe((responderBooks) => {
       for (const book of responderBooks) {
-        this.responderItems.push({book, selected: book.uniqueId === this.bookId});
+        this.responderItems.push({book, selected: book.id === this.bookId});
       }
     })
   }
@@ -102,7 +102,7 @@ export class NegotiatePageComponent {
   }
 
   sendOffer(): void {
-    let initiatorSelectedBookIds: number[] | boolean = this.getSelectedItemsFrom(this.initiatorItems);
+    let initiatorSelectedBookIds: string[] | boolean = this.getSelectedItemsFrom(this.initiatorItems);
     if(!Array.isArray(initiatorSelectedBookIds)) return;
 
     if (initiatorSelectedBookIds.length < 1)
@@ -111,7 +111,7 @@ export class NegotiatePageComponent {
       return;
     }
 
-    let responderSelectedBookIds: number[] | boolean = this.getSelectedItemsFrom(this.responderItems);
+    let responderSelectedBookIds: string[] | boolean = this.getSelectedItemsFrom(this.responderItems);
     if(!Array.isArray(responderSelectedBookIds)) return;
 
     if (responderSelectedBookIds.length < 1)
@@ -121,8 +121,8 @@ export class NegotiatePageComponent {
     }
 
     let negotiationOffer: NegotiationOfferDto = {
-      initiatorId: this.initiatorId,
-      responderId: this.responderId,
+      initiatorUsername: this.initiatorUsername,
+      responderUsername: this.responderUsername,
       initiatorSelectedBooks: initiatorSelectedBookIds,
       responderSelectedBooks: responderSelectedBookIds
     }
@@ -130,15 +130,15 @@ export class NegotiatePageComponent {
     this.negotiationService.sendOffer(negotiationOffer);
   }
 
-  getSelectedItemsFrom(list: NegotiateItem[]): number[] | boolean {
-    let returnList: number[] = [];
+  getSelectedItemsFrom(list: NegotiateItem[]): string[] | boolean {
+    let returnList: string[] = [];
     for(let item of list)
     {
       if(item.selected)
       {
-        if(item.book.uniqueId != undefined)
+        if(item.book.id != undefined)
         {
-          returnList.push(item.book.uniqueId);
+          returnList.push(item.book.id);
         } else {
           this.setProblem("A problem occured. Please try again later.");
           return false;

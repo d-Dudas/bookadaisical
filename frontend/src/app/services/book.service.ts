@@ -33,13 +33,13 @@ export class BookService {
     return this.http.post<Book>(this.backendUrl + this.getBookByIdUrl, uniqueId);
   }
 
-  getBookOwnerId(bookId: number): Observable<number>
+  getBookOwnerUsername(bookId: string): Observable<string>
   {
-    return this.http.get<number>(this.backendUrl + this.getBookOwnerIdUrl + "/" + bookId.toString());
+    return this.http.get<string>(this.backendUrl + this.getBookOwnerIdUrl + "/" + bookId.toString());
   }
 
-  getUserBooks(userId: number): Observable<Book[]>
+  getUserBooks(username: string): Observable<Book[]>
   {
-    return this.http.get<Book[]>(this.backendUrl + this.getUserBooksUrl + "/" + userId.toString());
+    return this.http.get<Book[]>(this.backendUrl + this.getUserBooksUrl + "/" + username);
   }
 }

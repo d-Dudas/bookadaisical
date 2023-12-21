@@ -16,7 +16,7 @@
         <div class="negotiation-books-container">
             <div class="user-books">
                 <div class="user-books-header">
-                    <h2>Initiator id: {{ initiatorId }}</h2>
+                    <h2>Initiator id: {{ initiatorUsername }}</h2>
                 </div>
                 <div class="user-books-content" >
                     <app-book-preview
@@ -30,7 +30,7 @@
             </div>
             <div class="user-books">
                 <div class="user-books-header">
-                    <h2>Responder id: {{ responderId }}</h2>
+                    <h2>Responder id: {{ responderUsername }}</h2>
                 </div>
                 <div class="user-books-content">
                     <div
@@ -41,7 +41,7 @@
                         <app-book-preview
                             [book]="item.book">
                         </app-book-preview>
-                        <button (click)="openBookInNewTab(item.book.uniqueId)">Details</button>
+                        <button (click)="openBookInNewTab(item.book.id)">Details</button>
                     </div>
                 </div>
             </div>

@@ -34,7 +34,7 @@ export class BookPageComponent implements OnInit {
           this.bookService.getBookByUniqueId(parseInt(bookUniqueId, 10)).subscribe(book => {
             this.book = book;
 
-            this.accountService.getUserDetails(book.uploader).subscribe(uploader => {
+            this.accountService.getUserDetails(book.uploaderUsername).subscribe(uploader => {
               this.uploader = uploader as UserSlim;
             })
           });
@@ -51,7 +51,7 @@ export class BookPageComponent implements OnInit {
   }
 
   onSwapClicked(): void {
-    const routePath = '/negotiate/' + this.book?.uniqueId;
+    const routePath = '/negotiate/' + this.book?.id;
 
     if(this.visitor !== null){
       this.router.navigate([routePath]);
@@ -72,7 +72,7 @@ export class BookPageComponent implements OnInit {
     {
       return this.visitor;
     }
-    let emptyUser: UserSlim = {id: 0, username: ""};
+    let emptyUser: UserSlim = { username: ""};
     return emptyUser;
   }
 
@@ -81,7 +81,7 @@ export class BookPageComponent implements OnInit {
     {
       return this.uploader;
     }
-    let emptyUser: UserSlim = {id: 0, username: ""};
+    let emptyUser: UserSlim = { username: ""};
     return emptyUser;
   }
 

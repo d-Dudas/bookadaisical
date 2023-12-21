@@ -1,5 +1,7 @@
 package com.bookadaisical.controller;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -32,7 +34,7 @@ public class ChatController {
     }
 
     @GetMapping("/chat/history")
-    public Page<MessageDto> getChatHistory(@RequestParam int user1Id, @RequestParam int user2Id,
+    public Page<MessageDto> getChatHistory(@RequestParam UUID user1Id, @RequestParam UUID user2Id,
                                            @RequestParam(defaultValue = "0") int page,
                                            @RequestParam(defaultValue = "10") int size) {
         return chatService.getChatHistoryOfTwoUsers(user1Id, user2Id, page, size);

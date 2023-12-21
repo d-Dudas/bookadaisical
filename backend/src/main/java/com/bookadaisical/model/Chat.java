@@ -30,7 +30,7 @@ public class Chat {
 
     private String message;
 
-    @Column(name = "sent_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime sentAt;
 
     public Chat(){}

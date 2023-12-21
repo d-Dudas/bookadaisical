@@ -38,7 +38,7 @@
                 mat-raised-button
                 extended
                 type="button"
-                *ngIf="user?.id !== visitor?.id"
+                *ngIf="user?.username !== visitor?.username"
                 (click)="drawer.toggle()">
                 <mat-icon>message</mat-icon>
                 Message</button>

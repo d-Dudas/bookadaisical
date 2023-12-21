@@ -47,16 +47,9 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(name = "current_points")
     private int currentPoints;
-
-    @Column(name = "total_points")
     private int totalPoints;
-
-    @Column(name = "special_currency")
     private int specialCurrency;
-
-    @Column(name = "is_admin")
     private boolean isAdmin;
 
     @OneToMany(mappedBy = "uploader")

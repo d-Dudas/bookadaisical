@@ -1,6 +1,5 @@
 package com.bookadaisical.enums;
 
-
 public enum ArtisticMovement {
     ALL,
     ANCIENT_LITERATURE,

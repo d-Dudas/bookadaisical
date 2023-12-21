@@ -33,9 +33,9 @@ export class AccountService {
     return this.http.post(this.backendUrl + this.loginWithTokenUrl, {token, key});
   }
 
-  getUserDetails(userId: number): Observable<User>
+  getUserDetails(username: string): Observable<User>
   {
-    return this.http.get<User>(this.backendUrl + this.getUserDetailsUrl + "/" + userId);
+    return this.http.get<User>(this.backendUrl + this.getUserDetailsUrl + "/" + username);
   }
 
   changeUsername(userId: number, newUsername: string): Observable<User>

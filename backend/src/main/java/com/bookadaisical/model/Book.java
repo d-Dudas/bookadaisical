@@ -1,5 +1,6 @@
 package com.bookadaisical.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -38,13 +39,22 @@ import lombok.NoArgsConstructor;
 @Table(schema = "bookadaisical", name = "books")
 public class Book {
 
+    // only for developement purposes
+    public Book(User uploader, String title, String author)
+    {
+        this.uploader = uploader;
+        this.title = title;
+        this.author = author;
+        this.createdOn = LocalDateTime.now();
+        this.isActive = true;
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "uploader", referencedColumnName = "id", nullable = false)
+    @JoinColumn(referencedColumnName = "id", nullable = false)
     private User uploader;
 
     @Column(nullable = false)
@@ -53,34 +63,27 @@ public class Book {
     @Column(nullable = false)
     private String author;
 
-    @Column(name = "num_views")
     private int numViews;
 
     @Column
     private String description;
-    
-    @Column(name = "created_on", nullable = false)
+
+    @Column(nullable = false)
     private LocalDateTime createdOn;
 
-    @Column(name = "last_modified")
     private LocalDateTime lastModified;
-
-    @Column(name = "year_of_publication")
     private int yearOfPublication;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "artistic_movement")
     private ArtisticMovement artisticMovement;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "target_audience")
     private TargetAudience targetAudience;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "book_condition")
     private Condition bookCondition;
 
-    @Column(name = "is_active", nullable = false)
+    @Column(nullable = false)
     private boolean isActive;
 
     @OneToMany(mappedBy = "book", cascade =  CascadeType.ALL, orphanRemoval = true)
@@ -89,13 +92,11 @@ public class Book {
     @Enumerated(EnumType.STRING)
     @ElementCollection(targetClass = Genre.class)
     @CollectionTable(name = "genres_books", joinColumns = @JoinColumn(name = "book_id"))
-    @Column(name = "genre_name")
     private Set<Genre> genres = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     @ElementCollection(targetClass = TradingOption.class)
     @CollectionTable(name = "trading_options_books", joinColumns = @JoinColumn(name = "book_id"))
-    @Column(name = "trading_option")
     private Set<TradingOption> tradingOptions = new HashSet<>();
 
     public List<Image> getImages() {

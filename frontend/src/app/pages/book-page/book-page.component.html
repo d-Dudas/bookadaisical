@@ -10,12 +10,12 @@
     <h1>{{book?.title}}</h1>
     <h2>{{book?.author}}</h2>
     <h3>{{book?.description}}</h3>
-    <h3>{{book?.uniqueId}}</h3>
+    <h3>{{book?.id}}</h3>
     <button
         mat-raised-button
         extended
         type="button"
-        *ngIf="visitor?.id !== uploader?.id"
+        *ngIf="visitor?.username !== uploader?.username"
         (click)="drawer.toggle(); onBuyClicked();">
         <mat-icon>chat</mat-icon>
         Buy</button>
@@ -28,7 +28,7 @@
         extended
         type="button"
         style="background-color: lightblue;"
-        *ngIf="visitor?.id !== uploader?.id"
+        *ngIf="visitor?.username !== uploader?.username"
         (click)="onSwapClicked()">
         <mat-icon>swap_horiz</mat-icon>
         Swap</button>

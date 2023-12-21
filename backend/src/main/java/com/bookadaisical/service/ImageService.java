@@ -19,7 +19,7 @@ import com.bookadaisical.utils.ImageUtils;
 
 @Service
 public class ImageService implements IImageService {
-    
+
     private final ImageRepository imageRepository;
     private final BookRepository bookRepository;
 
@@ -36,7 +36,7 @@ public class ImageService implements IImageService {
         String imageName = imageFile.getOriginalFilename();
         if (imageName != null) {
             imageName = imageName.replaceFirst("[.][^.]+$", "");
-        }        
+        }
         var imageToSave = Image.builder()
             .imageData(ImageUtils.compressImage(imageFile.getBytes()))
             .imageName(imageName)
@@ -45,7 +45,7 @@ public class ImageService implements IImageService {
 
         book.getImages().add(imageToSave);
         imageRepository.save(imageToSave);
-        
+
         return "file uploaded successfully : " + imageFile.getOriginalFilename();
     }
 

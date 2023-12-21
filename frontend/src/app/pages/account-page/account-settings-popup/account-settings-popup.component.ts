@@ -81,7 +81,9 @@ export class AccountSettingsPopupComponent {
     {
       this.accountService.changeUsername(this.user.id, this.changeUsernameFormData.value.username).subscribe({
         next: user1 => {
-          let user = new UserSlim(user1.id, user1.username);
+          let user = {
+            username: user1.username
+          };
           this.store.dispatch(login({ user }));
           window.location.reload();
         },
@@ -108,7 +110,7 @@ export class AccountSettingsPopupComponent {
     {
       this.accountService.changeEmail(this.user.id, this.changeEmailFormData.value.email).subscribe({
         next: user1 => {
-          let user = new UserSlim(user1.id, user1.username);
+          let user = {username: user1.username};
           this.store.dispatch(login({ user }));
           window.location.reload();
         },
@@ -136,7 +138,7 @@ export class AccountSettingsPopupComponent {
     {
       this.accountService.changePassword(this.user.id, this.changePasswordFormData.value.password).subscribe({
         next: user1 => {
-          let user = new UserSlim(user1.id, user1.username);
+          let user = {username: user1.username};
           this.store.dispatch(login({ user }));
           window.location.reload();
         },

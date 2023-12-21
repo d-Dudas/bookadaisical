@@ -1,8 +1,8 @@
 export interface Message {
 }
 export interface Message {
-    senderId: number;
-    receiverId: number;
-    message: string;
-    sentAt: string;
+    senderUsername: string
+    receiverUsername: string
+    message: string
+    sentAt: string
 }

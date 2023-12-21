@@ -25,7 +25,7 @@ export class ChatComponent {
 
   ngOnInit(){
     this.message = this.defaultMessage;
-    this.webSocket = new WebSocket('ws://localhost:8080/chat?userId=' + this.sender.id);
+    this.webSocket = new WebSocket('ws://localhost:8080/chat?username=' + this.sender.username);
 
     this.webSocket.onmessage = (event) => {
       let data = JSON.parse(event.data);
@@ -34,7 +34,7 @@ export class ChatComponent {
       this.scrollToBottom();
     }
 
-    this.chatService.getChatHistory(this.sender.id, this.receiver.id, this.messagePage, this.messagesPerPage).subscribe(
+    this.chatService.getChatHistory(this.sender.username, this.receiver.username, this.messagePage, this.messagesPerPage).subscribe(
       (chats) => {
         this.messages = chats.content;
       },
@@ -51,8 +51,8 @@ export class ChatComponent {
 
   processMessageData(data: any): Message {
     return {
-      senderId: data.senderId,
-      receiverId: data.receiverId,
+      senderUsername: data.senderId,
+      receiverUsername: data.receiverId,
       message: data.message,
       sentAt: this.formatSentAt(data.sentAt),
     };
@@ -62,8 +62,8 @@ export class ChatComponent {
     if(this.message === "") return;
 
     let message: Message = {
-      senderId: this.sender.id,
-      receiverId: this.receiver.id,
+      senderUsername: this.sender.username,
+      receiverUsername: this.receiver.username,
       message: this.message,
       sentAt: this.getLocalIsoTimeString()
     }
@@ -91,7 +91,7 @@ export class ChatComponent {
   }
 
   isSender(message: Message): boolean{
-    return message.senderId === this.sender.id;
+    return message.senderUsername === this.sender.username;
   }
 
   private scrollToBottom(): void {
@@ -106,7 +106,7 @@ export class ChatComponent {
 
     if (atTop) {
       this.messagePage += 1;
-      this.chatService.getChatHistory(this.sender.id, this.receiver.id, this.messagePage, this.messagesPerPage)
+      this.chatService.getChatHistory(this.sender.username, this.receiver.username, this.messagePage, this.messagesPerPage)
         .subscribe(moreMessages => {
           this.messages = [...this.messages, ...moreMessages.content];
         });

@@ -1,5 +1,6 @@
 export enum TargetAudience {
-    childrens = "Children's",
-    youngAdult = "Young adult",
-    adult = "Adult"
+    ALL,
+    CHILDREN,
+    YOUNG_ADULTS,
+    ADULTS
 }

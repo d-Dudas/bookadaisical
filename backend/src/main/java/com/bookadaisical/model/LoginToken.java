@@ -22,7 +22,7 @@ public class LoginToken {
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(nullable = false)
     private User user;
 
     @Column(nullable = false)
@@ -31,7 +31,7 @@ public class LoginToken {
     @Column(nullable = false)
     private String key;
 
-    @Column(name = "last_validated_on", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp lastValidatedOn;
 
     public LoginToken(User user, String token, String key) {
