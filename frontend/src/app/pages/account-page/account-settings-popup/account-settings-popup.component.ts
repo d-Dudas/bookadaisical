@@ -80,11 +80,9 @@ export class AccountSettingsPopupComponent {
     if(this.user !== null)
     {
       this.accountService.changeUsername(this.user.id, this.changeUsernameFormData.value.username).subscribe({
-        next: user1 => {
-          let user = {
-            username: user1.username
-          };
-          this.store.dispatch(login({ user }));
+        next: user => {
+          let username = user.username;
+          this.store.dispatch(login({ username }));
           window.location.reload();
         },
         error: error => {
@@ -109,9 +107,9 @@ export class AccountSettingsPopupComponent {
     if(this.user !== null)
     {
       this.accountService.changeEmail(this.user.id, this.changeEmailFormData.value.email).subscribe({
-        next: user1 => {
-          let user = {username: user1.username};
-          this.store.dispatch(login({ user }));
+        next: user => {
+          let username = user.username;
+          this.store.dispatch(login({ username }));
           window.location.reload();
         },
         error: error => {
@@ -137,9 +135,9 @@ export class AccountSettingsPopupComponent {
     if(this.user !== null)
     {
       this.accountService.changePassword(this.user.id, this.changePasswordFormData.value.password).subscribe({
-        next: user1 => {
-          let user = {username: user1.username};
-          this.store.dispatch(login({ user }));
+        next: user => {
+          let username: string = user.username;
+          this.store.dispatch(login({ username }));
           window.location.reload();
         },
         error: error => {

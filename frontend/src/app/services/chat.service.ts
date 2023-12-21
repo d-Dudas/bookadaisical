@@ -10,8 +10,8 @@ export class ChatService {
 
   constructor(private http: HttpClient) { }
 
-  getChatHistory(firstUsername: string, secondUsername: string, page: number, size: number): Observable<any> {
-    const params = { firstUsername: firstUsername, secondUsername: secondUsername, page: page.toString(), size: size.toString() };
+  getChatHistory(senderUsername: string, receiverUsername: string, page: number, size: number): Observable<any> {
+    const params = { senderUsername: senderUsername, receiverUsername: receiverUsername, page: page.toString(), size: size.toString() };
     return this.http.get(this.chatHistoryUrl, { params });
   }
 }

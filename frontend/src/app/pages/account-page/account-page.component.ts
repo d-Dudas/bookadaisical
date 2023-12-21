@@ -14,7 +14,7 @@ import { AccountService } from 'src/app/services/account.service';
 })
 export class AccountPageComponent {
   public user: User | null = null;
-  public visitor: UserSlim | null = null;
+  public visitorUsername: string | null = null;
   public isVisitorTheOwner: boolean = false;
   public isAccountSettingsPopupVisible = false;
 
@@ -60,11 +60,11 @@ export class AccountPageComponent {
         if(isAuthenticated)
         {
           this.store.select(selectUser).subscribe({
-            next: (user) => {
-              if(user !== null)
+            next: (username) => {
+              if(username !== null)
               {
-                this.isVisitorTheOwner = user.username == this.user?.username;
-                this.visitor = user;
+                this.isVisitorTheOwner = username == this.user?.username;
+                this.visitorUsername = username;
               }
             }
           });
@@ -83,26 +83,19 @@ export class AccountPageComponent {
     this.isAccountSettingsPopupVisible = false;
   }
 
-  getUser(): UserSlim {
+  getUserUsername(): string {
     if(this.user !== null)
     {
-      let user: User = this.user;
-      let userSlim: UserSlim = {
-        username: user.username
-      }
-
-      return userSlim;
+      return this.user.username;
     }
-    let emptyUser: UserSlim = {username: ""};
-    return emptyUser;
+    return "";
   }
 
-  getVisitor(): UserSlim {
-    if(this.visitor !== null)
+  getVisitorUsername(): string {
+    if(this.visitorUsername !== null)
     {
-      return this.visitor;
+      return this.visitorUsername;
     }
-    let emptyUser: UserSlim = {username: ""};
-    return emptyUser;
+    return "";
   }
 }

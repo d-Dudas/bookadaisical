@@ -114,7 +114,7 @@ public class UserService implements IUserService {
 
     @Transactional
     @Override
-    public UserSlimDto loginUserWithToken(String token, String key) throws Exception
+    public IUserDto loginUserWithToken(String token, String key) throws Exception
     {
         Optional<LoginToken> loginToken = loginTokenRepository.findByTokenAndKey(token, key);
 
@@ -127,9 +127,9 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserDto getUserDetails(UUID userId) throws Exception
+    public UserDto getUserDetails(String username) throws Exception
     {
-        Optional<User> user = userRepository.findById(userId);
+        Optional<User> user = userRepository.findByUsername(username);
 
         if(user.isPresent())
         {

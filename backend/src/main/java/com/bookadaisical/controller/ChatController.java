@@ -34,9 +34,10 @@ public class ChatController {
     }
 
     @GetMapping("/chat/history")
-    public Page<MessageDto> getChatHistory(@RequestParam UUID user1Id, @RequestParam UUID user2Id,
+    public Page<MessageDto> getChatHistory(@RequestParam String senderUsername, @RequestParam String receiverUsername,
                                            @RequestParam(defaultValue = "0") int page,
                                            @RequestParam(defaultValue = "10") int size) {
-        return chatService.getChatHistoryOfTwoUsers(user1Id, user2Id, page, size);
+        System.out.println("In chat controller");
+        return chatService.getChatHistoryOfTwoUsers(senderUsername, receiverUsername, page, size);
     }
 }

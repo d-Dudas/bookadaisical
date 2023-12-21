@@ -12,13 +12,14 @@ export class AuthService {
 
   constructor(private store: Store<AuthState.AuthState>) {}
 
-  login(user: UserSlim) {
-    this.store.dispatch(login({ user }));
+  login(username: string) {
+    this.store.dispatch(login({ username }));
   }
 
   loginAndSaveToken(user: UserToken)
   {
-    this.store.dispatch(login({ user }));
+    let username: string = user.username;
+    this.store.dispatch(login({ username }));
     localStorage.setItem('loginToken', user.token);
     localStorage.setItem('loginKey', user.key);
   }

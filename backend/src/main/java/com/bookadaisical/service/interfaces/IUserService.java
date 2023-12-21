@@ -15,8 +15,8 @@ public interface IUserService {
     List<User> getAllUsers();
     IUserDto registerUser(UserRegisterDto userRegisterDto) throws Exception;
     IUserDto loginUser(UserLoginDto userLoginDto) throws Exception;
-    UserSlimDto loginUserWithToken(String token, String key) throws Exception;
-    UserDto getUserDetails(UUID userId) throws Exception;
+    IUserDto loginUserWithToken(String token, String key) throws Exception;
+    UserDto getUserDetails(String userId) throws Exception;
     UserSlimDto changeUsername(UUID userId, String newUsername) throws Exception;
     UserSlimDto changeEmail(UUID userId, String newEmail) throws Exception;
     UserSlimDto changePassword(UUID userId, String newPassword) throws Exception;

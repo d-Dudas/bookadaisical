@@ -71,11 +71,11 @@ public class UserController {
         }
     }
 
-    @GetMapping(value = "/get-user-details/{userId}")
-    public ResponseEntity<?> getUserDeatils(@PathVariable("userId") UUID userId)
+    @GetMapping(value = "/get-user-details/{username}")
+    public ResponseEntity<?> getUserDeatils(@PathVariable("username") String username)
     {
         try {
-            return ResponseEntity.ok(userService.getUserDetails(userId));
+            return ResponseEntity.ok(userService.getUserDetails(username));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

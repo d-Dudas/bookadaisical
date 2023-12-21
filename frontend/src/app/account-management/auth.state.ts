@@ -3,7 +3,7 @@ import { UserSlim } from '../elements/classes/userSlim';
 
 export interface AuthState {
   isAuthenticated: boolean;
-  user: UserSlim | null;
+  username: string | null;
 }
 
 export interface AuthPopupState {
@@ -14,14 +14,14 @@ export interface AuthPopupState {
 
 export const initialAuthState: AuthState = {
   isAuthenticated: false,
-  user: null
+  username: null
 };
 
 export const initialAuthPopupState: AuthPopupState = {
   isAuthPopupVisible: false,
   isLoginPopupVisible: false,
   intendedPath: false
-}
+};
 
 const getAuthFeatureState = createFeatureSelector<AuthState>('auth');
 const getAuthPopupFeatureState = createFeatureSelector<AuthPopupState>('authPopup');
@@ -33,7 +33,7 @@ export const selectIsAuthenticated = createSelector(
 
 export const selectUser = createSelector(
   getAuthFeatureState,
-  (state) => state.user
+  (state) => state.username
 );
 
 export const selectIsAuthPopupVisible = createSelector(

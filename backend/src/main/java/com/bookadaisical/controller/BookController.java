@@ -1,9 +1,7 @@
 package com.bookadaisical.controller;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bookadaisical.dto.requests.BookSearchFiltersDto;
+import com.bookadaisical.dto.responses.BookDto;
 import com.bookadaisical.model.Book;
 import com.bookadaisical.service.BookService;
 
@@ -65,12 +64,17 @@ public class BookController {
     }
 
     @PostMapping("/get-book-id")
-    public ResponseEntity<Book> getBookById(@RequestBody UUID uniqueId)
+    public ResponseEntity<BookDto> getBookById(@RequestBody String uniqueId)
     {
-        List<Book> books = BooksProvider.getHardcodedBooksList();
-        for(Book book : books)
+        UUID bookId = UUID.fromString(uniqueId);
+        System.out.println("\n\nGot this UUID: " + uniqueId + "\n\n");
+        System.out.println("\n\nGot this UUID: " + bookId + "\n\n");
+        // List<Book> books = BooksProvider.getHardcodedBooksList();
+        List<BookDto> books = bookService.getAllBooks();
+        for(BookDto book : books)
         {
-            if(book.getId().equals(uniqueId))
+            System.out.println("Book id:" + book.getId());
+            if(book.getId().equals(bookId))
                 return ResponseEntity.ok(book);
         }
 

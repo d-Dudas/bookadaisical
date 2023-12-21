@@ -45,10 +45,10 @@ export class NegotiatePageComponent {
     {
       if(isAuthenticated)
       {
-        this.store.select(selectUser).subscribe((user) => {
-          if(user?.username !== undefined)
+        this.store.select(selectUser).subscribe((username) => {
+          if(username !== null)
           {
-            this.initiatorUsername = user?.username;
+            this.initiatorUsername = username;
             this.getInitiatorBooks();
           }
         });

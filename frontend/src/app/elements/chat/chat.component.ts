@@ -11,8 +11,8 @@ import { elementAt } from 'rxjs';
 })
 export class ChatComponent {
   @ViewChild('messageFlowContainer') private messageFlowContainer!: ElementRef;
-  @Input() sender!: UserSlim;
-  @Input() receiver!: UserSlim;
+  @Input() senderUsername!: string;
+  @Input() receiverUsername!: string;
   @Input() defaultMessage: string = "";
 
   private webSocket!: WebSocket;
@@ -25,7 +25,7 @@ export class ChatComponent {
 
   ngOnInit(){
     this.message = this.defaultMessage;
-    this.webSocket = new WebSocket('ws://localhost:8080/chat?username=' + this.sender.username);
+    this.webSocket = new WebSocket('ws://localhost:8080/chat?username=' + this.senderUsername);
 
     this.webSocket.onmessage = (event) => {
       let data = JSON.parse(event.data);
@@ -34,7 +34,7 @@ export class ChatComponent {
       this.scrollToBottom();
     }
 
-    this.chatService.getChatHistory(this.sender.username, this.receiver.username, this.messagePage, this.messagesPerPage).subscribe(
+    this.chatService.getChatHistory(this.senderUsername, this.receiverUsername, this.messagePage, this.messagesPerPage).subscribe(
       (chats) => {
         this.messages = chats.content;
       },
@@ -62,8 +62,8 @@ export class ChatComponent {
     if(this.message === "") return;
 
     let message: Message = {
-      senderUsername: this.sender.username,
-      receiverUsername: this.receiver.username,
+      senderUsername: this.senderUsername,
+      receiverUsername: this.receiverUsername,
       message: this.message,
       sentAt: this.getLocalIsoTimeString()
     }
@@ -91,7 +91,7 @@ export class ChatComponent {
   }
 
   isSender(message: Message): boolean{
-    return message.senderUsername === this.sender.username;
+    return message.senderUsername === this.senderUsername;
   }
 
   private scrollToBottom(): void {
@@ -106,7 +106,7 @@ export class ChatComponent {
 
     if (atTop) {
       this.messagePage += 1;
-      this.chatService.getChatHistory(this.sender.username, this.receiver.username, this.messagePage, this.messagesPerPage)
+      this.chatService.getChatHistory(this.senderUsername, this.receiverUsername, this.messagePage, this.messagesPerPage)
         .subscribe(moreMessages => {
           this.messages = [...this.messages, ...moreMessages.content];
         });

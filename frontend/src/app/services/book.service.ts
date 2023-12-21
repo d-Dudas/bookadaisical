@@ -28,8 +28,10 @@ export class BookService {
     return this.http.post<Book[]>(this.backendUrl + this.getFilteredBooksUrl, filters);
   }
 
-  getBookByUniqueId(uniqueId: number)
+  getBookByUniqueId(uniqueId: string)
   {
+    console.log("Book unique Id:");
+    console.log(uniqueId);
     return this.http.post<Book>(this.backendUrl + this.getBookByIdUrl, uniqueId);
   }
 

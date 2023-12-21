@@ -10,25 +10,27 @@
     <h1>{{book?.title}}</h1>
     <h2>{{book?.author}}</h2>
     <h3>{{book?.description}}</h3>
-    <h3>{{book?.id}}</h3>
+    <div *ngFor="let image of book?.images">
+        <img src="data:image/png;base64, {{ image }}" alt="">
+    </div>
     <button
         mat-raised-button
         extended
         type="button"
-        *ngIf="visitor?.username !== uploader?.username"
+        *ngIf="visitorUsername !== uploaderUsername"
         (click)="drawer.toggle(); onBuyClicked();">
         <mat-icon>chat</mat-icon>
         Buy</button>
     <mat-drawer-container autosize></mat-drawer-container>
     <mat-drawer #drawer class="chat-sidebar" mode="push" position="end">
-        <app-chat *ngIf="uploader !== null && visitor !== null" [receiver]="getReceiver()" [sender]="getVisitor()" [defaultMessage]="getDefaultMessage()"></app-chat>
+        <app-chat *ngIf="uploaderUsername !== null && visitorUsername !== null" [receiverUsername]="getReceiverUsername()" [senderUsername]="getVisitorUsername()" [defaultMessage]="getDefaultMessage()"></app-chat>
     </mat-drawer>
     <button
         mat-raised-button
         extended
         type="button"
         style="background-color: lightblue;"
-        *ngIf="visitor?.username !== uploader?.username"
+        *ngIf="visitorUsername !== uploaderUsername"
         (click)="onSwapClicked()">
         <mat-icon>swap_horiz</mat-icon>
         Swap</button>
