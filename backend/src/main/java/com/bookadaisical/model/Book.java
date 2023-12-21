@@ -46,6 +46,7 @@ public class Book {
         this.title = title;
         this.author = author;
         this.createdOn = LocalDateTime.now();
+        this.lastModified = createdOn;
         this.isActive = true;
     }
     @Id

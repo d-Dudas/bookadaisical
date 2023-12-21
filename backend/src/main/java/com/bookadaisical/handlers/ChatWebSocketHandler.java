@@ -52,7 +52,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 
         String username = null;
         for(String param : queryParams) {
-            if(param.startsWith("userId=")) {
+            if(param.startsWith("username=")) {
                 username = param.split("=")[1];
                 break;
             }
@@ -64,6 +64,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         }
 
         sessions.put(username, session);
+        System.out.println("(OPEN) Sessions: " + sessions.size());
     }
 
     @Override
@@ -108,5 +109,6 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         sessions.values().remove(session);
+        System.out.println("(CLOSE) Sessions: " + sessions.size());
     }
 }

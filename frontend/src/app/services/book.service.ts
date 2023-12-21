@@ -25,6 +25,7 @@ export class BookService {
 
   getFilteredBooks(filters: {}): Observable<Book[]>
   {
+    console.log(filters);
     return this.http.post<Book[]>(this.backendUrl + this.getFilteredBooksUrl, filters);
   }
 

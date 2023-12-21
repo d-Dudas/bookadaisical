@@ -12,19 +12,23 @@ import lombok.Setter;
 @Setter
 @Getter
 public class BookSearchFiltersDto {
-    //implemented GenreBook class and map it to the db table
     private Genre genre;
-    //variable in the Book class
     private TargetAudience targetAudience;
     private ArtisticMovement artisticMovement;
-    //variable in the Book class
     private Condition condition;
-    //TODO implement class
     private TradingOption tradingOption;
     private int yearOfPublicationNotLessThen;
     private int yearOfPublicationNotBiggerThen;
     private String contains;
 
+    // remove this toString
+    @Override
+    public String toString() {
+        return "BookSearchFiltersDto [genre=" + genre + ", targetAudience=" + targetAudience + ", artisticMovement="
+                + artisticMovement + ", condition=" + condition + ", tradingOption=" + tradingOption
+                + ", yearOfPublicationNotLessThen=" + yearOfPublicationNotLessThen + ", yearOfPublicationNotBiggerThen="
+                + yearOfPublicationNotBiggerThen + ", contains=" + contains + "]";
+    }
     public void setArtisticMovement(String artisticMovement) {
         switch (artisticMovement) {
             case "":
