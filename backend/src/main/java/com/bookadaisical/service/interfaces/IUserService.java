@@ -8,7 +8,6 @@ import com.bookadaisical.dto.requests.UserRegisterDto;
 import com.bookadaisical.dto.responses.UserDto;
 import com.bookadaisical.dto.responses.UserSlimDto;
 import com.bookadaisical.dto.responses.interfaces.IUserDto;
-import com.bookadaisical.dto.responses.interfaces.UserSlimDtoProjection;
 import com.bookadaisical.model.User;
 
 public interface IUserService {

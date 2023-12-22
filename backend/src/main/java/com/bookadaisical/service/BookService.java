@@ -58,8 +58,8 @@ public class BookService implements IBookService {
     }
 
     @Override
-    public List<BookDto> getBooksByUserId(UUID userId) {
-        List<Book> books = bookRepository.findAllBooksByUploaderId(userId);
+    public List<BookDto> getBooksByUploaderUsername(String username) {
+        List<Book> books = bookRepository.findAllBooksByUploaderUsername(username);
 
         return books.stream().map(book -> new BookDto(book)).collect(Collectors.toList());
     }

@@ -1,7 +1,5 @@
 package com.bookadaisical.service.interfaces;
 
-import java.util.UUID;
-
 import org.springframework.data.domain.Page;
 
 import com.bookadaisical.dto.MessageDto;

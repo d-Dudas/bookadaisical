@@ -30,7 +30,6 @@ export class AccountService {
 
   loginWithToken(token: string, key: string)
   {
-    console.log("Hello world");
     return this.http.post(this.backendUrl + this.loginWithTokenUrl, {token, key});
   }
 

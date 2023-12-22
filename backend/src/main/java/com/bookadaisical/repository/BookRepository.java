@@ -24,6 +24,6 @@ public interface BookRepository extends JpaRepository<Book, UUID>, JpaSpecificat
    @Query(value = "SELECT * FROM bookadaisical.books", nativeQuery = true)
    List<Book> findAllByGenreNativeQuery();
 
-   @Query("SELECT b FROM Book b WHERE b.uploader.id = :userId")
-   List<Book> findAllBooksByUploaderId(@Param("userId") UUID userId);
+   @Query("SELECT b FROM Book b WHERE b.uploader.username = :username")
+   List<Book> findAllBooksByUploaderUsername(@Param("username") String username);
 }

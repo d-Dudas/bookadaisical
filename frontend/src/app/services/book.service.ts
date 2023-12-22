@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Book } from '../elements/classes/book';
+import { UserSlim } from '../elements/classes/userSlim';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class BookService {
   private getPopularBooksUrl = '/top-ten-books';
   private getFilteredBooksUrl = '/get-filtered-books';
   private getBookByIdUrl = '/get-book-by-id';
-  private getBookOwnerIdUrl = '/get-book-owner-id';
+  private getBookOwnerIdUrl = '/get-book-owner-username';
   private getUserBooksUrl = '/get-user-books';
 
   constructor(private http: HttpClient)
@@ -33,9 +34,9 @@ export class BookService {
     return this.http.post<Book>(this.backendUrl + this.getBookByIdUrl, uniqueId);
   }
 
-  getBookOwnerUsername(bookId: string): Observable<string>
+  getBookOwnerUsername(bookId: string): Observable<UserSlim>
   {
-    return this.http.get<string>(this.backendUrl + this.getBookOwnerIdUrl + "/" + bookId.toString());
+    return this.http.get<UserSlim>(this.backendUrl + this.getBookOwnerIdUrl + "/" + bookId.toString());
   }
 
   getUserBooks(username: string): Observable<Book[]>

@@ -66,8 +66,9 @@ export class NegotiatePageComponent {
       if(bookIdString !== null)
       {
         this.bookId = bookIdString;
-        this.bookService.getBookOwnerUsername(this.bookId).subscribe((ownerId) => {
-          this.responderUsername = ownerId;
+        this.bookService.getBookOwnerUsername(this.bookId).subscribe((owner) => {
+          console.log(owner);
+          this.responderUsername = owner.username;
           this.getResponderBooks();
         });
       }

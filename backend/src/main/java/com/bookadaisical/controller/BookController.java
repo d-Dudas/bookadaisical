@@ -16,15 +16,9 @@ import com.bookadaisical.dto.requests.BookSearchFiltersDto;
 import com.bookadaisical.dto.responses.BookDto;
 import com.bookadaisical.service.BookService;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 @RestController
 public class BookController {
-
     private final BookService bookService;
-
-    private static final Logger log = LoggerFactory.getLogger(BookController.class);
 
     @Autowired
     public BookController(BookService bookService) {
@@ -73,11 +67,10 @@ public class BookController {
         return ResponseEntity.badRequest().body(null);
     }
 
-    @GetMapping(value = "/get-user-books/{userId}")
-    public ResponseEntity<List<BookDto>> getUserBooks(@PathVariable("userId") UUID userId)
+    @GetMapping(value = "/get-user-books/{username}")
+    public ResponseEntity<List<BookDto>> getUserBooks(@PathVariable("username") String username)
     {
-        List<BookDto> userBooks = bookService.getBooksByUserId(userId);
-        log.info("User ID: {}", userId);
+        List<BookDto> userBooks = bookService.getBooksByUploaderUsername(username);
         return ResponseEntity.ok(userBooks);
     }
 }

@@ -11,5 +11,5 @@ public interface IBookService {
     List<BookDto> getTopTenBooks() throws Exception;
     List<BookDto> getFilteredBooks(BookSearchFiltersDto bookSearchFiltersDto) throws Exception;
     List<BookDto> getAllBooks() throws Exception;
-    List<BookDto> getBooksByUserId(UUID userId);
+    List<BookDto> getBooksByUploaderUsername(String username);
 }
