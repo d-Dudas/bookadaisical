@@ -5,12 +5,11 @@ import java.util.UUID;
 
 import com.bookadaisical.dto.requests.BookSearchFiltersDto;
 import com.bookadaisical.dto.responses.BookDto;
-import com.bookadaisical.model.Book;
 
 public interface IBookService {
 
-    List<Book> getTopTenBooks() throws Exception;
-    List<Book> getFilteredBooks(BookSearchFiltersDto bookSearchFiltersDto) throws Exception;
+    List<BookDto> getTopTenBooks() throws Exception;
+    List<BookDto> getFilteredBooks(BookSearchFiltersDto bookSearchFiltersDto) throws Exception;
     List<BookDto> getAllBooks() throws Exception;
-    List<Book> getBooksByUserId(UUID userId);
+    List<BookDto> getBooksByUserId(UUID userId);
 }

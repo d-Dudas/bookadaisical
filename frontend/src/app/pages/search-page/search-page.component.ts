@@ -7,6 +7,15 @@ import { Condition } from 'src/app/utils/enums/condition';
 import { Genres } from 'src/app/utils/enums/genres';
 import { TargetAudience } from 'src/app/utils/enums/target-audience';
 
+interface Filter {
+  genre: string;
+  targetAudience: string;
+  artisticMovement: string;
+  condition: string;
+  contains: string;
+  yearOfPublicationNotLessThen: number;
+  yearOfPublicationNotBiggerThen: number;
+}
 @Component({
   selector: 'app-search-page',
   templateUrl: './search-page.component.html',
@@ -14,16 +23,16 @@ import { TargetAudience } from 'src/app/utils/enums/target-audience';
 })
 export class SearchPageComponent {
   books: Book[] = [];
-  genreOptions = Object.values(Genres);
-  targetAudienceOptions = Object.values(TargetAudience);
-  artisticMovementOptions = Object.values(ArtisticMovement);
-  conditionOptions = Object.values(Condition);
+  genreOptions = this.getEnumValues(Genres);
+  targetAudienceOptions = this.getEnumValues(TargetAudience);
+  artisticMovementOptions = this.getEnumValues(ArtisticMovement);
+  conditionOptions = this.getEnumValues(Condition);
 
-  filters = {
-    genre: "",
-    targetAudience: "",
-    artistitMovement: "",
-    condition: "",
+  filter: Filter = {
+    genre: this.genreOptions[0],
+    targetAudience: this.targetAudienceOptions[0],
+    artisticMovement: this.artisticMovementOptions[0],
+    condition: this.conditionOptions[0],
     yearOfPublicationNotLessThen: 1950, // TODO: Dynamically get the "oldest" book from database
     yearOfPublicationNotBiggerThen: 2023, // TODO: Dynamically read maximum year
     contains: ""
@@ -44,14 +53,18 @@ export class SearchPageComponent {
     this.updateBookList();
   }
 
-  genreChanged()
+  private getEnumValues(e: any) {
+    return Object.keys(e).filter(key => isNaN(Number(key)));
+  }
+
+  filterChanged()
   {
     this.updateBookList();
   }
 
   updateBookList()
   {
-    this.bookService.getFilteredBooks(this.filters).subscribe((books) => {
+    this.bookService.getFilteredBooks(this.filter).subscribe((books) => {
       this.books = books;
     });
   }

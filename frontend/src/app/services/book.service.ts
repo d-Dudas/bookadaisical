@@ -10,7 +10,7 @@ export class BookService {
   private backendUrl = 'http://localhost:8080';
   private getPopularBooksUrl = '/top-ten-books';
   private getFilteredBooksUrl = '/get-filtered-books';
-  private getBookByIdUrl = '/get-book-id';
+  private getBookByIdUrl = '/get-book-by-id';
   private getBookOwnerIdUrl = '/get-book-owner-id';
   private getUserBooksUrl = '/get-user-books';
 
@@ -25,14 +25,11 @@ export class BookService {
 
   getFilteredBooks(filters: {}): Observable<Book[]>
   {
-    console.log(filters);
     return this.http.post<Book[]>(this.backendUrl + this.getFilteredBooksUrl, filters);
   }
 
   getBookByUniqueId(uniqueId: string)
   {
-    console.log("Book unique Id:");
-    console.log(uniqueId);
     return this.http.post<Book>(this.backendUrl + this.getBookByIdUrl, uniqueId);
   }
 

@@ -1,10 +1,14 @@
 package com.bookadaisical.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.bookadaisical.dto.requests.BookSearchFiltersDto;
@@ -13,8 +17,6 @@ import com.bookadaisical.model.Book;
 import com.bookadaisical.repository.BookRepository;
 import com.bookadaisical.repository.specifications.BookSpecification;
 import com.bookadaisical.service.interfaces.IBookService;
-
-import jakarta.transaction.Transactional;
 
 @Service
 public class BookService implements IBookService {
@@ -27,64 +29,38 @@ public class BookService implements IBookService {
     }
 
     @Override
-    @Transactional
-    public List<Book> getTopTenBooks() throws Exception {
-        List<Book> topTenMonthlyBooks = bookRepository.findTopTenBooks();
-        return topTenMonthlyBooks;
+    public List<BookDto> getTopTenBooks() {
+        List<Book> books = new ArrayList<>();
+        int daysBack = 30;
+        Pageable topTen = PageRequest.of(0, 10);
+
+        while (books.size() < 10 && daysBack <= 180) {
+            LocalDateTime startDate = LocalDateTime.now().minusDays(daysBack);
+            books = bookRepository.findBooksByUploadDateAndViews(startDate, topTen);
+            daysBack *= 2;
+        }
+
+        return books.stream().map(book -> new BookDto(book)).collect(Collectors.toList());
     }
 
     @Override
     public List<BookDto> getAllBooks() {
-        List<BookDto> books = new ArrayList<>();
-        for(Book book : bookRepository.findAll()) {
-            books.add(new BookDto(book));
-        }
+        List<Book> books = bookRepository.findAll();
 
-        return books;
+        return books.stream().map(book -> new BookDto(book)).collect(Collectors.toList());
     }
 
-    // @Override
-    // public List<Book> getFilteredBooks(BookSearchFiltersDto bookSearchFiltersDto) throws Exception {
-    //     System.out.println("FILTER DTO: " + bookSearchFiltersDto.toString() );
-
-    //     // int idIndex = 0;
-    //     // int titleIndex = 1;
-    //     // int authorIndex = 2;
-    //     // int numViewsIndex = 3;
-    //     // int descriptionIndex = 4;
-    //     // int createdOnIndex = 5;
-
-    //     //List<BookResponseDto> filteredBooks = bookRepository.findAllByGenreNativeQuery(bookSearchFiltersDto.getGenre().toString());
-    //     //List<BookResponseDto> filteredBooks = bookRepository.findAllByGenreNativeQuery(bookSearchFiltersDto.getGenre().toString());
-    //     //return filteredBooks;
-
-    //     //List<BookResponseDto> filteredByGenreBooks = bookRepository.findAllByGenreNativeQuery(bookSearchFiltersDto.getGenre().toString());
-
-    //     // List<Book> filteredByGenreBooks = bookRepository.findAllByGenreNativeQuery();
-    //     List<Book> filteredByGenreBooks = bookRepository.findAll();
-    //     //List<Book> filteredByGenreBooks = bookRepository.findAllByGenreNativeQuery(bookSearchFiltersDto.getGenre().toString());
-
-    //     return filteredByGenreBooks;
-
-    //     /*List<Book> filteredBooks =
-    //     bookRepository.findFilteredBooks(bookSearchFiltersDto.getGenre().toString(),
-    //                                     bookSearchFiltersDto.getTargetAudience(),
-    //                                     bookSearchFiltersDto.getArtisticMovement(),
-    //                                     bookSearchFiltersDto.getCondition().toString(),
-    //                                     bookSearchFiltersDto.getYearOfPublicationNotBiggerThen(),
-    //                                     bookSearchFiltersDto.getYearOfPublicationNotLessThen(),
-    //                                     bookSearchFiltersDto.getContains());*/
-    //     //return filteredBooks;
-    // }
-
-    public List<Book> getFilteredBooks(BookSearchFiltersDto filters) {
+    public List<BookDto> getFilteredBooks(BookSearchFiltersDto filters) {
         BookSpecification spec = new BookSpecification(filters);
-        return bookRepository.findAll(spec);
+        List<Book> books = bookRepository.findAll(spec);
+
+        return books.stream().map(book -> new BookDto(book)).collect(Collectors.toList());
     }
 
     @Override
-    public List<Book> getBooksByUserId(UUID userId) {
-        return bookRepository.findAllBooksByUploaderId(userId);
-    }
+    public List<BookDto> getBooksByUserId(UUID userId) {
+        List<Book> books = bookRepository.findAllBooksByUploaderId(userId);
 
+        return books.stream().map(book -> new BookDto(book)).collect(Collectors.toList());
+    }
 }

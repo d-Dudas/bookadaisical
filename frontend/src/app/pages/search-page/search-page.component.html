@@ -8,38 +8,79 @@
 <body>
     <app-navbar></app-navbar>
     <div class="body-header">
-        Hello
     </div>
     <div class="content">
         <div class="filter-fields-contaienr">
             <div class="filter-fields">
+
                 <label for="genre">Genre</label>
-                <select id="genre" [(ngModel)]="filters.genre" (change)="genreChanged()">
-                    <option value="">All</option>
-                    <option *ngFor="let genre of genreOptions" [value]="genre">{{ genre }}</option>
+                <select
+                    id="genre"
+                    [(ngModel)]="filter.genre"
+                    (change)="updateBookList()">
+                    <option
+                        *ngFor="let genre of genreOptions"
+                        [value]="genre">
+                        {{ genre }}
+                    </option>
                 </select>
+
                 <label for="target-audience">Target audience</label>
-                <select id="target-audience" [(ngModel)]="filters.targetAudience" (change)="genreChanged()">
-                    <option value="">All</option>
-                    <option *ngFor="let targetAudience of targetAudienceOptions" [value]="targetAudience">{{ targetAudience }}</option>
+                <select
+                    id="target-audience"
+                    [(ngModel)]="filter.targetAudience"
+                    (change)="updateBookList()">
+                    <option
+                        *ngFor="let targetAudience of targetAudienceOptions"
+                        [value]="targetAudience">
+                        {{ targetAudience }}
+                    </option>
                 </select>
+
                 <label for="artistic-movement">Artistic movement</label>
-                <select id="artistic-movement" [(ngModel)]="filters.artistitMovement">
-                    <option value="">All</option>
-                    <option *ngFor="let artisticMovement of artisticMovementOptions" [value]="artisticMovement">{{ artisticMovement }}</option>
+                <select
+                    id="artistic-movement"
+                    [(ngModel)]="filter.artisticMovement"
+                    (change)="updateBookList()">
+                    <option
+                        *ngFor="let artisticMovement of artisticMovementOptions"
+                        [value]="artisticMovement">
+                        {{ artisticMovement }}
+                    </option>
                 </select>
+
                 <label for="condition">Condition</label>
-                <select id="condition" [(ngModel)]="filters.condition">
-                    <option value="">All</option>
-                    <option *ngFor="let condition of conditionOptions" [value]="condition">{{ condition }}</option>
+                <select
+                    id="condition"
+                    [(ngModel)]="filter.condition"
+                    (change)="updateBookList()">
+                    <option
+                        *ngFor="let condition of conditionOptions"
+                        [value]="condition">
+                        {{ condition }}
+                    </option>
                 </select>
-                <ngx-slider [(value)]="filters.yearOfPublicationNotBiggerThen" [(highValue)]="filters.yearOfPublicationNotLessThen" [options]="options"></ngx-slider>
-                <input type="text" placeholder="Search" [(ngModel)]="filters.contains" (change)="genreChanged()">
+
+                <ngx-slider
+                    [(highValue)]="filter.yearOfPublicationNotBiggerThen"
+                    [(value)]="filter.yearOfPublicationNotLessThen"
+                    [options]="options"
+                    (valueChange)="updateBookList()"
+                    (highValueChange)="updateBookList()">
+                </ngx-slider>
+
+                <input
+                    type="text"
+                    placeholder="Search"
+                    [(ngModel)]="filter.contains"
+                    (change)="updateBookList()">
             </div>
         </div>
         <div class="books-container">
             <div class="books" *ngFor="let book of books">
-                <app-book-preview [book]="book"></app-book-preview>
+                <app-book-preview
+                    [book]="book">
+                </app-book-preview>
             </div>
         </div>
     </div>

@@ -1,7 +1,5 @@
 package com.bookadaisical.controller;
 
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -37,7 +35,6 @@ public class ChatController {
     public Page<MessageDto> getChatHistory(@RequestParam String senderUsername, @RequestParam String receiverUsername,
                                            @RequestParam(defaultValue = "0") int page,
                                            @RequestParam(defaultValue = "10") int size) {
-        System.out.println("In chat controller");
         return chatService.getChatHistoryOfTwoUsers(senderUsername, receiverUsername, page, size);
     }
 }

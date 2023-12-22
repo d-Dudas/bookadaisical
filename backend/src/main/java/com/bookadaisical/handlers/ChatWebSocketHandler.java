@@ -15,7 +15,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +63,6 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         }
 
         sessions.put(username, session);
-        System.out.println("(OPEN) Sessions: " + sessions.size());
     }
 
     @Override
@@ -109,6 +107,5 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         sessions.values().remove(session);
-        System.out.println("(CLOSE) Sessions: " + sessions.size());
     }
 }

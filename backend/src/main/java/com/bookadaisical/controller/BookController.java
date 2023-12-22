@@ -14,14 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bookadaisical.dto.requests.BookSearchFiltersDto;
 import com.bookadaisical.dto.responses.BookDto;
-import com.bookadaisical.model.Book;
 import com.bookadaisical.service.BookService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-// Temporary import
-import com.bookadaisical.hardcodedValues.BooksProvider;
 
 @RestController
 public class BookController {
@@ -40,7 +36,7 @@ public class BookController {
         try {
             return new ResponseEntity<>(bookService.getAllBooks(), HttpStatus.OK);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("error: " + e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -49,7 +45,7 @@ public class BookController {
         try {
             return new ResponseEntity<>(bookService.getTopTenBooks(), HttpStatus.OK);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("error: " + e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -59,21 +55,17 @@ public class BookController {
         try {
             return new ResponseEntity<>(bookService.getFilteredBooks(searchFilters), HttpStatus.OK);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("error: " + e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @PostMapping("/get-book-id")
+    @PostMapping("/get-book-by-id")
     public ResponseEntity<BookDto> getBookById(@RequestBody String uniqueId)
     {
         UUID bookId = UUID.fromString(uniqueId);
-        System.out.println("\n\nGot this UUID: " + uniqueId + "\n\n");
-        System.out.println("\n\nGot this UUID: " + bookId + "\n\n");
-        // List<Book> books = BooksProvider.getHardcodedBooksList();
         List<BookDto> books = bookService.getAllBooks();
         for(BookDto book : books)
         {
-            System.out.println("Book id:" + book.getId());
             if(book.getId().equals(bookId))
                 return ResponseEntity.ok(book);
         }
@@ -82,9 +74,9 @@ public class BookController {
     }
 
     @GetMapping(value = "/get-user-books/{userId}")
-    public ResponseEntity<List<Book>> getUserBooks(@PathVariable("userId") UUID userId)
+    public ResponseEntity<List<BookDto>> getUserBooks(@PathVariable("userId") UUID userId)
     {
-        List<Book> userBooks = bookService.getBooksByUserId(userId);
+        List<BookDto> userBooks = bookService.getBooksByUserId(userId);
         log.info("User ID: {}", userId);
         return ResponseEntity.ok(userBooks);
     }

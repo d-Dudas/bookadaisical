@@ -1,7 +1,5 @@
 package com.bookadaisical.service;
 
-import java.util.UUID;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +25,6 @@ public class ChatService implements IChatService {
 
     @Override
     public Page<MessageDto> getChatHistoryOfTwoUsers(String senderUsername, String receiverUsername, int page, int pageSize) throws UserNotFoundException{
-        System.out.println("In chat service");
         validateUserExists(senderUsername);
         validateUserExists(receiverUsername);
 

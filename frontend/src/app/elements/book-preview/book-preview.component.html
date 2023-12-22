@@ -5,18 +5,25 @@
         </div>
         <div class="book-preview-title-container">
             <p class="book-preview-title">
-                {{ book?.title }}
+                {{ book.title }}
             </p>
         </div>
+
+        <div class="book-preview-image-container">
+            <div *ngFor="let image of book.images">
+                <img src="data:image/png;base64, {{ image }}" style="width: 5vh; height: 5vw;">
+            </div>
+        </div>
+
         <div class="book-preview-author-container">
             <p class="book-preview-author">
-                {{ book?.author }}
+                {{ book.author }}
             </p>
         </div>
         <div class="book-preview-description-container">
             <div class="book-preview-description-content">
                 <p class="book-preview-description">
-                    {{ book?.description }}
+                    {{ book.description }}
                 </p>
             </div>
         </div>
