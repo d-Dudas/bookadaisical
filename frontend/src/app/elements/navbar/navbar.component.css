@@ -1,7 +1,69 @@
-.navbar
+@font-face {
+    font-family: 'LoraItalic';
+    src: url('../../../assets/Lora/Lora-Italic-VariableFont_wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.navbar-container
 {
-    top: 0;
     width: 100%;
-    height: 5vh;
-    border-bottom: 1px solid grey;
+    background-color: coral;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.navbar-container > div
+{
+    width: 100%;
+}
+
+.navbar-pages
+{
+    justify-content: left;
+}
+
+.navbar-title
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navbar-title > span
+{
+    cursor: pointer;
+    color: white;
+    font-family: 'LoraItalic';
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.navbar-options
+{
+    justify-content: right;
+}
+
+.navbar-go-to-account-button
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mat-icon
+{
+    margin: 0 !important;
+}
+
+.navbar-buttons
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.navbar-buttons *
+{
+    margin: 0px 0.7vw;
 }
