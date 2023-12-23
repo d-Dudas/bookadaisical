@@ -29,6 +29,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatSliderModule } from '@angular/material/slider';
+import { MatChipsModule } from '@angular/material/chips';
 
 
 @NgModule({
@@ -66,6 +67,7 @@ import { MatSliderModule } from '@angular/material/slider';
     MatFormFieldModule,
     MatInputModule,
     MatCardModule,
+    MatChipsModule
   ],
   providers: [],
   bootstrap: [RootComponent]
