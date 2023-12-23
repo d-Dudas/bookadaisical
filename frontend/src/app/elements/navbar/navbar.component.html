@@ -1,5 +1,21 @@
-<nav class="navbar">
-    <app-authenticate-popup></app-authenticate-popup>
-    <a routerLink="/home">Home</a>
-    <a routerLink="/search">Search</a>
-</nav>
+<p>
+    <mat-toolbar class="navbar-container">
+        <div class="navbar-pages navbar-buttons">
+            <button mat-raised-button routerLink="/home">Home</button>
+            <button mat-raised-button routerLink="/search">Search</button>
+        </div>
+        <div class="navbar-title">
+            <span routerLink="/home">Bookadaisical</span>
+        </div>
+        <div class="navbar-options navbar-buttons">
+            <app-authenticate-popup></app-authenticate-popup>
+            <button
+                class="navbar-go-to-account-button"
+                mat-raised-button
+                *ngIf="isAuthenticated"
+                [routerLink]="['/account', username]">
+                <mat-icon>person</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+  </p>
