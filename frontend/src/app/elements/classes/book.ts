@@ -16,7 +16,7 @@ export interface Book {
     isActive: boolean,
     images: string[],
     genres: Genres[],
-    tradingOptions: TradingOption,
+    tradingOptions: TradingOption[],
 
     uploaderUsername: string,
     views: number,
