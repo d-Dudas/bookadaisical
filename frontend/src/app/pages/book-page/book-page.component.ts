@@ -32,10 +32,7 @@ export class BookPageComponent implements OnInit {
         if(bookUniqueId !== null)
         {
           this.bookService.getBookByUniqueId(bookUniqueId).subscribe(book => {
-            console.log(book);
             this.book = book;
-            console.log(this.book);
-
             this.accountService.getUserDetails(book.uploaderUsername).subscribe(uploader => {
               this.uploaderUsername = uploader.username;
             })

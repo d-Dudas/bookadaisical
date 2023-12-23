@@ -50,6 +50,11 @@ public class DataInitializer implements CommandLineRunner {
         image.setImageData(imageData);
         image.setImageName("metamorphosis");
         book.addImage(image);
+        imageData = loadImage("the_plague.jpg");
+        image = new Image();
+        image.setImageData(imageData);
+        image.setImageName("the_plague");
+        book.addImage(image);
         userRepository.save(user);
         bookRepository.save(book);
         imageRepository.save(image);

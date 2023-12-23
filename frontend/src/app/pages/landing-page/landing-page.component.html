@@ -9,9 +9,7 @@
     <app-navbar></app-navbar>
     <app-user-info></app-user-info>
     <div class="popular-books-container">
-        <div class="popular-books-content" *ngFor="let book of books">
-            <app-book-preview [book]="book" [routerLink]="['/books', book.id]"></app-book-preview>
-        </div>
+        <app-book-preview *ngFor="let book of books" [book]="book" class="popular-books-content"></app-book-preview>
     </div>
 </body>
 </html>

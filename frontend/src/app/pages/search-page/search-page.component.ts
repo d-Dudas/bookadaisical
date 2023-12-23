@@ -57,14 +57,8 @@ export class SearchPageComponent {
     return Object.keys(e).filter(key => isNaN(Number(key)));
   }
 
-  filterChanged()
-  {
-    this.updateBookList();
-  }
-
   updateBookList()
   {
-    console.log(this.filter);
     this.bookService.getFilteredBooks(this.filter).subscribe((books) => {
       this.books = books;
     });

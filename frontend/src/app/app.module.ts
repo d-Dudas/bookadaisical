@@ -16,7 +16,6 @@ import { BookPreviewComponent } from './elements/book-preview/book-preview.compo
 import { SearchPageComponent } from './pages/search-page/search-page.component';
 import { RootComponent } from './root/root.component';
 import { BookPageComponent } from './pages/book-page/book-page.component';
-import { SendMessageToBookOwnerPopupComponent } from './pages/book-page/send-message-to-book-owner-popup/send-message-to-book-owner-popup.component';
 import { NegotiatePageComponent } from './pages/negotiate-page/negotiate-page.component';
 import { ProblemPopupComponent } from './elements/problem-popup/problem-popup.component';
 import { AccountPageComponent } from './pages/account-page/account-page.component';
@@ -31,6 +30,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatSliderModule } from '@angular/material/slider';
 
+
 @NgModule({
   declarations: [
     LandingPageComponent,
@@ -43,7 +43,6 @@ import { MatSliderModule } from '@angular/material/slider';
     SearchPageComponent,
     RootComponent,
     BookPageComponent,
-    SendMessageToBookOwnerPopupComponent,
     NegotiatePageComponent,
     ProblemPopupComponent,
     AccountPageComponent,
