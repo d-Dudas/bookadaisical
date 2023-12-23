@@ -8,7 +8,6 @@ import com.bookadaisical.enums.Condition;
 import com.bookadaisical.enums.TargetAudience;
 
 public interface BookResponseProjection {
-    
     UUID getBookId();
     String getTitle();
     String getAuthor();
@@ -21,5 +20,4 @@ public interface BookResponseProjection {
     Integer getPoints();
     String getDescription();
     LocalDateTime getCreatedOn();
-
 }

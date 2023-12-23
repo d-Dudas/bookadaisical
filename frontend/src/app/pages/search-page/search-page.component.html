@@ -61,13 +61,16 @@
                     </option>
                 </select>
 
-                <ngx-slider
-                    [(highValue)]="filter.yearOfPublicationNotBiggerThen"
-                    [(value)]="filter.yearOfPublicationNotLessThen"
-                    [options]="options"
-                    (valueChange)="updateBookList()"
-                    (highValueChange)="updateBookList()">
-                </ngx-slider>
+                <div class="example-label-container">
+                    <label id="example-name-label" class="example-name-label">From </label>
+                    <label class="example-value-label">{{filter.yearOfPublicationNotLessThen}}</label>
+                    <label id="example-name-label" class="example-name-label">To </label>
+                    <label class="example-value-label">{{filter.yearOfPublicationNotBiggerThen}}</label>
+                  </div>
+                <mat-slider min="1800" max="2023" (change)="updateBookList()">
+                    <input [(ngModel)]="filter.yearOfPublicationNotLessThen" matSliderStartThumb>
+                    <input [(ngModel)]="filter.yearOfPublicationNotBiggerThen" matSliderEndThumb>
+                </mat-slider>
 
                 <input
                     type="text"

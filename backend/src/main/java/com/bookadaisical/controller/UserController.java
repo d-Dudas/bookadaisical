@@ -20,8 +20,6 @@ import com.bookadaisical.dto.requests.UserLoginTokenDto;
 import com.bookadaisical.dto.requests.UserRegisterDto;
 import com.bookadaisical.dto.responses.BookDto;
 import com.bookadaisical.dto.responses.UserSlimDto;
-import com.bookadaisical.hardcodedValues.BooksProvider;
-import com.bookadaisical.model.Book;
 import com.bookadaisical.service.BookService;
 import com.bookadaisical.service.UserService;
 

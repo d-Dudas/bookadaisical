@@ -13,6 +13,5 @@ public class NegotiationController {
     public ResponseEntity<?> sendOffer(@RequestBody NegotiationOfferDto negotiationOfferDto)
     {
         return null;
-        //TODO return negotiationOfferDto.getInitiatorId() % 2 == 0 ? ResponseEntity.badRequest().body("helloWorld") : ResponseEntity.ok("helloWorld");
     }
 }

@@ -25,7 +25,6 @@ import org.apache.commons.io.IOUtils;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
-
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -54,7 +53,6 @@ public class DataInitializer implements CommandLineRunner {
         userRepository.save(user);
         bookRepository.save(book);
         imageRepository.save(image);
-
 
         book = new Book(user, "Metamorphosis2", "Kafka2");
         book.setDescription("hello world");

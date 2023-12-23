@@ -11,7 +11,6 @@ import lombok.Data;
 
 @Data
 public class BookResponseDto {
-    
     UUID bookId;
     String title;
     String author;
@@ -25,5 +24,4 @@ public class BookResponseDto {
     Integer points;
     String description;
     LocalDateTime createdOn;
-
 }

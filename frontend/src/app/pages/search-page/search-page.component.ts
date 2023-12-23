@@ -1,5 +1,5 @@
 import { Component} from '@angular/core';
-import { Options } from 'ngx-slider-v2';
+// import { Options } from 'ngx-slider-v2';
 import { Book } from 'src/app/elements/classes/book';
 import { BookService } from 'src/app/services/book.service';
 import { ArtisticMovement } from 'src/app/utils/enums/artistic-movement';
@@ -38,12 +38,12 @@ export class SearchPageComponent {
     contains: ""
   }
 
-  value: number = 100;
-  highValue: number = 150;
-  options: Options = {
-    floor:1950,
-    ceil: 2023
-  };
+  // value: number = 100;
+  // highValue: number = 150;
+  // options: Options = {
+  //   floor:1950,
+  //   ceil: 2023
+  // };
 
   constructor(private bookService: BookService)
   {
@@ -64,6 +64,7 @@ export class SearchPageComponent {
 
   updateBookList()
   {
+    console.log(this.filter);
     this.bookService.getFilteredBooks(this.filter).subscribe((books) => {
       this.books = books;
     });

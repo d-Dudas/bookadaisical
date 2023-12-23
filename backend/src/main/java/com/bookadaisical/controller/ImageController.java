@@ -17,7 +17,6 @@ import com.bookadaisical.service.ImageService;
 @RestController
 @RequestMapping("/images")
 public class ImageController {
-    
     private final ImageService imageService;
 
     @Autowired
@@ -42,7 +41,6 @@ public class ImageController {
             return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.valueOf(MediaType.IMAGE_PNG_VALUE))
                 .body(imageData);
-            
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

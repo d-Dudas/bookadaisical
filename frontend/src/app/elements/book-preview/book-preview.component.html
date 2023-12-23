@@ -9,11 +9,24 @@
             </p>
         </div>
 
-        <div class="book-preview-image-container">
+        <!-- <div class="book-preview-image-container">
             <div *ngFor="let image of book.images">
-                <img src="data:image/png;base64, {{ image }}" style="width: 5vh; height: 5vw;">
+                <img src="data:image/png;base64, {{ image }}" style="width: 5vh; height: 5vw;"> 
             </div>
-        </div>
+        </div> -->
+        <!-- <c-carousel>
+            <c-carousel-indicators></c-carousel-indicators>
+            <c-carousel-inner>
+              <c-carousel-item *ngFor="let image of book.images">
+                <img
+                  src="data:image/png;base64, {{ image }}"
+                  class="d-block w-100"
+                  loading="lazy" />
+              </c-carousel-item>
+            </c-carousel-inner>
+            <c-carousel-control [routerLink] caption="Previous" direction="prev"></c-carousel-control>
+            <c-carousel-control [routerLink] caption="Next" direction="next"></c-carousel-control>
+          </c-carousel> -->
 
         <div class="book-preview-author-container">
             <p class="book-preview-author">
