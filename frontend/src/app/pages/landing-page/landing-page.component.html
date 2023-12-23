@@ -1,15 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bookadaisical</title>
-</head>
-<body>
-    <app-navbar></app-navbar>
-    <app-user-info></app-user-info>
-    <div class="popular-books-container">
-        <app-book-preview *ngFor="let book of books" [book]="book" class="popular-books-content"></app-book-preview>
+<app-navbar></app-navbar>
+<div class="landing-page-header"></div>
+<div class="landing-page-top-books">
+    <div class="carousel-container">
+        <p-carousel
+            [value]="books"
+            [numVisible]="4"
+            [numScroll]="1"
+            [circular]="true"
+            [responsiveOptions]="responsiveOptions">
+            <ng-template
+                let-product
+                pTemplate="item">
+                <div class="popular-books-content">
+                    <app-book-preview
+                        [book]="product">
+                    </app-book-preview>
+                </div>
+            </ng-template>
+        </p-carousel>
     </div>
-</body>
-</html>
+</div>

@@ -10,6 +10,8 @@ import { Book } from '../../elements/classes/book';
 export class LandingPageComponent {
   books: Book[] = [];
 
+  responsiveOptions: any[] | undefined;
+
   constructor(private bookService: BookService)
   {
   }
@@ -18,5 +20,23 @@ export class LandingPageComponent {
     this.bookService.getTopTenBooks().subscribe((books) => {
       this.books = books;
     });
+
+    this.responsiveOptions = [
+      {
+          breakpoint: '1199px',
+          numVisible: 1,
+          numScroll: 1
+      },
+      {
+          breakpoint: '991px',
+          numVisible: 2,
+          numScroll: 1
+      },
+      {
+          breakpoint: '767px',
+          numVisible: 1,
+          numScroll: 1
+      }
+    ];
   }
 }
