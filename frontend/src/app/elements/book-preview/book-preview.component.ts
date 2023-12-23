@@ -7,5 +7,5 @@ import { Book } from '../classes/book';
   styleUrls: ['./book-preview.component.css']
 })
 export class BookPreviewComponent {
-  @Input() book: Book | undefined;
+  @Input() book!: Book;
 }

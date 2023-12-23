@@ -32,9 +32,9 @@ public class ChatController {
     }
 
     @GetMapping("/chat/history")
-    public Page<MessageDto> getChatHistory(@RequestParam int user1Id, @RequestParam int user2Id,
+    public Page<MessageDto> getChatHistory(@RequestParam String senderUsername, @RequestParam String receiverUsername,
                                            @RequestParam(defaultValue = "0") int page,
                                            @RequestParam(defaultValue = "10") int size) {
-        return chatService.getChatHistoryOfTwoUsers(user1Id, user2Id, page, size);
+        return chatService.getChatHistoryOfTwoUsers(senderUsername, receiverUsername, page, size);
     }
 }

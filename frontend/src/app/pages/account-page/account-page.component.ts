@@ -14,7 +14,7 @@ import { AccountService } from 'src/app/services/account.service';
 })
 export class AccountPageComponent {
   public user: User | null = null;
-  public visitor: UserSlim | null = null;
+  public visitorUsername: string | null = null;
   public isVisitorTheOwner: boolean = false;
   public isAccountSettingsPopupVisible = false;
 
@@ -23,8 +23,8 @@ export class AccountPageComponent {
               private router: Router,
               private store: Store)
   {
-    const userId: number = this.getUserIdFromUrl();
-    this.accountService.getUserDetails(userId).subscribe({
+    const username: string = this.getUserIdFromUrl();
+    this.accountService.getUserDetails(username).subscribe({
       next: user => {
         this.user = user;
         this.verifyIfVisitorIsTheOwner();
@@ -35,22 +35,22 @@ export class AccountPageComponent {
     });
   }
 
-  getUserIdFromUrl(): number
+  getUserIdFromUrl(): string
   {
-    let userId: number = -1;
+    let username: string = "";
     this.route.paramMap.subscribe({
       next: params => {
-        const userIdString: string | null = params.get('userId');
-        if(userIdString !== null)
+        const tempUsername: string | null = params.get('userId');
+        if(tempUsername !== null)
         {
-          userId = parseInt(userIdString, 10);
+          username = tempUsername;
         } else {
           this.router.navigate(["/home"]);
         }
       }
     });
 
-    return userId;
+    return username;
   }
 
   verifyIfVisitorIsTheOwner()
@@ -60,11 +60,11 @@ export class AccountPageComponent {
         if(isAuthenticated)
         {
           this.store.select(selectUser).subscribe({
-            next: (user) => {
-              if(user !== null)
+            next: (username) => {
+              if(username !== null)
               {
-                this.isVisitorTheOwner = user.id == this.user?.id;
-                this.visitor = user;
+                this.isVisitorTheOwner = username == this.user?.username;
+                this.visitorUsername = username;
               }
             }
           });
@@ -83,27 +83,19 @@ export class AccountPageComponent {
     this.isAccountSettingsPopupVisible = false;
   }
 
-  getUser(): UserSlim {
+  getUserUsername(): string {
     if(this.user !== null)
     {
-      let user: User = this.user;
-      let userSlim: UserSlim = {
-        id: user.id,
-        username: user.username
-      }
-
-      return userSlim;
+      return this.user.username;
     }
-    let emptyUser: UserSlim = {id: 0, username: ""};
-    return emptyUser;
+    return "";
   }
 
-  getVisitor(): UserSlim {
-    if(this.visitor !== null)
+  getVisitorUsername(): string {
+    if(this.visitorUsername !== null)
     {
-      return this.visitor;
+      return this.visitorUsername;
     }
-    let emptyUser: UserSlim = {id: 0, username: ""};
-    return emptyUser;
+    return "";
   }
 }

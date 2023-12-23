@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.util.UUID;
 
 @Entity
 @Setter
@@ -16,12 +17,12 @@ import java.sql.Timestamp;
 @Table(name = "login_tokens", schema = "bookadaisical")
 public class LoginToken {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)
-    private int id;
+    private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(nullable = false)
     private User user;
 
     @Column(nullable = false)
@@ -30,7 +31,7 @@ public class LoginToken {
     @Column(nullable = false)
     private String key;
 
-    @Column(name = "last_validated_on", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp lastValidatedOn;
 
     public LoginToken(User user, String token, String key) {

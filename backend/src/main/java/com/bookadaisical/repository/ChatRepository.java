@@ -11,6 +11,6 @@ import com.bookadaisical.model.Chat;
 
 @Repository
 public interface ChatRepository extends JpaRepository<Chat, Integer>{
-    @Query("SELECT c FROM Chat c WHERE (c.sender.id = :user1Id AND c.receiver.id = :user2Id) OR (c.sender.id = :user2Id AND c.receiver.id = :user1Id) ORDER BY c.sentAt DESC")
-    Page<Chat> findChatsBetweenUsers(@Param("user1Id") int user1Id, @Param("user2Id") int user2Id, Pageable pageable);
+    @Query("SELECT c FROM Chat c WHERE (c.sender.username = :senderUsername AND c.receiver.username = :receiverUsername) OR (c.sender.username = :receiverUsername AND c.receiver.username = :senderUsername) ORDER BY c.sentAt DESC")
+    Page<Chat> findChatsBetweenUsers(@Param("senderUsername") String senderUsername, @Param("receiverUsername") String receiverUsername, Pageable pageable);
 }

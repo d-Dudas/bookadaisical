@@ -60,7 +60,7 @@ export class RegisterPopupComponent {
         else
         {
           const user: UserSlim = response as UserSlim;
-          this.authService.login(user);
+          this.authService.login(user.username);
         }
 
         this.clearRegisterFormData();

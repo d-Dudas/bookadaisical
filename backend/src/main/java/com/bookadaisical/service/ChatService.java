@@ -23,25 +23,26 @@ public class ChatService implements IChatService {
         this.userRepository = userRepository;
     }
 
-    public Page<MessageDto> getChatHistoryOfTwoUsers(int user1Id, int user2Id, int page, int pageSize) throws UserNotFoundException{
-        validateUserExists(user1Id);
-        validateUserExists(user2Id);
+    @Override
+    public Page<MessageDto> getChatHistoryOfTwoUsers(String senderUsername, String receiverUsername, int page, int pageSize) throws UserNotFoundException{
+        validateUserExists(senderUsername);
+        validateUserExists(receiverUsername);
 
         Pageable pageable = PageRequest.of(page, pageSize);
-        Page<Chat> chatPage = chatRepository.findChatsBetweenUsers(user1Id, user2Id, pageable);
+        Page<Chat> chatPage = chatRepository.findChatsBetweenUsers(senderUsername, receiverUsername, pageable);
         return chatPage.map(this::convertToDto);
     }
 
-    private void validateUserExists(int userId) throws UserNotFoundException {
-        if(!userRepository.existsById(userId)) {
+    private void validateUserExists(String username) throws UserNotFoundException {
+        if(!userRepository.findByUsername(username).isPresent()) {
             throw new UserNotFoundException();
         }
     }
 
     private MessageDto convertToDto(Chat chat) {
         MessageDto dto = new MessageDto();
-        dto.setSenderId(chat.getSender().getId());
-        dto.setReceiverId(chat.getReceiver().getId());
+        dto.setSenderUsername(chat.getSender().getUsername());
+        dto.setReceiverUsername(chat.getReceiver().getUsername());
         dto.setMessage(chat.getMessage());
         dto.setSentAt(chat.getSentAt());
         return dto;

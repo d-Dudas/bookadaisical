@@ -6,8 +6,8 @@ import lombok.Data;
 
 @Data
 public class MessageDto {
-    Integer senderId;
-    Integer receiverId;
+    String senderUsername;
+    String receiverUsername;
     String message;
     LocalDateTime sentAt;
 }

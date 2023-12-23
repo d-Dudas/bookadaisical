@@ -2,10 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 export interface NegotiationOfferDto {
-    initiatorId: number,
-    responderId: number,
-    initiatorSelectedBooks: number[],
-    responderSelectedBooks: number[]
+    initiatorUsername: string,
+    responderUsername: string,
+    initiatorSelectedBooks: string[],
+    responderSelectedBooks: string[]
 }
 
 @Injectable({

@@ -16,17 +16,17 @@ export class RootComponent {
   ngOnInit(): void {
     let loginToken = localStorage.getItem('loginToken');
     let loginKey = localStorage.getItem('loginKey');
+
     if(loginToken && loginKey)
     {
       this.accountService.loginWithToken(loginToken, loginKey).subscribe({
         next: (response: any) => {
-          const user: UserSlim = response as UserSlim;
-          this.authService.login(user);
+          this.authService.login(response.username);
         },
-        error:error => {
+        error: error => {
+          console.log(error);
         }
-      })
-    } else {
+      });
     }
   }
 

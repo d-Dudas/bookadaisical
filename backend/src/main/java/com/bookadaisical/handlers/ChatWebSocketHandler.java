@@ -29,7 +29,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
     private final ObjectMapper objectMapper;
     private final ChatRepository chatRepository;
     private final UserRepository userRepository;
-    private final Map<Integer, WebSocketSession> sessions = new ConcurrentHashMap<>();
+    private final Map<String, WebSocketSession> sessions = new ConcurrentHashMap<>();
 
     @Autowired
     public ChatWebSocketHandler(ChatRepository chatRepository, UserRepository userRepository) {
@@ -49,32 +49,32 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         String query = uri.getQuery();
         String[] queryParams = query.split("&");
 
-        Integer userId = null;
+        String username = null;
         for(String param : queryParams) {
-            if(param.startsWith("userId=")) {
-                userId = Integer.parseInt(param.split("=")[1]);
+            if(param.startsWith("username=")) {
+                username = param.split("=")[1];
                 break;
             }
         }
 
-        if(userId == null) {
+        if(username == null) {
             session.close(CloseStatus.BAD_DATA);
             return;
         }
 
-        sessions.put(userId, session);
+        sessions.put(username, session);
     }
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
         MessageDto messageDto = parseMessage(message);
 
-        User sender = validateUser(messageDto.getSenderId());
-        User receiver = validateUser(messageDto.getReceiverId());
+        User sender = validateUser(messageDto.getSenderUsername());
+        User receiver = validateUser(messageDto.getReceiverUsername());
 
         saveMessage(sender, receiver, messageDto);
 
-        sendMessageToReceiver(receiver.getId(), messageDto);
+        sendMessageToReceiver(receiver.getUsername(), messageDto);
     }
 
     private MessageDto parseMessage(TextMessage message) throws IOException {
@@ -86,8 +86,8 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         }
     }
 
-    private User validateUser(Integer userId) {
-        return userRepository.findById(userId)
+    private User validateUser(String username) {
+        return userRepository.findByUsername(username)
                 .orElseThrow(UserNotFoundException::new);
     }
 
@@ -96,8 +96,8 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
         chatRepository.save(chat);
     }
 
-    private void sendMessageToReceiver(Integer receiverId, MessageDto messageDto) throws IOException {
-        WebSocketSession receiverSession = sessions.get(receiverId);
+    private void sendMessageToReceiver(String receiverUsername, MessageDto messageDto) throws IOException {
+        WebSocketSession receiverSession = sessions.get(receiverUsername);
         if (receiverSession != null) {
             String jsonMessage = objectMapper.writeValueAsString(messageDto);
             receiverSession.sendMessage(new TextMessage(jsonMessage));

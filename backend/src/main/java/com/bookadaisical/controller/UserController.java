@@ -1,6 +1,7 @@
 package com.bookadaisical.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,17 +18,20 @@ import com.bookadaisical.dto.requests.ChangeUsernameDto;
 import com.bookadaisical.dto.requests.UserLoginDto;
 import com.bookadaisical.dto.requests.UserLoginTokenDto;
 import com.bookadaisical.dto.requests.UserRegisterDto;
-import com.bookadaisical.hardcodedValues.BooksProvider;
-import com.bookadaisical.model.Book;
+import com.bookadaisical.dto.responses.BookDto;
+import com.bookadaisical.dto.responses.UserSlimDto;
+import com.bookadaisical.service.BookService;
 import com.bookadaisical.service.UserService;
 
 @RestController
 public class UserController {
 
     private final UserService userService;
+    private final BookService bookService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, BookService bookService) {
         this.userService = userService;
+        this.bookService = bookService;
     }
 
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -48,13 +52,17 @@ public class UserController {
         }
     }
 
-    @GetMapping(value = "/get-book-owner-id/{bookId}")
-    public ResponseEntity<?> getBookOwnerId(@PathVariable("bookId") int bookId)
+    @GetMapping(value = "/get-book-owner-username/{bookId}")
+    public ResponseEntity<?> getBookOwnerId(@PathVariable("bookId") String bookId)
     {
-        List<Book> books = BooksProvider.getHardcodedBooksList();
-        for (Book book : books) {
-            if(book.getUniqueId() == bookId)
-                return ResponseEntity.ok(book.getUploader());
+        List<BookDto> books = bookService.getAllBooks();
+        for (BookDto book : books) {
+            if(book.getId().equals(UUID.fromString(bookId)))
+            {
+                UserSlimDto userSlimDto = new UserSlimDto();
+                userSlimDto.setUsername(book.getUploaderUsername());
+                return ResponseEntity.ok(userSlimDto);
+            }
         }
 
         return ResponseEntity.badRequest().body("book_not_found");
@@ -70,11 +78,11 @@ public class UserController {
         }
     }
 
-    @GetMapping(value = "/get-user-details/{userId}")
-    public ResponseEntity<?> getUserDeatils(@PathVariable("userId") int userId)
+    @GetMapping(value = "/get-user-details/{username}")
+    public ResponseEntity<?> getUserDeatils(@PathVariable("username") String username)
     {
         try {
-            return ResponseEntity.ok(userService.getUserDetails(userId));
+            return ResponseEntity.ok(userService.getUserDetails(username));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

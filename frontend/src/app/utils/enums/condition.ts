@@ -1,7 +1,8 @@
 export enum Condition {
-    new = "New",
-    likeNew = "Like new",
-    veryGood = "Very good",
-    good = "Good",
-    acceptable = "Acceptable"
+    ALL,
+    NEW,
+    LIKE_NEW,
+    VERY_GOOD,
+    GOOD,
+    ACCEPTABLE
 }

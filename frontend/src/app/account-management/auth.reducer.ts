@@ -4,8 +4,8 @@ import { initialAuthState, initialAuthPopupState } from './auth.state';
 
 export const authReducer = createReducer(
   initialAuthState,
-  on(AuthActions.login, (state, { user }) => ({ isAuthenticated: true, user, isAuthPopupVisible: false, isLoginPopupVisible: false })),
-  on(AuthActions.logout, (state) => ({ isAuthenticated: false, user: null, isAuthPopupVisible: false, isLoginPopupVisible: false }))
+  on(AuthActions.login, (state, { username }) => ({ isAuthenticated: true, username, isAuthPopupVisible: false, isLoginPopupVisible: false })),
+  on(AuthActions.logout, (state) => ({ isAuthenticated: false, username: null, isAuthPopupVisible: false, isLoginPopupVisible: false }))
 );
 
 export const authPopupReducer = createReducer(

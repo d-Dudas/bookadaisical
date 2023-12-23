@@ -11,7 +11,7 @@ import { UserSlim } from '../elements/classes/userSlim';
 })
 export class UserInfoComponent {
   isLoggedIn = false;
-  user: UserSlim | null = null;
+  username: string| null = null;
 
   constructor(private store: Store) {
     this.store.select(selectIsAuthenticated).subscribe((isAuthenticated) =>
@@ -20,7 +20,7 @@ export class UserInfoComponent {
       if(isAuthenticated)
       {
         this.isLoggedIn = isAuthenticated;
-        this.store.select(selectUser).subscribe((user) => {this.user = user});
+        this.store.select(selectUser).subscribe((username) => {this.username = username});
       }
     })
   }

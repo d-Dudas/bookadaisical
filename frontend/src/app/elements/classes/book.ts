@@ -1,19 +1,28 @@
-
-import { BookPurpose } from "../../utils/enums/book-purpose";
-import { UserSlim } from "./userSlim";
+import { ArtisticMovement } from "src/app/utils/enums/artistic-movement";
+import { Condition } from "src/app/utils/enums/condition";
+import { Genres } from "src/app/utils/enums/genres";
+import { TargetAudience } from "src/app/utils/enums/target-audience";
+import { TradingOption } from "src/app/utils/enums/trading-option";
 
 export interface Book {
-    uniqueId: number | undefined;
-    title: string | undefined;
-    author: string | undefined;
-    uploader: number;
-    ISBN: string | undefined;
-    images: string[] | undefined;
-    views: number | undefined;
-    purpose: BookPurpose | undefined;
-    priceCurrency: number | undefined;
-    pricePoints: number | undefined;
-    description: Text | undefined;
-    created: Date | undefined;
-    active: boolean | undefined;
+    id: string,
+    title: string,
+    author: string,
+    description: Text,
+    yearOfPublication: number,
+    artisticMovement: ArtisticMovement,
+    targetAudience: TargetAudience,
+    condition: Condition,
+    isActive: boolean,
+    images: string[],
+    genres: Genres[],
+    tradingOptions: TradingOption,
+
+    uploaderUsername: string,
+    views: number,
+    createdOn: Date,
+    lastModifiedOn: Date,
+
+    priceCurrency: number,
+    pricePoints: number,
 }

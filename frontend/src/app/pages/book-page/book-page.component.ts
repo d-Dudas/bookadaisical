@@ -15,8 +15,8 @@ import { UserSlim } from 'src/app/elements/classes/userSlim';
 })
 export class BookPageComponent implements OnInit {
   public book: Book | undefined;
-  public visitor: UserSlim | null = null;
-  public uploader: UserSlim | null = null;
+  public visitorUsername: string | null = null;
+  public uploaderUsername: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -31,11 +31,10 @@ export class BookPageComponent implements OnInit {
         const bookUniqueId = params.get('uniqueId');
         if(bookUniqueId !== null)
         {
-          this.bookService.getBookByUniqueId(parseInt(bookUniqueId, 10)).subscribe(book => {
+          this.bookService.getBookByUniqueId(bookUniqueId).subscribe(book => {
             this.book = book;
-
-            this.accountService.getUserDetails(book.uploader).subscribe(uploader => {
-              this.uploader = uploader as UserSlim;
+            this.accountService.getUserDetails(book.uploaderUsername).subscribe(uploader => {
+              this.uploaderUsername = uploader.username;
             })
           });
         }
@@ -45,15 +44,15 @@ export class BookPageComponent implements OnInit {
       {
         if(authenticated)
         {
-          this.store.select(selectUser).subscribe((user) => { this.visitor = user; });
+          this.store.select(selectUser).subscribe((username) => { this.visitorUsername = username; });
         }
       });
   }
 
   onSwapClicked(): void {
-    const routePath = '/negotiate/' + this.book?.uniqueId;
+    const routePath = '/negotiate/' + this.book?.id;
 
-    if(this.visitor !== null){
+    if(this.visitorUsername !== null){
       this.router.navigate([routePath]);
     } else {
       this.store.dispatch(showAuthPopup());
@@ -62,27 +61,25 @@ export class BookPageComponent implements OnInit {
   }
 
   onBuyClicked(): void {
-    if(this.visitor === null) {
+    if(this.visitorUsername === null) {
       this.store.dispatch(showAuthPopup());
     }
   }
 
-  getVisitor(): UserSlim {
-    if(this.visitor !== null)
+  getVisitorUsername(): string {
+    if(this.visitorUsername !== null)
     {
-      return this.visitor;
+      return this.visitorUsername;
     }
-    let emptyUser: UserSlim = {id: 0, username: ""};
-    return emptyUser;
+    return "";
   }
 
-  getReceiver(): UserSlim {
-    if(this.uploader !== null)
+  getReceiverUsername(): string {
+    if(this.uploaderUsername !== null)
     {
-      return this.uploader;
+      return this.uploaderUsername;
     }
-    let emptyUser: UserSlim = {id: 0, username: ""};
-    return emptyUser;
+    return "";
   }
 
   getDefaultMessage(): string {

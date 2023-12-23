@@ -5,6 +5,7 @@ import com.bookadaisical.utils.Hasher;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
@@ -113,7 +114,7 @@ public class UserService implements IUserService {
 
     @Transactional
     @Override
-    public UserSlimDto loginUserWithToken(String token, String key) throws Exception
+    public IUserDto loginUserWithToken(String token, String key) throws Exception
     {
         Optional<LoginToken> loginToken = loginTokenRepository.findByTokenAndKey(token, key);
 
@@ -126,9 +127,9 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserDto getUserDetails(int userId) throws Exception
+    public UserDto getUserDetails(String username) throws Exception
     {
-        Optional<User> user = userRepository.findById(userId);
+        Optional<User> user = userRepository.findByUsername(username);
 
         if(user.isPresent())
         {
@@ -139,7 +140,7 @@ public class UserService implements IUserService {
 
     @Transactional
     @Override
-    public UserSlimDto changeUsername(int userId, String newUsername) throws Exception
+    public UserSlimDto changeUsername(UUID userId, String newUsername) throws Exception
     {
         Optional<User> user;
 
@@ -161,7 +162,7 @@ public class UserService implements IUserService {
 
     @Transactional
     @Override
-    public UserSlimDto changeEmail(int userId, String newEmail) throws Exception
+    public UserSlimDto changeEmail(UUID userId, String newEmail) throws Exception
     {
         Optional<User> user;
 
@@ -183,7 +184,7 @@ public class UserService implements IUserService {
 
     @Transactional
     @Override
-    public UserSlimDto changePassword(int userId, String newPassword) throws Exception
+    public UserSlimDto changePassword(UUID userId, String newPassword) throws Exception
     {
         Optional<User> user;
 
@@ -195,4 +196,5 @@ public class UserService implements IUserService {
         }
         throw new UserNotFoundException();
     }
+
 }

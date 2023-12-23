@@ -1,8 +1,10 @@
 package com.bookadaisical.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,55 +12,65 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bookadaisical.dto.requests.SearchFiltersDto;
-import com.bookadaisical.enums.TargetAudience;
-import com.bookadaisical.model.Book;
-
-// Temporary import
-import com.bookadaisical.hardcodedValues.BooksProvider;
+import com.bookadaisical.dto.requests.BookSearchFiltersDto;
+import com.bookadaisical.dto.responses.BookDto;
+import com.bookadaisical.service.BookService;
 
 @RestController
 public class BookController {
+    private final BookService bookService;
+
+    @Autowired
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
+    }
+
+    @GetMapping("/all-books")
+    public ResponseEntity<?> GetAllBooks() {
+        try {
+            return new ResponseEntity<>(bookService.getAllBooks(), HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @GetMapping("/top-ten-books")
-    public ResponseEntity<List<Book>> getTopTenBooks()
-    {
-        List<Book> books = BooksProvider.getHardcodedBooksList();
-        return ResponseEntity.ok(books);
+    public ResponseEntity<?> getTopTenBooks() {
+        try {
+            return new ResponseEntity<>(bookService.getTopTenBooks(), HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PostMapping("/get-filtered-books")
-    public ResponseEntity<List<Book>> getFilteredBooks(@RequestBody SearchFiltersDto searchFilters)
+    public ResponseEntity<?> getFilteredBooks(@RequestBody BookSearchFiltersDto searchFilters)
     {
-        List<Book> books = BooksProvider.getHardcodedBooksList();
-        books = books.stream()
-            .filter(b -> (searchFilters.getTargetAudience() == b.getTargetAudience()
-                      || searchFilters.getTargetAudience() == TargetAudience.ALL)
-                      && (b.getTitle().contains(searchFilters.getContains())
-                      || searchFilters.getContains().equals(""))
-            ).toList();
-        return ResponseEntity.ok(books);
+        try {
+            return new ResponseEntity<>(bookService.getFilteredBooks(searchFilters), HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
-    @PostMapping("/get-book-id")
-    public ResponseEntity<Book> getBookById(@RequestBody int uniqueId)
+    @PostMapping("/get-book-by-id")
+    public ResponseEntity<BookDto> getBookById(@RequestBody String uniqueId)
     {
-        List<Book> books = BooksProvider.getHardcodedBooksList();
-        for(Book book : books)
+        UUID bookId = UUID.fromString(uniqueId);
+        List<BookDto> books = bookService.getAllBooks();
+        for(BookDto book : books)
         {
-            if(book.getUniqueId() == uniqueId)
+            if(book.getId().equals(bookId))
                 return ResponseEntity.ok(book);
         }
 
         return ResponseEntity.badRequest().body(null);
     }
 
-    @GetMapping(value = "/get-user-books/{userId}")
-    public ResponseEntity<List<Book>> getUserBooks(@PathVariable("userId") int userId)
+    @GetMapping(value = "/get-user-books/{username}")
+    public ResponseEntity<List<BookDto>> getUserBooks(@PathVariable("username") String username)
     {
-        List<Book> books = BooksProvider.getHardcodedBooksList();
-        books = books.stream()
-                    .filter(book -> book.getUploader() == userId)
-                    .collect(Collectors.toList());
-        return ResponseEntity.ok(books);
+        List<BookDto> userBooks = bookService.getBooksByUploaderUsername(username);
+        return ResponseEntity.ok(userBooks);
     }
 }

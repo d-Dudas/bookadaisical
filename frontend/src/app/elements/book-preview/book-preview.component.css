@@ -1,4 +1,29 @@
-.book-preview-container
+.book-preview-card
 {
-    border: 1px solid black;
+    width: 100%;
+    height: 100%;
+}
+
+.book-preview-card-header
+{
+    width: 100%;
+    height: 20%;
+}
+
+.book-preview-card-image
+{
+    width: 100%;
+    height: 60%;
+}
+
+.book-preview-card-content
+{
+    width: 100%;
+    height: 10%;
+}
+
+.book-preview-card-actions
+{
+    width: 100%;
+    height: 10%;
 }
