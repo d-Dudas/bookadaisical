@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.bookadaisical.dto.requests.BookSearchFiltersDto;
@@ -38,6 +39,15 @@ public class BookService implements IBookService {
             books = bookRepository.findBooksByUploadDateAndViews(startDate, topTen);
             daysBack *= 2;
         }
+
+        return books.stream().map(book -> new BookDto(book)).collect(Collectors.toList());
+    }
+
+    public List<BookDto> getRecentlyAddedBooks(){
+        List<Book> books = bookRepository.findTop10ByIsActiveOrderByCreatedOnDesc(
+            true,
+            PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "createdOn"))
+        );
 
         return books.stream().map(book -> new BookDto(book)).collect(Collectors.toList());
     }

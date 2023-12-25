@@ -14,6 +14,7 @@ export class BookService {
   private getBookByIdUrl = '/get-book-by-id';
   private getBookOwnerIdUrl = '/get-book-owner-username';
   private getUserBooksUrl = '/get-user-books';
+  private getRecentlyAddedBooksUrl = '/books/recently-added-books';
 
   constructor(private http: HttpClient)
   {
@@ -22,6 +23,11 @@ export class BookService {
   getTopTenBooks(): Observable<Book[]>
   {
     return this.http.get<Book[]>(this.backendUrl + this.getPopularBooksUrl);
+  }
+
+  getRecentlyAddedBooks(): Observable<Book[]>
+  {
+    return this.http.get<Book[]>(this.backendUrl + this.getRecentlyAddedBooksUrl);
   }
 
   getFilteredBooks(filters: {}): Observable<Book[]>

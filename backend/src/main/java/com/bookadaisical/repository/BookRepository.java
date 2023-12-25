@@ -26,4 +26,6 @@ public interface BookRepository extends JpaRepository<Book, UUID>, JpaSpecificat
 
    @Query("SELECT b FROM Book b WHERE b.uploader.username = :username")
    List<Book> findAllBooksByUploaderUsername(@Param("username") String username);
+
+   List<Book> findTop10ByIsActiveOrderByCreatedOnDesc(boolean isActive, Pageable pageable);
 }

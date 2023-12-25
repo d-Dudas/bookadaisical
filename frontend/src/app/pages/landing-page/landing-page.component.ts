@@ -8,7 +8,8 @@ import { Book } from '../../elements/classes/book';
   styleUrls: ['./landing-page.component.css']
 })
 export class LandingPageComponent {
-  books: Book[] = [];
+  topBooks: Book[] = [];
+  recentlyAddedBooks: Book[] = [];
 
   responsiveOptions: any[] | undefined;
 
@@ -18,8 +19,13 @@ export class LandingPageComponent {
 
   ngOnInit(): void {
     this.bookService.getTopTenBooks().subscribe((books) => {
-      this.books = books;
+      this.topBooks = books;
     });
+
+    this.bookService.getRecentlyAddedBooks().subscribe((books) => {
+      console.log(books);
+      this.recentlyAddedBooks = books;
+    })
 
     this.responsiveOptions = [
       {

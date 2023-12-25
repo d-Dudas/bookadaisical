@@ -3,7 +3,7 @@
 <div class="landing-page-top-books">
     <div class="carousel-container">
         <p-carousel
-            [value]="books"
+            [value]="topBooks"
             [numVisible]="4"
             [numScroll]="1"
             [circular]="true"
@@ -21,5 +21,22 @@
     </div>
 </div>
 <div class="landing-page-recently-added-books">
-
+    <div class="carousel-container">
+        <p-carousel
+            [value]="recentlyAddedBooks"
+            [numVisible]="4"
+            [numScroll]="1"
+            [circular]="true"
+            [responsiveOptions]="responsiveOptions">
+            <ng-template
+                let-product
+                pTemplate="item">
+                <div class="popular-books-content">
+                    <app-book-preview
+                        [book]="product">
+                    </app-book-preview>
+                </div>
+            </ng-template>
+        </p-carousel>
+    </div>
 </div>

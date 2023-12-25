@@ -43,6 +43,15 @@ public class BookController {
         }
     }
 
+    @GetMapping("/books/recently-added-books")
+    public ResponseEntity<?> getRecentlyAddedBooks(){
+        try {
+            return ResponseEntity.ok(bookService.getRecentlyAddedBooks());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @PostMapping("/get-filtered-books")
     public ResponseEntity<?> getFilteredBooks(@RequestBody BookSearchFiltersDto searchFilters)
     {

@@ -67,6 +67,7 @@ public class DataInitializer implements CommandLineRunner {
         book.setBookCondition(randomEnum(Condition.class));
         book.setTargetAudience(randomEnum(TargetAudience.class));
         book.getTradingOptions().add(randomEnum(TradingOption.class));
+        book.setArtisticMovement(randomEnum(ArtisticMovement.class));
         book.addImage(image);
 
         userRepository.save(user);
