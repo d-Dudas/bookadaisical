@@ -1,5 +1,10 @@
 <app-navbar></app-navbar>
 <div class="landing-page-header"></div>
+<div class="landing-page-separator">
+    <div class="landing-page-separator-container">
+        <h2 class="landing-page-separator-content">Popular books</h2>
+    </div>
+</div>
 <div class="landing-page-top-books">
     <div class="carousel-container">
         <p-carousel
@@ -18,6 +23,11 @@
                 </div>
             </ng-template>
         </p-carousel>
+    </div>
+</div>
+<div class="landing-page-separator">
+    <div class="landing-page-separator-container">
+        <h2 class="landing-page-separator-content">Recenlty added books</h2>
     </div>
 </div>
 <div class="landing-page-recently-added-books">
@@ -39,4 +49,28 @@
             </ng-template>
         </p-carousel>
     </div>
+</div>
+<div class="landing-page-separator">
+    <div class="landing-page-separator-container">
+        <h2 class="landing-page-separator-content">Most popular genres</h2>
+    </div>
+</div>
+<div class="landing-page-most-popular-genres">
+    <div class="landing-page-most-popular-genres-container">
+        <div *ngFor="let popularGenre of mostPopularCategories" class="landing-page-most-popular-genres-container-item">
+            <app-book-preview class="landing-page-most-popular-genres-book"
+                [book]="popularGenre.book">
+            </app-book-preview>
+            <div class="landing-page-most-popular-genre-card">
+                <h1>{{ popularGenre.genre }}</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="landing-page-separator">
+    <div class="landing-page-separator-container">
+        <h2 class="landing-page-separator-content"></h2>
+    </div>
+</div>
+<div class="landing-page-footer">
 </div>

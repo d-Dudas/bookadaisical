@@ -52,6 +52,15 @@ public class BookController {
         }
     }
 
+    @GetMapping("/books/most-popular-categories")
+    public ResponseEntity<?> getMostPopularCategories() {
+        try {
+            return ResponseEntity.ok(bookService.getMostPopularCategories());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @PostMapping("/get-filtered-books")
     public ResponseEntity<?> getFilteredBooks(@RequestBody BookSearchFiltersDto searchFilters)
     {

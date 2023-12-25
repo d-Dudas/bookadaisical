@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'LoraItalic';
+    src: url('../../../assets/Lora/Lora-Italic-VariableFont_wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 .popular-books-content
 {
     height: 45vh;
@@ -26,6 +33,31 @@
     justify-content: center;
 }
 
+.landing-page-separator
+{
+    width: 100%;
+    height: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.landing-page-separator-container
+{
+    width: 60%;
+    height: 100%;
+    display: flex;
+    align-items: end;
+    justify-content: left;
+}
+
+.landing-page-separator-content
+{
+    font-family: 'LoraItalic';
+    font-size: 2rem;
+    font-weight: bold;
+}
+
 .landing-page-recently-added-books
 {
     width: 100%;
@@ -33,4 +65,67 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.landing-page-most-popular-genres
+{
+    width: 100%;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.landing-page-most-popular-genres-container
+{
+    width: 60%;
+    height: 90%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 5vw;
+    position: relative;
+}
+
+.landing-page-most-popular-genre-card
+{
+    position: absolute;
+    z-index: 9;
+    width: 25%;
+    height: 80%;
+    grid-area: 1 / 1;
+    background-color: coral;
+    clip-path: polygon(50% 30%, 100% 0, 100% 100%, 0 100%, 0 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.landing-page-most-popular-genres-book
+{
+    position: absolute;
+    width: 24%;
+    height: 80%;
+    grid-area: 1 / 1;
+    transform: translateY(-10%);
+    transition: 1s;
+}
+
+.landing-page-most-popular-genres-container-item
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.landing-page-most-popular-genres-container-item:hover .landing-page-most-popular-genres-book
+{
+    transform: translateY(-20%);
+}
+
+.landing-page-footer
+{
+    width: 100%;
+    height: 30%;
+    background-color: black;
 }

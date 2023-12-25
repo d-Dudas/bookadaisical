@@ -8,9 +8,12 @@
 .navbar-container
 {
     width: 100%;
-    background-color: coral;
+    background-color: saddlebrown;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    position: fixed;
+    top: 0;
+    z-index: 10;
 }
 
 .navbar-container > div
