@@ -31,6 +31,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { CarouselModule } from 'primeng/carousel';
 
 
 @NgModule({
@@ -70,6 +71,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatCardModule,
     MatChipsModule,
     MatToolbarModule,
+    CarouselModule
   ],
   providers: [],
   bootstrap: [RootComponent]

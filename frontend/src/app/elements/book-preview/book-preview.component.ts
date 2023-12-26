@@ -23,7 +23,6 @@ export class BookPreviewComponent {
     } else {
       this.tradingOptions = this.book.tradingOptions;
     }
-    console.log(this.tradingOptions);
   }
 
   nextBookImage(): void

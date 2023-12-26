@@ -1,21 +1,13 @@
 import { Component} from '@angular/core';
-// import { Options } from 'ngx-slider-v2';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Book } from 'src/app/elements/classes/book';
+import { Filter } from 'src/app/elements/interfaces/filter';
 import { BookService } from 'src/app/services/book.service';
 import { ArtisticMovement } from 'src/app/utils/enums/artistic-movement';
 import { Condition } from 'src/app/utils/enums/condition';
 import { Genres } from 'src/app/utils/enums/genres';
 import { TargetAudience } from 'src/app/utils/enums/target-audience';
 
-interface Filter {
-  genre: string;
-  targetAudience: string;
-  artisticMovement: string;
-  condition: string;
-  contains: string;
-  yearOfPublicationNotLessThen: number;
-  yearOfPublicationNotBiggerThen: number;
-}
 @Component({
   selector: 'app-search-page',
   templateUrl: './search-page.component.html',
@@ -38,15 +30,12 @@ export class SearchPageComponent {
     contains: ""
   }
 
-  // value: number = 100;
-  // highValue: number = 150;
-  // options: Options = {
-  //   floor:1950,
-  //   ceil: 2023
-  // };
-
-  constructor(private bookService: BookService)
-  {
+  constructor(private bookService: BookService,
+              private activatedRoute: ActivatedRoute,
+              private router: Router) {
+    this.activatedRoute.queryParams.subscribe(params => {
+        this.filter.genre = params['genre'] || this.genreOptions[0];
+    });
   }
 
   ngOnInit(): void {
@@ -61,6 +50,12 @@ export class SearchPageComponent {
   {
     this.bookService.getFilteredBooks(this.filter).subscribe((books) => {
       this.books = books;
+    });
+
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: this.filter,
+      queryParamsHandling: 'merge',
     });
   }
 }

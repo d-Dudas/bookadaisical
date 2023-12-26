@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Book } from '../elements/classes/book';
 import { UserSlim } from '../elements/classes/userSlim';
+import { Genres } from '../utils/enums/genres';
+import { PopularGenre } from '../elements/interfaces/popularGenre';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +16,8 @@ export class BookService {
   private getBookByIdUrl = '/get-book-by-id';
   private getBookOwnerIdUrl = '/get-book-owner-username';
   private getUserBooksUrl = '/get-user-books';
+  private getRecentlyAddedBooksUrl = '/books/recently-added-books';
+  private getMostPopularCategoriesUrl = '/books/most-popular-categories';
 
   constructor(private http: HttpClient)
   {
@@ -22,6 +26,16 @@ export class BookService {
   getTopTenBooks(): Observable<Book[]>
   {
     return this.http.get<Book[]>(this.backendUrl + this.getPopularBooksUrl);
+  }
+
+  getRecentlyAddedBooks(): Observable<Book[]>
+  {
+    return this.http.get<Book[]>(this.backendUrl + this.getRecentlyAddedBooksUrl);
+  }
+
+  getMostPopularCategories(): Observable<PopularGenre[]>
+  {
+    return this.http.get<PopularGenre[]>(this.backendUrl + this.getMostPopularCategoriesUrl);
   }
 
   getFilteredBooks(filters: {}): Observable<Book[]>

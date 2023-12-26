@@ -2,6 +2,7 @@ package com.bookadaisical.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -33,63 +34,50 @@ public class DataInitializer implements CommandLineRunner {
     private ImageRepository imageRepository;
     @Autowired
     private ResourceLoader resourceLoader;
+    private Random random = new Random();
 
     @Override
     public void run(String... args) throws Exception {
-        User user = new User("tomHanks", "tomHanks@mail.com", "hello");
-        Book book = new Book(user, "Metamorphosis", "Kafka");
-        book.setDescription("hello world");
-        book.setYearOfPublication(1982);
-        book.getGenres().add(Genre.ACADEMIC);
-        book.setArtisticMovement(ArtisticMovement.ANCIENT_LITERATURE);
-        book.setBookCondition(Condition.ACCEPTABLE);
-        book.setTargetAudience(TargetAudience.ADULTS);
-        book.getTradingOptions().add(TradingOption.ALL);
-        byte[] imageData = loadImage("metamorphosis.jpeg");
+        User user1 = new User("tomHanks", "tomHanks@mail.com", "hello");
+        addBook(user1, "Metamorphosis", "Franz Kafka", "A surreal story of transformation", "metamorphosis.jpeg", "metamorphosis");
+        addBook(user1, "Moby Dick", "Herman Melville", "A tale of obsession and a white whale", "moby_dick.jpg", "moby_dick");
+        addBook(user1, "Pride and Prejudice", "Jane Austen", "A classic novel of manners", "pride_and_prejudice.jpg", "pride_prejudice");
+        addBook(user1, "1984", "George Orwell", "A dystopian novel about totalitarianism", "1984.jpg", "1984");
+        addBook(user1, "To Kill a Mockingbird", "Harper Lee", "A novel about racial injustice", "to_kill_a_mockingbird.jpg", "to_kill_mockingbird");
+
+        User user2 = new User("camus", "camus@mail.com", "hello");
+        addBook(user2, "The Plague", "Albert Camus", "A novel about a plague epidemic", "the_plague.jpg", "the_plague");
+        addBook(user2, "War and Peace", "Leo Tolstoy", "A sweeping epic of Russian life", "war_and_peace.jpeg", "war_peace");
+        addBook(user2, "The Great Gatsby", "F. Scott Fitzgerald", "A story of the Jazz Age", "the_great_gatsby.jpg", "great_gatsby");
+        addBook(user2, "Crime and Punishment", "Fyodor Dostoevsky", "A psychological novel about crime", "crime_and_punishment.jpg", "crime_punishment");
+        addBook(user2, "Wuthering Heights", "Emily Bronte", "A tragic tale of love and revenge", "wuthering_heights.jpg", "wuthering_heights");
+    }
+
+    private void addBook(User user, String title, String author, String description, String imageFilename, String imageName) throws Exception
+    {
+        byte[] imageData = loadImage(imageFilename);
         Image image = new Image();
         image.setImageData(imageData);
-        image.setImageName("metamorphosis");
+        image.setImageName(imageName);
+
+        Book book = new Book(user, title, author);
+        book.setDescription(description);
+        book.setYearOfPublication(random.nextInt(2023-1900+1) + 1900);
+        book.getGenres().add(randomEnum(Genre.class));
+        book.setBookCondition(randomEnum(Condition.class));
+        book.setTargetAudience(randomEnum(TargetAudience.class));
+        book.getTradingOptions().add(randomEnum(TradingOption.class));
+        book.setArtisticMovement(randomEnum(ArtisticMovement.class));
         book.addImage(image);
-        imageData = loadImage("the_plague.jpg");
-        image = new Image();
-        image.setImageData(imageData);
-        image.setImageName("the_plague");
-        book.addImage(image);
+
         userRepository.save(user);
         bookRepository.save(book);
         imageRepository.save(image);
+    }
 
-        book = new Book(user, "Metamorphosis2", "Kafka2");
-        book.setDescription("hello world");
-        book.setYearOfPublication(1987);
-        book.getGenres().add(Genre.COOKBOOK);
-        book.setBookCondition(Condition.GOOD);
-        book.setTargetAudience(TargetAudience.YOUNG_ADULTS);
-        book.getTradingOptions().add(TradingOption.CURRENCY);
-        imageData = loadImage("metamorphosis.jpeg");
-        image = new Image();
-        image.setImageData(imageData);
-        image.setImageName("metamorphosis2");
-        book.addImage(image);
-        bookRepository.save(book);
-        imageRepository.save(image);
-
-        user = new User("camus", "camus@mail.com", "hello");
-        book = new Book(user, "The Plague", "Camus");
-        book.setDescription("hello world");
-        book.setYearOfPublication(1998);
-        book.getGenres().add(Genre.CLASSICS);
-        book.setBookCondition(Condition.LIKE_NEW);
-        book.setTargetAudience(TargetAudience.CHILDREN);
-        book.getTradingOptions().add(TradingOption.SWAP);
-        imageData = loadImage("the_plague.jpg");
-        image = new Image();
-        image.setImageData(imageData);
-        image.setImageName("the_plague");
-        book.addImage(image);
-        userRepository.save(user);
-        bookRepository.save(book);
-        imageRepository.save(image);
+    private <T extends Enum<?>> T randomEnum(Class<T> clazz){
+        int x = random.nextInt(clazz.getEnumConstants().length);
+        return clazz.getEnumConstants()[x];
     }
 
     private byte[] loadImage(String resourceName) throws IOException {

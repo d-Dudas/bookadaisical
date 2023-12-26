@@ -3,19 +3,25 @@ package com.bookadaisical.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.bookadaisical.dto.requests.BookSearchFiltersDto;
 import com.bookadaisical.dto.responses.BookDto;
+import com.bookadaisical.dto.responses.PopularGenreDto;
+import com.bookadaisical.enums.Genre;
 import com.bookadaisical.model.Book;
 import com.bookadaisical.repository.BookRepository;
 import com.bookadaisical.repository.specifications.BookSpecification;
 import com.bookadaisical.service.interfaces.IBookService;
+import com.bookadaisical.utils.GenreCount;
 
 @Service
 public class BookService implements IBookService {
@@ -43,6 +49,16 @@ public class BookService implements IBookService {
     }
 
     @Override
+    public List<BookDto> getRecentlyAddedBooks(){
+        List<Book> books = bookRepository.findTop10ByIsActiveOrderByCreatedOnDesc(
+            true,
+            PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "createdOn"))
+        );
+
+        return books.stream().map(book -> new BookDto(book)).collect(Collectors.toList());
+    }
+
+    @Override
     public List<BookDto> getAllBooks() {
         List<Book> books = bookRepository.findAll();
 
@@ -61,5 +77,23 @@ public class BookService implements IBookService {
         List<Book> books = bookRepository.findAllBooksByUploaderUsername(username);
 
         return books.stream().map(book -> new BookDto(book)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PopularGenreDto> getMostPopularCategories(){
+
+        List<GenreCount> topGenres = bookRepository.findTop4GenresByPopularity(PageRequest.of(0, 3));
+
+        return topGenres.stream()
+                        .map(genreCount -> {
+                            Genre genre = genreCount.getGenre();
+                            return bookRepository.findMostPopularActiveBookByGenre(genre)
+                                                 .stream()
+                                                 .findFirst()
+                                                 .map(book -> new PopularGenreDto(genre, new BookDto(book)))
+                                                 .orElse(null);
+                        })
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toList());
     }
 }
