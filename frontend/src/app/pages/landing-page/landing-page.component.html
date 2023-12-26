@@ -57,7 +57,10 @@
 </div>
 <div class="landing-page-most-popular-genres">
     <div class="landing-page-most-popular-genres-container">
-        <div *ngFor="let popularGenre of mostPopularCategories" class="landing-page-most-popular-genres-container-item">
+        <div
+            *ngFor="let popularGenre of mostPopularCategories"
+            class="landing-page-most-popular-genres-container-item"
+            [routerLink]="['/search']" [queryParams]="{ genre: popularGenre.genre}">
             <app-book-preview class="landing-page-most-popular-genres-book"
                 [book]="popularGenre.book">
             </app-book-preview>
