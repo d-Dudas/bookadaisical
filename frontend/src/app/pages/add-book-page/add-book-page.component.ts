@@ -122,13 +122,11 @@ export class AddBookPageComponent {
   }
 
   private extractBase64Data(base64String: string): string {
-    // Find the index of the comma
     const commaIndex = base64String.indexOf(',');
-    // Extract the part after the comma
     if (commaIndex !== -1 && commaIndex + 1 < base64String.length) {
       return base64String.substring(commaIndex + 1);
     }
-    // Return the original string if no comma is found
+
     return base64String;
   }
 
