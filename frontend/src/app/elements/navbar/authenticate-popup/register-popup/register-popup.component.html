@@ -1,62 +1,116 @@
 <div class="register-popup-content" *ngIf="isRegisterPopupVisible">
-    <form class="register-form" (ngSubmit)="submitRegisterForm()" #registerForm="ngForm" [formGroup]="registerFormData">
-        <div class="register-username-container register-form-input-container">
-            <label for="username">Username</label>
-            <input type="text" name="username" formControlName="username">
-            <div *ngIf="registerFormData.get('username')?.hasError('required') && registerFormData.get('username')?.touched">
-                Username is required.
-            </div>
-            <div *ngIf="registerFormData.get('username')?.hasError('minlength') && registerFormData.get('username')?.touched">
-                Username must be at least 6 characters long.
-            </div>
-        </div>
-        <div class="register-email-container  register-form-input-container">
-            <label for="email">Email</label>
-            <input type="text" name="email" formControlName="email">
-            <div *ngIf="registerFormData.get('email')?.hasError('required') && registerFormData.get('email')?.touched">
-                Email is required.
-            </div>
-            <div *ngIf="registerFormData.get('email')?.hasError('email') && registerFormData.get('email')?.touched">
-                Invailid email format.
-            </div>
-        </div>
-        <div class="register-password-container register-form-input-container">
-            <label for="password">Password</label>
-            <input [type]="passwordInputType" name="password" formControlName="password">
-            <div *ngIf="registerFormData.get('password')?.hasError('required') && registerFormData.get('password')?.touched">
-                Password is required.
-            </div>
-            <div *ngIf="registerFormData.get('password')?.hasError('pattern') && registerFormData.get('password')?.touched">
-                <p>Password must:</p>
-                <ul>
-                    <li>be at least 8 characters long</li>
-                    <li>contain at least 1 upper case character</li>
-                    <li>contain at least 1 lower case character</li>
-                    <li>contain at least 1 number</li>
-                </ul>
-            </div>
-        </div>
-        <div class="register-confirm-password-container register-form-input-container">
-            <label for="confirmPassword">Confirm password</label>
-            <input [type]="passwordInputType" name="confirmPassword" formControlName="confirmPassword">
-            <div *ngIf="registerFormData.hasError('mismatch') && registerFormData.get('confirmPassword')?.touched">
-                Passwords do not match.
-            </div>
-        </div>
-        <div class="register-form-show-password-container">
-            <label for="showPassword">Show password</label>
-            <input type="checkbox" name="showPassword" (change)="togglePasswordVisibility()">
-        </div>
-        <div class="register-form-remember-me-container">
-            <label for="rememberMe">Remember me</label>
-            <input type="checkbox" name="rememberMe" (change)="toggleRememberMe($event)">
-        </div>
-        <button type="submit">Submit</button>
+    <form
+        class="register-form"
+        (ngSubmit)="submitRegisterForm()"
+        #registerForm="ngForm"
+        [formGroup]="registerFormData">
+
+        <mat-form-field
+            appearance="outline"
+            class="register-form-input-field">
+            <mat-label>Username</mat-label>
+            <input
+                formControlName="username"
+                matInput
+                placeholder="someUsername"
+                required="true">
+            @if (registerFormData.get('username')?.hasError('minlength') && registerFormData.get('username')?.touched) {
+                <mat-error>Use at least 6 characters.</mat-error>
+            }
+        </mat-form-field>
+
+        <mat-form-field
+            appearance="outline"
+            class="register-form-input-field">
+            <mat-label>Email</mat-label>
+            <input
+                formControlName="email"
+                matInput
+                placeholder="some@email.example"
+                required="true">
+            @if (registerFormData.get('email')?.hasError('email') && registerFormData.get('email')?.touched) {
+                <mat-error>Not a valid email.</mat-error>
+            }
+        </mat-form-field>
+
+        <mat-form-field
+            appearance="outline"
+            class="register-form-input-field">
+            <mat-label>Password</mat-label>
+            <input
+                matInput
+                [type]="isPasswordHidden ? 'password' : 'text'"
+                required="true"
+                formControlName="password">
+            <button
+                mat-icon-button
+                matSuffix
+                (click)="isPasswordHidden = !isPasswordHidden"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="isPasswordHidden">
+                <mat-icon>
+                    {{isPasswordHidden ? 'visibility_off' : 'visibility'}}
+                </mat-icon>
+            </button>
+            @if (registerFormData.get('password')?.hasError('minLength') && registerFormData.get('password')?.touched) {
+                <mat-error>Use at least 8 characters.</mat-error>
+            }
+            @if (registerFormData.get('password')?.hasError('uppercase') && registerFormData.get('password')?.touched) {
+                <mat-error>Use at least 1 uppercase character.</mat-error>
+            }
+            @if (registerFormData.get('password')?.hasError('lowercase') && registerFormData.get('password')?.touched) {
+                <mat-error>Use at least 1 lowercase character.</mat-error>
+            }
+            @if (registerFormData.get('password')?.hasError('number') && registerFormData.get('password')?.touched) {
+                <mat-error>Use at least 1 number.</mat-error>
+            }
+        </mat-form-field>
+
+        <mat-form-field
+            appearance="outline"
+            class="register-form-input-field">
+            <mat-label>Confirm password</mat-label>
+            <input
+                matInput
+                [type]="isConfirmPasswordHidden ? 'password' : 'text'"
+                required="true"
+                formControlName="confirmPassword">
+            <button
+                mat-icon-button
+                matSuffix
+                (click)="isConfirmPasswordHidden = !isConfirmPasswordHidden"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="isConfirmPasswordHidden">
+                <mat-icon>
+                    {{isConfirmPasswordHidden ? 'visibility_off' : 'visibility'}}
+                </mat-icon>
+            </button>
+            @if (registerFormData.get('confirmPassword')?.hasError('mismatch') && registerFormData.get('confirmPassword')?.touched) {
+                <mat-error>Passwords should match.</mat-error>
+            }
+        </mat-form-field>
+
+        <mat-slide-toggle
+            formControlName="rememberMe"
+            class="register-form-remember-me-slider">
+            Remember me
+        </mat-slide-toggle>
+
+        <button
+            type="submit"
+            mat-raised-button
+            class="register-form-submit-button">
+            Submit
+        </button>
     </form>
     <div class="dont-have-account-box">
         <div class="dont-have-account-content">
             <p>Already have an account?</p>
-            <button (click)="showLoginPopup()">Sign in!</button>
+            <button
+                mat-button
+                (click)="showLoginPopup()">
+                Sign in!
+            </button>
         </div>
     </div>
 </div>

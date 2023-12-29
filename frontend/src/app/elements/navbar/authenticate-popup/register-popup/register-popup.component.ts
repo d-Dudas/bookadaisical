@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { AbstractControlOptions, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, AbstractControlOptions, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/account-management/auth-service.service';
 import { UserSlim } from 'src/app/elements/classes/userSlim';
 import { UserToken } from 'src/app/elements/classes/userToken';
@@ -16,6 +16,8 @@ export class RegisterPopupComponent {
   @Output() showLoginPopupEvent = new EventEmitter<void>();
   registerFormData: FormGroup;
   isPasswordVisisble: boolean = false;
+  isPasswordHidden: boolean = true;
+  isConfirmPasswordHidden: boolean = true;
   passwordInputType: string = this.isPasswordVisisble ? "text" : "password";
 
   constructor(private accountService: AccountService,
@@ -25,23 +27,10 @@ export class RegisterPopupComponent {
     this.registerFormData = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(6)]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/)]],
-      confirmPassword: ['', [Validators.required]],
+      password: ['', [Validators.required, this.passwordStrengthValidator()]],
+      confirmPassword: ['', [Validators.required, this.passwordsMatchValidator()]],
       rememberMe: [false]
-    }, {
-      validators: this.passwordMatchValidator
-    } as AbstractControlOptions);
-  }
-
-  private passwordMatchValidator(group: FormGroup): ValidationErrors | null {
-    const password = group.get('password')?.value;
-    const confirmPassword = group.get('confirmPassword')?.value;
-
-    if (password === confirmPassword) {
-      return null;
-    } else {
-      return { mismatch: true };
-    }
+    });
   }
 
   submitRegisterForm()
@@ -89,15 +78,55 @@ export class RegisterPopupComponent {
     this.showLoginPopupEvent.emit();
   }
 
-  togglePasswordVisibility()
-  {
-    this.isPasswordVisisble = !this.isPasswordVisisble;
-    this.passwordInputType = this.isPasswordVisisble ? "text" : "password";
+  private passwordStrengthValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      const errors: ValidationErrors = {};
+
+      if (!value) {
+        return null;
+      }
+
+      if (value.length < 8) {
+        errors['minLength'] = { requiredLength: 8, actualLength: value.length };
+        return errors;
+      }
+
+      if (!/[A-Z]/.test(value)) {
+        errors['uppercase'] = true;
+        return errors;
+      }
+
+      if (!/[a-z]/.test(value)) {
+        errors['lowercase'] = true;
+        return errors;
+      }
+
+      if (!/\d/.test(value)) {
+        errors['number'] = true;
+        return errors;
+      }
+
+      return Object.keys(errors).length === 0 ? null : errors;
+    };
   }
 
-  toggleRememberMe(event: any)
-  {
-    const isChecked = event.target.checked;
-    this.registerFormData.get('rememberMe')?.setValue(isChecked);
+  private passwordsMatchValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      const errors: ValidationErrors = {};
+
+      if(!value) {
+        return null;
+      }
+
+      if(value !== this.registerFormData.getRawValue().password)
+      {
+        errors['mismatch'] = true;
+        return errors;
+      }
+
+      return Object.keys(errors).length === 0 ? null : errors;
+    }
   }
 }

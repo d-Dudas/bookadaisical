@@ -1,6 +1,6 @@
 .login-popup-content
 {
-    width: 25vw;
+    /* width: 25vw; */
     height: 50vh;
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 30px;
@@ -10,6 +10,7 @@
     backdrop-filter: blur(5px);
     flex-direction: column;
     padding: 20px;
+    padding: 3vh 4vw;
 }
 
 .login-form
@@ -18,42 +19,40 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
 }
 
-.login-form-input-container
+.login-form-input-field
 {
-    display: flex;
-    flex-direction: column;
-    margin: 5px;
+    width: 100%;
 }
 
-.login-form-show-password-container
+.login-form-remember-me-slider,
+.login-form-submit-button
 {
-    width: 80%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-evenly;
+    margin: 2vh 0;
 }
-
 .dont-have-account-box
 {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
 }
 
 .dont-have-account-content
 {
-    width: 80%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: end;
 }
 
 .dont-have-account-content p
 {
     text-align: center;
+    font-size: 1vw;
+    margin: 0 !important;
+    margin-right: 1vw;
 }

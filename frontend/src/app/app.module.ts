@@ -7,7 +7,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthenticatePopupComponent } from './elements/navbar/authenticate-popup/authenticate-popup.component';
 import { StoreModule } from '@ngrx/store';
-import { UserInfoComponent } from './user-info/user-info.component';
 import { authPopupReducer, authReducer } from './account-management/auth.reducer';
 import { RegisterPopupComponent } from './elements/navbar/authenticate-popup/register-popup/register-popup.component';
 import { LoginPopupComponent } from './elements/navbar/authenticate-popup/login-popup/login-popup.component';
@@ -35,13 +34,17 @@ import { CarouselModule } from 'primeng/carousel';
 import { AddBookPageComponent } from './pages/add-book-page/add-book-page.component';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatSelectModule } from '@angular/material/select';
+import {
+  MatSlideToggleModule,
+  _MatSlideToggleRequiredValidatorModule,
+} from '@angular/material/slide-toggle';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   declarations: [
     LandingPageComponent,
     AuthenticatePopupComponent,
     LoginPopupComponent,
-    UserInfoComponent,
     RegisterPopupComponent,
     NavbarComponent,
     BookPreviewComponent,
@@ -77,6 +80,9 @@ import { MatSelectModule } from '@angular/material/select';
     CarouselModule,
     MatStepperModule,
     MatSelectModule,
+    MatSlideToggleModule,
+    _MatSlideToggleRequiredValidatorModule,
+    MatDividerModule
   ],
   providers: [],
   bootstrap: [RootComponent]
