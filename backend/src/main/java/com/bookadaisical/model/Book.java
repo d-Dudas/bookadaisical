@@ -64,8 +64,6 @@ public class Book {
     private String author;
 
     private int numViews;
-
-    @Column
     private String description;
 
     @Column(nullable = false)
@@ -116,5 +114,4 @@ public class Book {
         images.remove(image);
         image.setBook(null);
     }
-
 }

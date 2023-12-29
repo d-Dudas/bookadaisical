@@ -1,0 +1,202 @@
+<app-navbar></app-navbar>
+<div class="add-book-page-header">
+
+</div>
+<div class="add-book-page-content">
+    <mat-stepper
+        class="book-form-stepper"
+        orientation="vertical"
+        [linear]="true"
+        #stepper>
+        <mat-step [stepControl]="bookDescription">
+          <form [formGroup]="bookDescription" class="book-form">
+            <ng-template matStepLabel>Book description</ng-template>
+
+            <mat-form-field>
+              <mat-label>Title</mat-label>
+              <input matInput formControlName="title" required>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Author</mat-label>
+                <input matInput formControlName="author" required>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Description</mat-label>
+                <textarea matInput formControlName="description"></textarea>
+            </mat-form-field>
+
+            <div>
+              <button mat-button matStepperNext>Next</button>
+            </div>
+          </form>
+        </mat-step>
+
+        <mat-step [stepControl]="bookDetails">
+            <form [formGroup]="bookDetails" class="book-form">
+              <ng-template matStepLabel>Book details</ng-template>
+
+              <mat-form-field>
+                  <mat-label>Genres</mat-label>
+                  <mat-select formControlName="genres" multiple>
+                      <mat-option
+                          *ngFor="let genre of genres"
+                          [value]="genre">
+                          {{ genre }}
+                      </mat-option>
+                  </mat-select>
+              </mat-form-field>
+
+              <mat-form-field>
+                  <mat-label>Condition</mat-label>
+                  <mat-select formControlName="bookCondition">
+                      <mat-option
+                          *ngFor="let condition of conditions"
+                          [value]="condition">
+                          {{ condition }}
+                      </mat-option>
+                  </mat-select>
+              </mat-form-field>
+
+              <mat-form-field>
+                  <mat-label>Year of publication</mat-label>
+                  <mat-select formControlName="yearOfPublication">
+                      <mat-option
+                          *ngFor="let year of years"
+                          [value]="year">
+                          {{ year }}
+                      </mat-option>
+                  </mat-select>
+              </mat-form-field>
+
+              <mat-form-field>
+                  <mat-label>Artistic movement</mat-label>
+                  <mat-select formControlName="artisticMovement">
+                      <mat-option
+                          *ngFor="let artisticMovement of artisticMovements"
+                          [value]="artisticMovement">
+                          {{ artisticMovement }}
+                      </mat-option>
+                  </mat-select>
+              </mat-form-field>
+
+              <mat-form-field>
+                  <mat-label>Target audience</mat-label>
+                  <mat-select formControlName="targetAudience">
+                      <mat-option
+                          *ngFor="let targetAudience of targetAudiences"
+                          [value]="targetAudience">
+                          {{ targetAudience }}
+                      </mat-option>
+                  </mat-select>
+              </mat-form-field>
+
+              <mat-form-field>
+                  <mat-label>Trading options</mat-label>
+                  <mat-select formControlName="tradingOption" multiple>
+                      <mat-option
+                          *ngFor="let tradingOption of tradingOptions"
+                          [value]="tradingOption">
+                          {{ tradingOption }}
+                      </mat-option>
+                  </mat-select>
+              </mat-form-field>
+
+              <div>
+                <button mat-button matStepperNext>Next</button>
+              </div>
+            </form>
+        </mat-step>
+
+        <mat-step [stepControl]="prices" *ngIf="isPriceNecessary()">
+          <form [formGroup]="prices" class="book-form">
+            <ng-template matStepLabel>Prices</ng-template>
+
+            <mat-form-field floatLabel="always" *ngIf="isPriceInCurrency()">
+                <mat-label>Price in currency</mat-label>
+                <input matInput type="number" placeholder="0" formControlName="priceInCurrency">
+                <span matTextSuffix> lei</span>
+            </mat-form-field>
+
+            <mat-form-field floatLabel="always" *ngIf="isPriceInPoints()">
+                <mat-label>Price in points</mat-label>
+                <input matInput type="number" placeholder="0" formControlName="priceInPoints">
+                <span matTextSuffix> points</span>
+            </mat-form-field>
+
+            <div>
+              <button mat-button matStepperPrevious>Back</button>
+              <button mat-button matStepperNext>Next</button>
+            </div>
+          </form>
+        </mat-step>
+
+        <mat-step [stepControl]="images">
+            <ng-template matStepLabel>Images</ng-template>
+            <form [formGroup]="images" class="book-form">
+
+                <div
+                    *ngIf="imageUrls.length <= 0"
+                    class="upload-images-message">
+                    <p>Please upload at least one image.</p>
+                </div>
+                <div
+                    *ngIf="imageUrls.length > 0" 
+                    class="uploaded-images-list">
+                    <div
+                        class="uploaded-image-container"
+                        *ngFor="let image of imageUrls">
+                        <div
+                            class="delete-image-layer"
+                            (click)="removeImage(imageUrls.indexOf(image))">
+                            <mat-icon
+                                class="delete-image-icon">
+                                delete
+                            </mat-icon>
+                        </div>
+                        <img
+                            [src]="image"
+                            class="uploaded-image">
+                    </div>
+                </div>
+
+                <div class="image-upload-button">
+                    <input
+                        #fileInput
+                        type="file"
+                        multiple
+                        (change)="onFilesSelected($event)"
+                        accept="image/*"
+                        style="display: none;"/>
+                    <button
+                        type="button"
+                        mat-raised-button
+                        (click)="fileInput.click()">
+                        <mat-icon>upload</mat-icon>
+                        Upload
+                    </button>
+                </div>
+
+                <div>
+                    <button mat-button matStepperPrevious>Back</button>
+                    <button mat-button matStepperNext>Next</button>
+                </div>
+            </form>
+        </mat-step>
+
+        <mat-step>
+          <ng-template matStepLabel>Done</ng-template>
+          <p>You are now done.</p>
+          <div>
+            <button mat-raised-button (click)="confirmUpload()">Confirm upload</button>
+          </div>
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button (click)="stepper.reset()">Reset</button>
+          </div>
+        </mat-step>
+      </mat-stepper>
+</div>
+<div class="add-book-page-separator"></div>
+<div class="add-book-page-footer"></div>
