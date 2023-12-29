@@ -18,7 +18,14 @@
             <span routerLink="/home">Bookadaisical</span>
         </div>
         <div class="navbar-options navbar-buttons">
-            <app-authenticate-popup></app-authenticate-popup>
+            <button
+                class="navbar-go-to-account-button"
+                mat-raised-button
+                *ngIf="isAuthenticated"
+                [routerLink]="['/upload-new-book']">
+                <mat-icon>book</mat-icon>
+                Upload new book
+            </button>
             <button
                 class="navbar-go-to-account-button"
                 mat-raised-button
@@ -26,6 +33,7 @@
                 [routerLink]="['/account', username]">
                 <mat-icon>person</mat-icon>
             </button>
+            <app-authenticate-popup></app-authenticate-popup>
         </div>
     </mat-toolbar>
   </p>

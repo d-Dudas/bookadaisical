@@ -18,6 +18,7 @@ export class BookService {
   private getUserBooksUrl = '/get-user-books';
   private getRecentlyAddedBooksUrl = '/books/recently-added-books';
   private getMostPopularCategoriesUrl = '/books/most-popular-categories';
+  private uploadNewBookUrl = '/books/upload-new';
 
   constructor(private http: HttpClient)
   {
@@ -56,5 +57,10 @@ export class BookService {
   getUserBooks(username: string): Observable<Book[]>
   {
     return this.http.get<Book[]>(this.backendUrl + this.getUserBooksUrl + "/" + username);
+  }
+
+  uploadNewBook(book: any)
+  {
+    return this.http.post(this.backendUrl + this.uploadNewBookUrl, book);
   }
 }

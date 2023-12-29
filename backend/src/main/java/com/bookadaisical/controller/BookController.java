@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bookadaisical.dto.requests.BookSearchFiltersDto;
+import com.bookadaisical.dto.requests.CreateNewBookDto;
 import com.bookadaisical.dto.responses.BookDto;
 import com.bookadaisical.service.BookService;
 
@@ -90,5 +91,17 @@ public class BookController {
     {
         List<BookDto> userBooks = bookService.getBooksByUploaderUsername(username);
         return ResponseEntity.ok(userBooks);
+    }
+
+    @PostMapping("/books/upload-new")
+    public ResponseEntity<?> uploadNewBook(@RequestBody CreateNewBookDto createNewBookDto)
+    {
+        try {
+            bookService.uploadNewBook(createNewBookDto);
+            return ResponseEntity.ok(createNewBookDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

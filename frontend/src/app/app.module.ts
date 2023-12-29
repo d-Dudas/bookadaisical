@@ -32,7 +32,9 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { CarouselModule } from 'primeng/carousel';
-
+import { AddBookPageComponent } from './pages/add-book-page/add-book-page.component';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -51,6 +53,7 @@ import { CarouselModule } from 'primeng/carousel';
     AccountPageComponent,
     AccountSettingsPopupComponent,
     ChatComponent,
+    AddBookPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,7 +74,9 @@ import { CarouselModule } from 'primeng/carousel';
     MatCardModule,
     MatChipsModule,
     MatToolbarModule,
-    CarouselModule
+    CarouselModule,
+    MatStepperModule,
+    MatSelectModule,
   ],
   providers: [],
   bootstrap: [RootComponent]

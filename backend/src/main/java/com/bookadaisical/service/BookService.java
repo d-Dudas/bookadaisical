@@ -2,6 +2,7 @@ package com.bookadaisical.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -14,11 +15,16 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.bookadaisical.dto.requests.BookSearchFiltersDto;
+import com.bookadaisical.dto.requests.CreateNewBookDto;
 import com.bookadaisical.dto.responses.BookDto;
 import com.bookadaisical.dto.responses.PopularGenreDto;
 import com.bookadaisical.enums.Genre;
+import com.bookadaisical.exceptions.UserNotFoundException;
 import com.bookadaisical.model.Book;
+import com.bookadaisical.model.Image;
+import com.bookadaisical.model.User;
 import com.bookadaisical.repository.BookRepository;
+import com.bookadaisical.repository.UserRepository;
 import com.bookadaisical.repository.specifications.BookSpecification;
 import com.bookadaisical.service.interfaces.IBookService;
 import com.bookadaisical.utils.GenreCount;
@@ -27,10 +33,13 @@ import com.bookadaisical.utils.GenreCount;
 public class BookService implements IBookService {
 
     private final BookRepository bookRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public BookService(BookRepository bookRepository) {
+    public BookService(BookRepository bookRepository,
+                        UserRepository userRepository) {
         this.bookRepository = bookRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -95,5 +104,47 @@ public class BookService implements IBookService {
                         })
                         .filter(Objects::nonNull)
                         .collect(Collectors.toList());
+    }
+
+    @Override
+    public void uploadNewBook(CreateNewBookDto createNewBookDto) throws Exception {
+        Book book = createNewBookDtoToBook(createNewBookDto);
+
+        bookRepository.save(book);
+    }
+
+    private Book createNewBookDtoToBook(CreateNewBookDto createNewBookDto) throws Exception {
+        Book book = new Book();
+
+        Optional<User> user = userRepository.findByUsername(createNewBookDto.getUploaderUsername()); 
+        if(user.isPresent()){
+            book.setUploader(user.get());
+        } else {
+            throw new UserNotFoundException();
+        }
+
+        book.setTitle(createNewBookDto.getTitle());
+        book.setAuthor(createNewBookDto.getAuthor());
+        book.setNumViews(0);
+        book.setDescription(createNewBookDto.getDescription());
+        book.setCreatedOn(LocalDateTime.now());
+        book.setLastModified(book.getCreatedOn());
+        book.setYearOfPublication(createNewBookDto.getYearOfPublication());
+        book.setArtisticMovement(createNewBookDto.getArtisticMovement());
+        book.setTargetAudience(createNewBookDto.getTargetAudience());
+        book.setBookCondition(createNewBookDto.getCondition());
+        book.setActive(true);
+        for(String imageData : createNewBookDto.getImages())
+        {
+            Image image = new Image();
+            image.setImageData(Base64.getDecoder().decode(imageData));
+            image.setImageName("");
+            book.addImage(image);
+        }
+
+        book.setGenres(createNewBookDto.getGenres());
+        book.setTradingOptions(createNewBookDto.getTradingOptions());
+
+        return book;
     }
 }

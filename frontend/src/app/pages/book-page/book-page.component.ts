@@ -6,7 +6,6 @@ import { AccountService} from '../../services/account.service';
 import { Store } from '@ngrx/store';
 import { selectIsAuthenticated, selectUser } from 'src/app/account-management/auth.state';
 import { setIntendedPath, showAuthPopup } from 'src/app/account-management/auth.actions';
-import { UserSlim } from 'src/app/elements/classes/userSlim';
 
 @Component({
   selector: 'app-book-page',
