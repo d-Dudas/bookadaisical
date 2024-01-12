@@ -3,10 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Book } from 'src/app/elements/classes/book';
 import { Filter } from 'src/app/elements/interfaces/filter';
 import { BookService } from 'src/app/services/book.service';
-import { ArtisticMovement } from 'src/app/utils/enums/artistic-movement';
-import { Condition } from 'src/app/utils/enums/condition';
-import { Genres } from 'src/app/utils/enums/genres';
-import { TargetAudience } from 'src/app/utils/enums/target-audience';
+import { ArtisticMovement } from 'src/app/elements/enums/artistic-movement';
+import { Condition } from 'src/app/elements/enums/condition';
+import { Genres } from 'src/app/elements/enums/genres';
+import { TargetAudience } from 'src/app/elements/enums/target-audience';
 
 @Component({
   selector: 'app-search-page',

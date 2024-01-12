@@ -2,13 +2,15 @@
     <mat-toolbar class="navbar-container">
         <div class="navbar-pages navbar-buttons">
             <button
-                mat-raised-button
+                class="navbar-button"
+                mat-button
                 routerLink="/home">
                 <mat-icon>home</mat-icon>
                 Home
             </button>
             <button
-                mat-raised-button
+                class="navbar-button"
+                mat-button
                 routerLink="/search">
                 <mat-icon>search</mat-icon>
                 Search
@@ -19,19 +21,20 @@
         </div>
         <div class="navbar-options navbar-buttons">
             <button
-                class="navbar-go-to-account-button"
-                mat-raised-button
+                class="navbar-button"
+                mat-button
                 *ngIf="isAuthenticated"
                 [routerLink]="['/upload-new-book']">
                 <mat-icon>book</mat-icon>
                 Upload new book
             </button>
             <button
-                class="navbar-go-to-account-button"
-                mat-raised-button
+                class="navbar-button"
+                mat-button
                 *ngIf="isAuthenticated"
                 [routerLink]="['/account', username]">
                 <mat-icon>person</mat-icon>
+                Account
             </button>
             <app-authenticate-popup></app-authenticate-popup>
         </div>

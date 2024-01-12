@@ -41,15 +41,25 @@
                         <app-book-preview
                             [book]="item.book">
                         </app-book-preview>
-                        <button (click)="openBookInNewTab(item.book.id)">Details</button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="negotiation-buttons-container">
-            <button>Not interested anymore</button>
-            <button>Accept offer</button>
-            <button (click)="sendOffer()">Send offer</button>
+            <button
+                (click)="cancelNegotiation()">
+                Not interested anymore
+            </button>
+            <button
+                [disabled]="!isAcceptable"
+                *ngIf="anOfferWasMade"
+                (click)="acceptOffer()">
+                Accept offer
+            </button>
+            <button
+                (click)="sendOffer()">
+                Send offer
+            </button>
         </div>
     </div>
 </body>

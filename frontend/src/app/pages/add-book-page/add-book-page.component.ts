@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ArtisticMovement } from 'src/app/utils/enums/artistic-movement';
-import { Condition } from 'src/app/utils/enums/condition';
-import { Genres } from 'src/app/utils/enums/genres';
-import { TargetAudience } from 'src/app/utils/enums/target-audience';
-import { TradingOption } from 'src/app/utils/enums/trading-option';
+import { ArtisticMovement } from 'src/app/elements/enums/artistic-movement';
+import { Condition } from 'src/app/elements/enums/condition';
+import { Genres } from 'src/app/elements/enums/genres';
+import { TargetAudience } from 'src/app/elements/enums/target-audience';
+import { TradingOption } from 'src/app/elements/enums/trading-option';
 import { getEnumValues } from 'src/app/utils/get-enum-values';
 import { Book } from 'src/app/elements/classes/book';
 import { Store } from '@ngrx/store';

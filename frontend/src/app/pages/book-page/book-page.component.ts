@@ -6,6 +6,7 @@ import { AccountService} from '../../services/account.service';
 import { Store } from '@ngrx/store';
 import { selectIsAuthenticated, selectUser } from 'src/app/account-management/auth.state';
 import { setIntendedPath, showAuthPopup } from 'src/app/account-management/auth.actions';
+import { NegotiationService } from 'src/app/services/negotiation.service';
 
 @Component({
   selector: 'app-book-page',
@@ -22,7 +23,8 @@ export class BookPageComponent implements OnInit {
     private router: Router,
     private bookService: BookService,
     private accountService: AccountService,
-    private store: Store
+    private store: Store,
+    private negotiationService: NegotiationService
   ) {}
 
   ngOnInit(): void {
@@ -49,7 +51,9 @@ export class BookPageComponent implements OnInit {
   }
 
   onSwapClicked(): void {
-    const routePath = '/negotiate/' + this.book?.id;
+    const routePath = '/negotiate';
+    this.negotiationService.setStoredBookId(this.book?.id!);
+    this.negotiationService.setResponderUsername(this.book?.uploaderUsername!);
 
     if(this.visitorUsername !== null){
       this.router.navigate([routePath]);

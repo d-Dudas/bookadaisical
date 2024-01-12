@@ -9,8 +9,15 @@ import lombok.Setter;
 @Setter
 @Getter
 public class NegotiationOfferDto {
-    private UUID initiatorId;
-    private UUID responderId;
+    private String initiatorUsername;
+    private String responderUsername;
     private List<UUID> initiatorSelectedBooks;
     private List<UUID> responderSelectedBooks;
+
+    @Override
+    public String toString() {
+        return "NegotiationOfferDto [initiatorUsername=" + initiatorUsername + ", responderUsername=" + responderUsername
+                + ", initiatorSelectedBooks=" + initiatorSelectedBooks + ", responderSelectedBooks="
+                + responderSelectedBooks + "]";
+    }
 }

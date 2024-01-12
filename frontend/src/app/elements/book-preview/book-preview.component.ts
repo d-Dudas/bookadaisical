@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Book } from '../classes/book';
-import { TradingOption } from 'src/app/utils/enums/trading-option';
+import { TradingOption } from 'src/app/elements/enums/trading-option';
 import { KeyValuePipe } from '@angular/common';
 
 @Component({
