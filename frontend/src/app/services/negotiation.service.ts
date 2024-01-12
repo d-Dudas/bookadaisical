@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, last } from 'rxjs';
 import { NegotiatingUsersDto } from '../elements/interfaces/find-existing-negotiation-dto';
 import { NegotiationOfferDto } from '../elements/interfaces/negotiation-offer-dto';
 import { ExistingNegotiationOfferDto } from '../elements/interfaces/existing-negotiation-offer-dto';
@@ -20,6 +20,8 @@ export class NegotiationService {
 
   constructor(private http: HttpClient)
   {
+    let lastResponderUsername = localStorage.getItem('lastResponderUsername');
+    if(lastResponderUsername !== null) this.responderUsername = lastResponderUsername;
   }
 
   sendOffer(negotiationOffer: NegotiationOfferDto)
@@ -55,6 +57,7 @@ export class NegotiationService {
   setResponderUsername(username: string): void
   {
     this.responderUsername = username;
+    localStorage.setItem('lastResponderUsername', username);
   }
 
   getResponderUsername(): string

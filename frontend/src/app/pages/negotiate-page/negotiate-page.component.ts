@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { selectIsAuthenticated, selectUser } from 'src/app/account-management/auth.state';
+import { selectIsAuthenticated, selectTokenVerificationStatus, selectUser } from 'src/app/account-management/auth.state';
 import { NegotiatingUsersDto } from 'src/app/elements/interfaces/find-existing-negotiation-dto';
 import { NegotiateItem } from 'src/app/elements/interfaces/negotiation-item';
 import { NegotiationOfferDto } from 'src/app/elements/interfaces/negotiation-offer-dto';
@@ -42,22 +42,26 @@ export class NegotiatePageComponent {
   {
     await this.setupInitiatorData();
     await this.setupResponderData();
-    
-    await this.getInitiatorBooks();
-    await this.getResponderBooks();
   }
 
   private async setupInitiatorData() {
-    this.store.select(selectIsAuthenticated).subscribe((isAuthenticated) =>
-    {
-      if(!isAuthenticated)
+    this.store.select(selectTokenVerificationStatus).subscribe((isVerified) => {
+      if(isVerified)
       {
-        this.router.navigate(['/home']);
+        this.store.select(selectIsAuthenticated).subscribe((isAuthenticated) =>
+        {
+          console.log(isAuthenticated);
+          if(!isAuthenticated)
+          {
+            this.router.navigate(['/home']);
+          } else {
+            this.store.select(selectUser).subscribe((username) => {
+              this.initiatorUsername = username!;
+              this.getInitiatorBooks();
+            });
+          }
+        });
       }
-    });
-
-    this.store.select(selectUser).subscribe((username) => {
-        this.initiatorUsername = username!;
     });
   }
   
@@ -73,6 +77,7 @@ export class NegotiatePageComponent {
   private async setupResponderData() {
     this.responderUsername = this.negotiationService.getResponderUsername();
     this.preselectedBookId = this.negotiationService.getStoredBookId();
+    this.getResponderBooks();
   }
 
 

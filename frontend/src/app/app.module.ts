@@ -7,7 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthenticatePopupComponent } from './elements/navbar/authenticate-popup/authenticate-popup.component';
 import { StoreModule } from '@ngrx/store';
-import { authPopupReducer, authReducer } from './account-management/auth.reducer';
+import { tokenVerificationStatusReducer, authPopupReducer, authReducer } from './account-management/auth.reducer';
 import { RegisterPopupComponent } from './elements/navbar/authenticate-popup/register-popup/register-popup.component';
 import { LoginPopupComponent } from './elements/navbar/authenticate-popup/login-popup/login-popup.component';
 import { NavbarComponent } from './elements/navbar/navbar.component';
@@ -66,6 +66,7 @@ import { MatDividerModule } from '@angular/material/divider';
     StoreModule.forRoot(authReducer),
     StoreModule.forFeature('auth', authReducer),
     StoreModule.forFeature('authPopup', authPopupReducer),
+    StoreModule.forFeature('tokenVerificationStatus', tokenVerificationStatusReducer),
     ReactiveFormsModule,
     MatSliderModule,
     BrowserAnimationsModule,
