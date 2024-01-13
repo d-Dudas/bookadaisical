@@ -1,38 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bookadaisical</title>
-</head>
-<body>
-    <app-navbar></app-navbar>
-    <h1>{{book?.title}}</h1>
-    <h2>{{book?.author}}</h2>
-    <h3>{{book?.description}}</h3>
-    <div *ngFor="let image of book?.images">
-        <img src="data:image/png;base64, {{ image }}" alt="">
-    </div>
-    <button
-        mat-raised-button
-        extended
-        type="button"
-        *ngIf="visitorUsername !== uploaderUsername"
-        (click)="drawer.toggle(); onBuyClicked();">
-        <mat-icon>chat</mat-icon>
-        Buy</button>
-    <mat-drawer-container autosize></mat-drawer-container>
-    <mat-drawer #drawer class="chat-sidebar" mode="push" position="end">
-        <app-chat *ngIf="uploaderUsername !== null && visitorUsername !== null" [receiverUsername]="getReceiverUsername()" [senderUsername]="getVisitorUsername()" [defaultMessage]="getDefaultMessage()"></app-chat>
-    </mat-drawer>
-    <button
-        mat-raised-button
-        extended
-        type="button"
-        style="background-color: lightblue;"
-        *ngIf="visitorUsername !== uploaderUsername"
-        (click)="onSwapClicked()">
-        <mat-icon>swap_horiz</mat-icon>
-        Swap</button>
-</body>
-</html>
+<h1>{{book?.title}}</h1>
+<h2>{{book?.author}}</h2>
+<h3>{{book?.description}}</h3>
+<div *ngFor="let image of book?.images">
+    <img src="data:image/png;base64, {{ image }}" alt="">
+</div>
+<button
+    mat-raised-button
+    extended
+    type="button"
+    *ngIf="visitorUsername !== uploaderUsername"
+    (click)="drawer.toggle(); onBuyClicked();">
+    <mat-icon>chat</mat-icon>
+    Buy</button>
+<mat-drawer-container
+    autosize>
+</mat-drawer-container>
+<mat-drawer 
+    #drawer
+    class="chat-sidebar"
+    mode="push"
+    position="end">
+    <app-chat
+        *ngIf="uploaderUsername !== null && visitorUsername !== null"
+        [receiverUsername]="getReceiverUsername()"
+        [senderUsername]="getVisitorUsername()"
+        [defaultMessage]="getDefaultMessage()">
+    </app-chat>
+</mat-drawer>
+<button
+    mat-raised-button
+    extended
+    type="button"
+    style="background-color: lightblue;"
+    *ngIf="visitorUsername !== uploaderUsername"
+    (click)="onSwapClicked()">
+    <mat-icon>swap_horiz</mat-icon>
+    Swap</button>

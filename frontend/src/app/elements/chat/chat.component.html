@@ -34,7 +34,17 @@
         </mat-card>
     </div>
     <div class="messages-header">
-        <mat-icon>person</mat-icon>
-        <p class="messages-header-username">{{receiverUsername}}</p>
+        <div class="messages-header-left-side"></div>
+        <div class="messages-header-center">
+            <mat-icon>person</mat-icon>
+            <p class="messages-header-username">{{receiverUsername}}</p>
+        </div>
+        <div class="message-header-right-side">
+            <button
+                (click)="closeChatBar()"
+                mat-flat-button>
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
     </div>
 </div>

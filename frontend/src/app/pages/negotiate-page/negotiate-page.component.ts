@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { MatDrawer } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { finalize } from 'rxjs/operators';
 import { selectIsAuthenticated, selectTokenVerificationStatus, selectUser } from 'src/app/account-management/auth.state';
 import { NegotiatingUsersDto } from 'src/app/elements/interfaces/find-existing-negotiation-dto';
 import { NegotiateItem } from 'src/app/elements/interfaces/negotiation-item';
@@ -25,7 +27,9 @@ export class NegotiatePageComponent {
   };
   public isAcceptable: boolean = false;
   public anOfferWasMade: boolean = false;
+  public isAcceptableByUser: boolean = true;
   public negotiationStatus: string = 'NOT STARTED';
+  @ViewChild('drawer') drawer!: MatDrawer;
 
   private initialInitiatorItems: NegotiateItem[] = [];
   private initialResponderItems: NegotiateItem[] = [];
@@ -99,7 +103,17 @@ export class NegotiatePageComponent {
       responderUsername: this.responderUsername
     };
 
-    this.negotiationService.getExistingNegotiation(users).subscribe({
+    this.negotiationService.getExistingNegotiation(users).pipe(
+      finalize(() => {
+        for(let item of this.responderItems)
+        {
+          if(item.book.id === this.preselectedBookId)
+          {
+            item.selected = true;
+          }
+        }
+      })
+    ).subscribe({
       next: negotiationOfferDto => {
         this.negotiationStatus = negotiationOfferDto.status.toString();
         this.extractSelectedBooks(
@@ -114,7 +128,6 @@ export class NegotiatePageComponent {
           negotiationOfferDto.initiatorSelectedBooks,
           this.responderItems);
         this.initialResponderItems = JSON.parse(JSON.stringify(this.responderItems));
-        this.preselectedBookId = this.negotiationService.getStoredBookId();
         if(negotiationOfferDto.initiatorSelectedBooks.length > 0 &&
            negotiationOfferDto.responderSelectedBooks.length > 0 &&
            (negotiationOfferDto.responderSelectedBooks.includes(this.preselectedBookId) ||
@@ -126,17 +139,11 @@ export class NegotiatePageComponent {
         console.log(negotiationOfferDto.responderSelectedBooks);
         console.log(negotiationOfferDto.initiatorSelectedBooks);
         console.log(!negotiationOfferDto.responderSelectedBooks.includes(this.preselectedBookId));
+        if(this.initiatorUsername === negotiationOfferDto.initiatorUsername) this.isAcceptableByUser = false;
         this.anOfferWasMade = true;
       },
-      error: () => {},
-      complete: () => {
-        for(let item of this.responderItems)
-        {
-          if(item.book.id === this.preselectedBookId)
-          {
-            item.selected = true;
-          }
-        }
+      error: () => {
+        this.preselectedBookId = this.negotiationService.getStoredBookId();
       }
     });
   }
@@ -262,7 +269,7 @@ export class NegotiatePageComponent {
 
     this.negotiationService.acceptOffer(users).subscribe({
       next: () => {
-        console.log("accepted");
+        this.drawer.toggle();
       },
       error: (error) => {
         console.log(error);
@@ -285,5 +292,17 @@ export class NegotiatePageComponent {
         console.log(error);
       }
     })
+  }
+
+  public getDefaultMessage(): string {
+    return "Hi! I just accepted your negotiation offer.";
+  }
+
+  public closeChat() {
+    this.drawer.toggle();
+  }
+
+  public isAlreadyAccepted() {
+    return this.negotiationStatus === 'ACCEPTED';
   }
 }

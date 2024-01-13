@@ -99,7 +99,7 @@ public class NegotiationService implements INegotiationService {
         Optional<NegotiationOffer> negotiationOffer = negotiationOfferRepository.findByInitiatorAndResponder(initiator.get(), responder.get());
         if(negotiationOffer.isEmpty()) throw new NegotiationNotFoundException();
 
-        if(negotiationOffer.get().getNegotiationStatus().compareTo(NegotiationStatus.ONGOING) != 0) throw new NegotiationNotFoundException();
+        if(negotiationOffer.get().getNegotiationStatus().compareTo(NegotiationStatus.CANCELED) == 0) throw new NegotiationNotFoundException();
 
         return modelMapper.map(negotiationOffer.get(), ExistingNegotiationOfferDto.class);
     }
