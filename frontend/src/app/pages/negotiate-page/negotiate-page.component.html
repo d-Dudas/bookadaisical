@@ -13,6 +13,9 @@
         (closePopupEvenet)="closeProblemPopup()">
     </app-problem-popup>
     <div class="negotiation-main-container">
+        <div class="negotiation-status-container">
+            <h2>Status: {{ negotiationStatus }}</h2>
+        </div>
         <div class="negotiation-books-container">
             <div class="user-books">
                 <div class="user-books-header">
@@ -47,6 +50,7 @@
         </div>
         <div class="negotiation-buttons-container">
             <button
+                *ngIf="anOfferWasMade"
                 (click)="cancelNegotiation()">
                 Not interested anymore
             </button>

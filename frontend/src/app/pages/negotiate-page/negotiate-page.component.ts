@@ -25,6 +25,7 @@ export class NegotiatePageComponent {
   };
   public isAcceptable: boolean = false;
   public anOfferWasMade: boolean = false;
+  public negotiationStatus: string = 'NOT STARTED';
 
   private initialInitiatorItems: NegotiateItem[] = [];
   private initialResponderItems: NegotiateItem[] = [];
@@ -71,12 +72,12 @@ export class NegotiatePageComponent {
       for (const book of initiatorBooks) {
         this.initiatorItems.push({book, selected: false});
       }
+      this.findExistingNegotiation();
     });
   }
 
   private async setupResponderData() {
     this.responderUsername = this.negotiationService.getResponderUsername();
-    this.preselectedBookId = this.negotiationService.getStoredBookId();
     this.getResponderBooks();
   }
 
@@ -100,7 +101,7 @@ export class NegotiatePageComponent {
 
     this.negotiationService.getExistingNegotiation(users).subscribe({
       next: negotiationOfferDto => {
-        console.log(negotiationOfferDto)
+        this.negotiationStatus = negotiationOfferDto.status.toString();
         this.extractSelectedBooks(
           negotiationOfferDto.initiatorUsername === this.initiatorUsername ?
           negotiationOfferDto.initiatorSelectedBooks :
@@ -113,20 +114,41 @@ export class NegotiatePageComponent {
           negotiationOfferDto.initiatorSelectedBooks,
           this.responderItems);
         this.initialResponderItems = JSON.parse(JSON.stringify(this.responderItems));
-        if(negotiationOfferDto.initiatorSelectedBooks.length > 0 && negotiationOfferDto.responderSelectedBooks.length > 0) this.isAcceptable = true;
+        this.preselectedBookId = this.negotiationService.getStoredBookId();
+        if(negotiationOfferDto.initiatorSelectedBooks.length > 0 &&
+           negotiationOfferDto.responderSelectedBooks.length > 0 &&
+           (negotiationOfferDto.responderSelectedBooks.includes(this.preselectedBookId) ||
+           negotiationOfferDto.initiatorSelectedBooks.includes(this.preselectedBookId) ||
+           this.preselectedBookId === ""))
+        {
+          this.isAcceptable = true;
+        }
+        console.log(negotiationOfferDto.responderSelectedBooks);
+        console.log(negotiationOfferDto.initiatorSelectedBooks);
+        console.log(!negotiationOfferDto.responderSelectedBooks.includes(this.preselectedBookId));
         this.anOfferWasMade = true;
       },
-      error: () => {}
+      error: () => {},
+      complete: () => {
+        for(let item of this.responderItems)
+        {
+          if(item.book.id === this.preselectedBookId)
+          {
+            item.selected = true;
+          }
+        }
+      }
     });
   }
 
   private extractSelectedBooks(selectedBooks: string[], items: NegotiateItem[])
   {
+    for(let item of items) item.selected = false;
     for (let bookId of selectedBooks)
     {
       for(let item of items)
       {
-        if(bookId == item.book.id)
+        if(bookId === item.book.id)
         {
           item.selected = true;
         }
@@ -256,7 +278,8 @@ export class NegotiatePageComponent {
 
     this.negotiationService.cancelNegotiation(users).subscribe({
       next: () => {
-        console.log("canceled");
+        this.setProblem("The negotiation has been canceled. You will be redirected to the home page");
+        this.redirectTo = '/home';
       },
       error: (error) => {
         console.log(error);
