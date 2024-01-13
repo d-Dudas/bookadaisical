@@ -1,7 +1,9 @@
 <mat-card class="book-preview-card">
     <mat-card-header class="book-preview-card-header">
-        <mat-card-title>{{ book.title }}</mat-card-title>
-        <mat-card-subtitle>{{ book.author }}</mat-card-subtitle>
+        <!-- <mat-card-title class="book-preview-card-header-title">{{ book.title }}</mat-card-title> -->
+        <h1 class="book-preview-card-header-title">{{ book.title }}</h1>
+        <!-- <mat-card-subtitle class="book-preview-card-header-author">{{ book.author }}</mat-card-subtitle> -->
+        <h2 class="book-preview-card-header-author">{{ book.author }}</h2>
     </mat-card-header>
     <div class="book-preview-card-image-container">
         <img
@@ -23,15 +25,17 @@
         </button>
     </div>
     <mat-card-content class="book-preview-card-content">
-        <label>Trading options:</label>
-        <div class="trading-option-chip-set">
-            <div class="trading-option-chip" *ngFor="let option of tradingOptions">
-                {{option}}
+        <h3 class="book-preview-card-content-text">Trading options:</h3>
+        <div class="mat-card-trading-options">
+            <div
+                class="mat-card-trading-option"
+                *ngFor="let option of tradingOptions">
+                {{ option }}
             </div>
         </div>
     </mat-card-content>
     <mat-card-actions class="book-preview-card-actions">
-        <button mat-button [routerLink]="['/books', book.id]">
+        <button mat-raised-button color="primary" [routerLink]="['/books', book.id]">
             <mat-icon>info</mat-icon>
             Details</button>
     </mat-card-actions>
