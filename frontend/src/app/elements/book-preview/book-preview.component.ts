@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Book } from '../classes/book';
 import { TradingOption } from 'src/app/elements/enums/trading-option';
 import { KeyValuePipe } from '@angular/common';
+import { keyframes } from '@angular/animations';
 
 @Component({
   selector: 'app-book-preview',
@@ -23,6 +24,11 @@ export class BookPreviewComponent {
     } else {
       this.tradingOptions = this.book.tradingOptions;
     }
+  }
+
+  public printTradingOption(option: any): string
+  {
+    return option.charAt(0) + option.slice(1).toLowerCase();
   }
 
   nextBookImage(): void
