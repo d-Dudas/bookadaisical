@@ -40,6 +40,7 @@ import {
 } from '@angular/material/slide-toggle';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
@@ -85,7 +86,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatSlideToggleModule,
     _MatSlideToggleRequiredValidatorModule,
     MatDividerModule,
-    MatTabsModule
+    MatTabsModule,
+    MatExpansionModule
   ],
   providers: [],
   bootstrap: [RootComponent]
