@@ -1,17 +1,21 @@
 package com.bookadaisical.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import com.bookadaisical.dto.requests.NegotiatingUsersDto;
 import com.bookadaisical.dto.requests.NegotiationOfferDto;
+import com.bookadaisical.dto.requests.UsernameDto;
 import com.bookadaisical.dto.responses.ExistingNegotiationOfferDto;
 import com.bookadaisical.enums.NegotiationStatus;
 import com.bookadaisical.exceptions.BookNotFoundException;
@@ -140,5 +144,32 @@ public class NegotiationService implements INegotiationService {
 
         negotiationOffer.get().setNegotiationStatus(NegotiationStatus.CANCELED);
         negotiationOfferRepository.save(negotiationOffer.get());
+    }
+
+    @Override
+    public List<ExistingNegotiationOfferDto> getUserOngoingNegotiations(UsernameDto usernameDto) throws UserNotFoundException
+    {
+        Optional<User> user = userRepository.findByUsername(usernameDto.getUsername());
+        if(user.isEmpty()) throw new UserNotFoundException();
+
+        List<NegotiationOffer> ongoingNegotiationOffers = negotiationOfferRepository.findByUser(user.get());
+
+        List<ExistingNegotiationOfferDto> ongoingNegotiatons = new ArrayList<>();
+        Set<Pair<String, String>> seenPairs = new HashSet<>();
+
+        for (NegotiationOffer negotiationOffer : ongoingNegotiationOffers)
+        {
+            String initiatorUsername = negotiationOffer.getInitiator().getUsername();
+            String responderUsername = negotiationOffer.getResponder().getUsername();
+            Pair<String, String> pair = initiatorUsername.compareTo(responderUsername) < 0 ? Pair.of(initiatorUsername, responderUsername) : Pair.of(responderUsername, initiatorUsername);
+        
+            if (!seenPairs.contains(pair))
+            {
+                seenPairs.add(pair);
+                ongoingNegotiatons.add(modelMapper.map(negotiationOffer, ExistingNegotiationOfferDto.class));
+            }
+        }
+
+        return ongoingNegotiatons;
     }
 }
