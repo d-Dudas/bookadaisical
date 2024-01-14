@@ -11,7 +11,7 @@ const routes: Routes = [
   {path: 'home', component: LandingPageComponent},
   {path: 'search', component: SearchPageComponent},
   {path: 'books/:uniqueId', component: BookPageComponent},
-  {path: 'negotiate/:bookId', component: NegotiatePageComponent},
+  {path: 'negotiate', component: NegotiatePageComponent},
   {path: 'account/:userId', component: AccountPageComponent},
   {path: 'upload-new-book', component: AddBookPageComponent},
 

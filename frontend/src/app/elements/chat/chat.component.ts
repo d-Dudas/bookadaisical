@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { UserSlim } from '../classes/userSlim';
 import { Message } from '../interfaces/message';
 import { ChatService } from 'src/app/services/chat.service';
@@ -14,6 +14,7 @@ export class ChatComponent {
   @Input() senderUsername!: string;
   @Input() receiverUsername!: string;
   @Input() defaultMessage: string = "";
+  @Output() closeChat = new EventEmitter<void>;
 
   private webSocket!: WebSocket;
   messages: Message[] = [];
@@ -111,5 +112,10 @@ export class ChatComponent {
           this.messages = [...this.messages, ...moreMessages.content];
         });
     }
+  }
+
+  public closeChatBar(): void
+  {
+    this.closeChat.emit();
   }
 }

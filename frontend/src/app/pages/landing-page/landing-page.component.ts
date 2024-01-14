@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { BookService } from '../../services/book.service';
 import { Book } from '../../elements/classes/book';
-import { PopularGenre } from 'src/app/elements/interfaces/popularGenre';
+import { PopularGenre } from 'src/app/elements/interfaces/popular-genre';
 
 @Component({
   selector: 'app-landing-page',

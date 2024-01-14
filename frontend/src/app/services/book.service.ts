@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Book } from '../elements/classes/book';
 import { UserSlim } from '../elements/classes/userSlim';
-import { Genres } from '../utils/enums/genres';
-import { PopularGenre } from '../elements/interfaces/popularGenre';
+import { Genres } from '../elements/enums/genres';
+import { PopularGenre } from '../elements/interfaces/popular-genre';
 
 @Injectable({
   providedIn: 'root'
