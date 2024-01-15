@@ -33,4 +33,5 @@ export interface User
     currentPoints: number;
     totalPoints: number;
     specialCurrency: number;
+    profilePicture: string;
 };

@@ -78,6 +78,54 @@
                     <mat-expansion-panel>
                         <mat-expansion-panel-header>
                             <mat-panel-title>
+                                Change profile picture
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+
+                        <form
+                            (ngSubmit)="submitChangeProfilePictureForm()"
+                            [formGroup]="changeProfilePictureFormData"
+                            class="update-personal-info-form">
+                            <!-- <input formControlName="image" matInput > -->
+                            <div
+                                *ngIf="changeProfilePictureFormData.controls['image'].value !== ''" 
+                                class="uploaded-image">
+                                <div
+                                    class="uploaded-image-container">
+                                    <img
+                                        [src]="changeProfilePictureFormData.controls['image'].value"
+                                        class="uploaded-image">
+                                </div>
+                            </div>
+                            <input
+                                #fileInput
+                                type="file"
+                                (change)="onFilesSelected($event)"
+                                accept="image/*"
+                                style="display: none;"/>
+                            <button
+                                type="button"
+                                class="form-button"
+                                mat-raised-button
+                                (click)="fileInput.click()">
+                                <mat-icon>upload</mat-icon>
+                                Upload
+                            </button>
+    
+                            <button
+                                class="form-button"
+                                color="primary"
+                                mat-raised-button>
+                                Change
+                            </button>
+                        </form>
+                    </mat-expansion-panel>
+                </mat-accordion>
+
+                <mat-accordion>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
                                 Change password
                             </mat-panel-title>
                         </mat-expansion-panel-header>

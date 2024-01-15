@@ -40,6 +40,7 @@ export class AccountPageComponent {
     const username: string = this.getUserIdFromUrl();
     this.accountService.getUserDetails(username).subscribe({
       next: user => {
+        console.log(user);
         this.user = user;
         this.verifyIfVisitorIsTheOwner();
         this.getUserBooks();

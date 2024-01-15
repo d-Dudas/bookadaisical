@@ -3,15 +3,19 @@ package com.bookadaisical.service;
 import com.bookadaisical.service.interfaces.IUserService;
 import com.bookadaisical.utils.Hasher;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.bookadaisical.dto.requests.ChangeProfilePictureDto;
 import com.bookadaisical.dto.requests.UserLoginDto;
 import com.bookadaisical.dto.requests.UserRegisterDto;
 import com.bookadaisical.dto.responses.UserDto;
@@ -35,6 +39,9 @@ public class UserService implements IUserService {
     private final UserRepository userRepository;
     private final UserMapper mapper;
     private final LoginTokenRepository loginTokenRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     public UserService(UserRepository userRepository,
                        UserMapper mapper,
@@ -133,7 +140,7 @@ public class UserService implements IUserService {
 
         if(user.isPresent())
         {
-            return mapper.toUserDto(user.get());
+            return modelMapper.map(user.get(), UserDto.class);
         }
         throw new UserNotFoundException();
     }
@@ -195,6 +202,16 @@ public class UserService implements IUserService {
             return mapper.toUserSlimDto(user.get());
         }
         throw new UserNotFoundException();
+    }
+
+    @Override
+    public void changeProfilePicture(ChangeProfilePictureDto changeProfilePictureDto) throws Exception
+    {
+        Optional<User> user = userRepository.findByUsername(changeProfilePictureDto.getUsername());
+        if(user.isEmpty()) throw new UserNotFoundException();
+
+        user.get().getImage().setImageData(Base64.getDecoder().decode(changeProfilePictureDto.getImage()));
+        userRepository.save(user.get());
     }
 
 }

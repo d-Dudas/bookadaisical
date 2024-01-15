@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bookadaisical.dto.requests.ChangeEmailDto;
 import com.bookadaisical.dto.requests.ChangePasswordDto;
+import com.bookadaisical.dto.requests.ChangeProfilePictureDto;
 import com.bookadaisical.dto.requests.ChangeUsernameDto;
 import com.bookadaisical.dto.requests.UserLoginDto;
 import com.bookadaisical.dto.requests.UserLoginTokenDto;
@@ -113,6 +114,17 @@ public class UserController {
     {
         try {
             return ResponseEntity.ok(userService.changePassword(changePasswordDto.getUserId(), changePasswordDto.getNewPassword()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/change-profile-picture")
+    public ResponseEntity<?> changeProfilePicture(@RequestBody ChangeProfilePictureDto changeProfilePictureDto)
+    {
+        try {
+            userService.changeProfilePicture(changeProfilePictureDto);
+            return ResponseEntity.ok(null);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

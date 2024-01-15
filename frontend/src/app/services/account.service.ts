@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../elements/classes/user';
+import { ChangeProfilePictureDto } from '../elements/interfaces/change-profile-picture-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class AccountService {
   private changeUsernameUrl: string = '/change-username';
   private changeEmailUrl: string = '/change-email';
   private changePasswordUrl: string = '/change-password';
+  private changeProfilePictureUrl = '/change-profile-picture';
 
   constructor(private http: HttpClient) { }
 
@@ -51,5 +53,10 @@ export class AccountService {
   changePassword(userId: number, newPassword: string): Observable<User>
   {
     return this.http.post<User>(this.backendUrl + this.changePasswordUrl, {userId, newPassword});
+  }
+
+  changeProfilePicture(data: ChangeProfilePictureDto)
+  {
+    return this.http.post(this.backendUrl + this.changeProfilePictureUrl, data);
   }
 }

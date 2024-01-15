@@ -11,7 +11,7 @@
             <div class="account-page-user-details-username-and-avatar">
                 <div class="account-page-user-details-avatar">
                     <div class="account-page-user-details-avatar-container">
-                        <mat-icon>person</mat-icon>
+                        <img class="account-page-user-details-avatar-image" src="data:image/png;base64, {{ user?.profilePicture }}">
                     </div>
                 </div>
                 <div class="account-page-user-details-username">
@@ -23,7 +23,7 @@
                         <mat-icon>settings</mat-icon>
                     </div>
                     <div
-                        *ngIf="user?.username !== visitorUsername"
+                        *ngIf="user?.username !== visitorUsername && visitorUsername !== ''"
                         (click)="openChatWith(user?.username!)"
                         class="account-page-user-details-button">
                         <mat-icon>message</mat-icon>
