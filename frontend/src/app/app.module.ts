@@ -41,6 +41,7 @@ import {
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -87,7 +88,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     _MatSlideToggleRequiredValidatorModule,
     MatDividerModule,
     MatTabsModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [RootComponent]
