@@ -1,8 +1,4 @@
 <div class="book-preview-card">
-    <div class="book-preview-card-header">
-        <h1 class="book-preview-card-header-title">{{ book.title }}</h1>
-        <h2 class="book-preview-card-header-author">{{ book.author }}</h2>
-    </div>
 
     <div class="book-preview-card-image-container">
         <img
@@ -24,23 +20,29 @@
         </button>
     </div>
 
+    <div class="book-preview-card-header">
+        <h1 class="book-preview-card-header-title" [routerLink]="['/books', book.id]">
+            {{ book.title }}
+        </h1>
+        <h2 class="book-preview-card-header-author">{{ book.author }}</h2>
+    </div>
+
     <div class="book-preview-card-trading-options-container">
-        <h3 class="book-preview-card-content-text">Trading options:</h3>
         <div class="mat-card-trading-options">
             <div
                 class="mat-card-trading-option"
-                *ngFor="let option of tradingOptions">
+                *ngFor="let option of tradingOptions" [ngClass]="{'currency': option === 'CURRENCY', 'swap': option === 'SWAP', 'points': option === 'POINTS'}">
                 {{ printTradingOption(option) }}
             </div>
         </div>
     </div>
-
-    <div class="book-preview-card-actions">
+    <!--<div class="book-preview-card-actions">
         <button
             mat-raised-button
             [routerLink]="['/books', book.id]">
             <mat-icon>info</mat-icon>
             Details
         </button>
-    </div>
+    </div>-->
+    
 </div>

@@ -39,6 +39,7 @@ import {
   _MatSlideToggleRequiredValidatorModule,
 } from '@angular/material/slide-toggle';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
@@ -83,7 +84,8 @@ import { MatDividerModule } from '@angular/material/divider';
     MatSelectModule,
     MatSlideToggleModule,
     _MatSlideToggleRequiredValidatorModule,
-    MatDividerModule
+    MatDividerModule,
+    MatExpansionModule
   ],
   providers: [],
   bootstrap: [RootComponent]
