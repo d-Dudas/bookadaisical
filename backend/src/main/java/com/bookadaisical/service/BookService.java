@@ -138,7 +138,6 @@ public class BookService implements IBookService {
         {
             Image image = new Image();
             image.setImageData(Base64.getDecoder().decode(imageData));
-            image.setImageName("");
             book.addImage(image);
         }
 

@@ -39,7 +39,6 @@ public class ImageService implements IImageService {
         }
         var imageToSave = Image.builder()
             .imageData(ImageUtils.compressImage(imageFile.getBytes()))
-            .imageName(imageName)
             .book(book)
             .build();
 

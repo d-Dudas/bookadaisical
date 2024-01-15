@@ -14,6 +14,7 @@ export class NegotiationService {
   private getExistingNegotiationUrl = '/get-existing-negotiation';
   private acceptOfferUrl = '/accept-offer';
   private cancelNegotiationUrl = '/cancel-negotiation';
+  private userOngoingNegotiationsUrl = '/user-negotiations';
 
   private storedBookId = '';
   private responderUsername = '';
@@ -42,6 +43,11 @@ export class NegotiationService {
   cancelNegotiation(users: NegotiatingUsersDto)
   {
     return this.http.post(this.backendUrl + this.cancelNegotiationUrl, users);
+  }
+
+  getUserOngoingNegotiations(username: string) : Observable<ExistingNegotiationOfferDto[]>
+  {
+    return this.http.post<ExistingNegotiationOfferDto[]>(this.backendUrl + this.userOngoingNegotiationsUrl, { username: username });
   }
 
   setStoredBookId(bookId: string): void

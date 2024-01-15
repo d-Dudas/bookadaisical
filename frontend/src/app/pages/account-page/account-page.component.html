@@ -1,56 +1,141 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bookadaisical</title>
-</head>
-<body>
-    <app-account-settings-popup
-        [isAccountSettingsPopupVisible]="isAccountSettingsPopupVisible"
-        (closeAccountSettingsPopup)="closeAccountSettingsPopup()"
-        [user]="user"
-        ></app-account-settings-popup>
-    <h1>{{ user?.username }}</h1>
-    <div class="account-page-main-container" mat-drawer-container>
-        <div class="user-details-container">
-            <div class="user-account-details-container">
-                <div class="user-email">
-                    <p>Email: {{ user?.email }}</p>
+<app-account-settings-popup
+    [isAccountSettingsPopupVisible]="isAccountSettingsPopupVisible"
+    (closeAccountSettingsPopup)="closeAccountSettingsPopup()"
+    [user]="user">
+</app-account-settings-popup>
+
+<div class="account-page-main">
+    <div class="account-page-main-container">
+        <div class="account-page-divider"></div>
+        <div class="account-page-user-details">
+            <div class="account-page-user-details-username-and-avatar">
+                <div class="account-page-user-details-avatar">
+                    <div class="account-page-user-details-avatar-container">
+                        <img class="account-page-user-details-avatar-image" src="data:image/png;base64, {{ user?.profilePicture }}">
+                    </div>
                 </div>
-                <div class="user-points-details">
-                    <p>Current points: {{ user?.currentPoints }}</p>
-                    <p>Total points: {{ user?.totalPoints }}</p>
-                    <p>Special currecny: {{ user?.specialCurrency }}</p>
+                <div class="account-page-user-details-username">
+                    <h1>{{ user?.username }}</h1>
+                    <div
+                        *ngIf="isVisitorTheOwner"
+                        (click)="openAccountSettingsPopup()"
+                        class="account-page-user-details-button">
+                        <mat-icon>settings</mat-icon>
+                    </div>
+                    <div
+                        *ngIf="user?.username !== visitorUsername && visitorUsername !== ''"
+                        (click)="openChatWith(user?.username!)"
+                        class="account-page-user-details-button">
+                        <mat-icon>message</mat-icon>
+                    </div>
                 </div>
             </div>
-            <button
-                mat-raised-button
-                extended
-                color="primary"
-                class="user-more-details-account"
-                *ngIf="isVisitorTheOwner"
-                (click)="openAccountSettingsPopup()">
-                <mat-icon>info</mat-icon>
-                Details</button>
-            <button
-                mat-raised-button
-                extended
-                type="button"
-                *ngIf="user?.username !== visitorUsername"
-                (click)="drawer.toggle()">
-                <mat-icon>message</mat-icon>
-                Message</button>
-            <div class="user-statistics-container">
+            <div class="account-page-user-details-points">
+                <div class="account-page-user-details-points-container">
+                    <div class="account-page-user-details-points-container-header">
+                        <h1>Current points</h1>
+                    </div>
+                    <div class="account-page-user-details-points-container-value">
+                        <h2>{{ user?.currentPoints }}</h2>
+                    </div>
+                </div>
+                <div class="account-page-user-details-points-container">
+                    <div class="account-page-user-details-points-container-header">
+                        <h1>Total points</h1>
+                    </div>
+                    <div class="account-page-user-details-points-container-value">
+                        <h2>{{ user?.totalPoints }}</h2>
+                    </div>
+                </div>
+                <div class="account-page-user-details-points-container">
+                    <div class="account-page-user-details-points-container-header">
+                        <h1>Special currency</h1>
+                    </div>
+                    <div class="account-page-user-details-points-container-value">
+                        <h2>{{ user?.specialCurrency }}</h2>
+                    </div>
+                </div>
             </div>
         </div>
+        <div class="account-page-divider"></div>
+        <div class="account-page-tabs">
+            <mat-tab-group class="account-page-tab-group">
+                <mat-tab
+                    class="account-page-tab"
+                    label="Books">
+                    <div class="books-grid">
+                        <div
+                            class="book-grid-item"
+                            *ngFor="let book of books">
+                            <app-book-preview
+                                [book]="book">
+                            </app-book-preview>
+                        </div>
+                    </div>
+                </mat-tab>
+
+                <mat-tab
+                    class="account-page-tab"
+                    *ngIf="user?.username === visitorUsername"
+                    label="Chats">
+                    <div class="chats-grid">
+                        <div
+                            *ngFor="let chat of chats?.lastMessages"
+                            class="chat-grid-item">
+                            <div
+                                (click)="openChatWith(chat.senderUsername == user?.username ? chat.receiverUsername : chat.senderUsername)"
+                                class="chat-grid-item-container">
+                                <div class="chat-grid-item-container-username">
+                                    <h2>{{ chat.senderUsername == user?.username ? chat.receiverUsername : chat.senderUsername }}</h2>
+                                </div>
+                                <div class="chat-grid-item-container-message">
+                                    <h3>{{ user?.username === chat.senderUsername ? "you" : chat.senderUsername}} {{ ": " + chat.message }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </mat-tab>
+
+                <mat-tab
+                    *ngIf="user?.username === visitorUsername"
+                    label="Negotiations">
+                    <div class="negotiations-grid">
+                        <div
+                            (click)="openNegotiationWith(negotiation.initiatorUsername === user?.username ? negotiation.responderUsername : negotiation.initiatorUsername)"
+                            *ngFor="let negotiation of negotiations"
+                            class="negotiation-grid-item">
+                            <div
+                                class="negotiation-grid-item-container">
+                                <div class="negotiation-grid-item-partner">
+                                    <h1 class="negotiation-grid-item-h1">Negotiating with</h1>
+                                    <h2 class="negotiation-grid-item-h2">{{ negotiation.initiatorUsername === user?.username ? negotiation.responderUsername : negotiation.initiatorUsername }}</h2>
+                                </div>
+
+                                <div class="negotiation-grid-item-last-offer">
+                                    <h1 class="negotiation-grid-item-h1">Last offer made by</h1>
+                                    <h2 class="negotiation-grid-item-h2">{{ negotiation.initiatorUsername === user?.username ? 'you' : negotiation.initiatorUsername }}</h2>
+                                </div>
+
+                                <div class="negotiation-grid-item-last-offer">
+                                    <h1 class="negotiation-grid-item-h1">Status</h1>
+                                    <h2 class="negotiation-grid-item-h2">{{ printNegotiationStatus(negotiation.status) }}</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>              
+        </div>
+        <div class="account-page-divider"></div>
+
         <mat-drawer-container autosize></mat-drawer-container>
         <mat-drawer #drawer class="chat-sidebar" mode="push" position="end">
-            <app-chat *ngIf="user !== null && visitorUsername !== null" [receiverUsername]="getUserUsername()" [senderUsername]="getVisitorUsername()"></app-chat>
+            <app-chat
+                (closeChat)="drawer.toggle()"
+                *ngIf="chatMateUsername !== null && visitorUsername !== null"
+                [receiverUsername]="chatMateUsername"
+                [senderUsername]="visitorUsername">
+            </app-chat>
         </mat-drawer>
-        <div class="user-history-detials">
-
-        </div>
     </div>
-</body>
-</html>
+</div>

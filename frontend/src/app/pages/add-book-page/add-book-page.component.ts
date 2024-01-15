@@ -50,7 +50,7 @@ export class AddBookPageComponent {
 
   images = this._formBuilder.group({
     list: [[''], Validators.required]
-  })
+  });
 
   constructor(private _formBuilder: FormBuilder,
               private store: Store,
@@ -104,7 +104,7 @@ export class AddBookPageComponent {
   }
 
   onFilesSelected(event: any): void {
-    const files = event.target.files;
+    const files = event.target.file;
 
     for (let file of files) {
       const reader = new FileReader();

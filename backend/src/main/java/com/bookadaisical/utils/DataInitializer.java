@@ -58,7 +58,6 @@ public class DataInitializer implements CommandLineRunner {
         byte[] imageData = loadImage(imageFilename);
         Image image = new Image();
         image.setImageData(imageData);
-        image.setImageName(imageName);
 
         Book book = new Book(user, title, author);
         book.setDescription(description);
@@ -71,6 +70,13 @@ public class DataInitializer implements CommandLineRunner {
         book.addImage(image);
 
         userRepository.save(user);
+
+        byte[] userImageData = loadImage("default_profile_picture.png");
+        Image userImage = new Image();
+        userImage.setImageData(userImageData);
+        userImage.setUser(user);
+        imageRepository.save(userImage);
+
         bookRepository.save(book);
         imageRepository.save(image);
     }
