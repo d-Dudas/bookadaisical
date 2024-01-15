@@ -10,73 +10,86 @@
     </div>
     <div class="content">
         <div class="filter-fields-container">
-            <div class="filter-fields">
+            <form class="filter-fields" [formGroup]="filterForm">
 
-                <label for="genre">Genre</label>
-                <select
-                    id="genre"
-                    [(ngModel)]="filter.genre"
-                    (change)="updateBookList()">
-                    <option
-                        *ngFor="let genre of genreOptions"
-                        [value]="genre">
-                        {{ genre }}
-                    </option>
-                </select>
+                <mat-form-field>
+                    <mat-label>Genre</mat-label>
+                    <mat-select
+                        multiple
+                        (selectionChange)="updateBookList()"
+                        formControlName="genre">
+                        <mat-option
+                            *ngFor="let genre of genreOptions"
+                            [value]="genre">
+                            {{ (genre.charAt(0) + genre.slice(1).toLowerCase()).split('_').join(' ') === 'Sci fi' ? 'Sci-fi' : (genre.charAt(0) + genre.slice(1).toLowerCase()).split('_').join(' ') }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
 
-                <label for="target-audience">Target audience</label>
-                <select
-                    id="target-audience"
-                    [(ngModel)]="filter.targetAudience"
-                    (change)="updateBookList()">
-                    <option
+                <mat-form-field>
+                    <mat-label>Target audience</mat-label>
+                    <mat-select
+                        (selectionChange)="updateBookList()"
+                        formControlName="targetAudience">
+                        <mat-option
                         *ngFor="let targetAudience of targetAudienceOptions"
-                        [value]="targetAudience">
-                        {{ targetAudience }}
-                    </option>
-                </select>
+                            [value]="targetAudience">
+                            {{ (targetAudience.charAt(0) + targetAudience.slice(1).toLowerCase()).split('_').join(' ') }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
 
-                <label for="artistic-movement">Artistic movement</label>
-                <select
-                    id="artistic-movement"
-                    [(ngModel)]="filter.artisticMovement"
-                    (change)="updateBookList()">
-                    <option
-                        *ngFor="let artisticMovement of artisticMovementOptions"
-                        [value]="artisticMovement">
-                        {{ artisticMovement }}
-                    </option>
-                </select>
+                <mat-form-field>
+                    <mat-label>Artistic movement</mat-label>
+                    <mat-select
+                        (selectionChange)="updateBookList()"
+                        formControlName="artisticMovement">
+                        <mat-option
+                            *ngFor="let artisticMovement of artisticMovementOptions"
+                            [value]="artisticMovement">
+                            {{ (artisticMovement.charAt(0) + artisticMovement.slice(1).toLowerCase()).split('_').join(' ') }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
 
-                <label for="condition">Condition</label>
-                <select
-                    id="condition"
-                    [(ngModel)]="filter.condition"
-                    (change)="updateBookList()">
-                    <option
-                        *ngFor="let condition of conditionOptions"
-                        [value]="condition">
-                        {{ condition }}
-                    </option>
-                </select>
+                <mat-form-field>
+                    <mat-label>Condition</mat-label>
+                    <mat-select
+                        (selectionChange)="updateBookList()"
+                        formControlName="condition">
+                        <mat-option
+                            *ngFor="let condition of conditionOptions"
+                            [value]="condition">
+                            {{ (condition.charAt(0) + condition.slice(1).toLowerCase()).split('_').join(' ') }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
 
                 <div class="example-label-container">
                     <label id="example-name-label" class="example-name-label">From </label>
-                    <label class="example-value-label">{{filter.yearOfPublicationNotLessThen}}</label>
+                    <label class="example-value-label">{{filterForm.getRawValue().yearOfPublicationNotLessThen}}</label>
                     <label id="example-name-label" class="example-name-label">To </label>
-                    <label class="example-value-label">{{filter.yearOfPublicationNotBiggerThen}}</label>
-                  </div>
-                <mat-slider min="1800" max="2023" (change)="updateBookList()">
-                    <input [(ngModel)]="filter.yearOfPublicationNotLessThen" matSliderStartThumb>
-                    <input [(ngModel)]="filter.yearOfPublicationNotBiggerThen" matSliderEndThumb>
+                    <label class="example-value-label">{{filterForm.getRawValue().yearOfPublicationNotBiggerThen}}</label>
+                </div>
+
+                <mat-slider
+                    (input)="updateBookList()"
+                    min="1800"
+                    max="2023">
+                    <input formControlName="yearOfPublicationNotLessThen" matSliderStartThumb>
+                    <input formControlName="yearOfPublicationNotBiggerThen" matSliderEndThumb>
                 </mat-slider>
 
-                <input
-                    type="text"
-                    placeholder="Search"
-                    [(ngModel)]="filter.contains"
-                    (change)="updateBookList()">
-            </div>
+                <mat-form-field>
+                    <mat-label>Search</mat-label>
+                    <input
+                        matInput
+                        placeholder="Search"
+                        formControlName="contains"
+                        (change)="updateBookList()">
+                </mat-form-field>
+
+            </form>
         </div>
         <div class="books-container">
             <div class="books" *ngFor="let book of books">

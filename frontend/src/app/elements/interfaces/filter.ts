@@ -1,5 +1,5 @@
 export interface Filter {
-    genre: string;
+    genre: string[];
     targetAudience: string;
     artisticMovement: string;
     condition: string;

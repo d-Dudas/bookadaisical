@@ -65,6 +65,7 @@ public class BookController {
     @PostMapping("/get-filtered-books")
     public ResponseEntity<?> getFilteredBooks(@RequestBody BookSearchFiltersDto searchFilters)
     {
+        System.out.println(searchFilters);
         try {
             return new ResponseEntity<>(bookService.getFilteredBooks(searchFilters), HttpStatus.OK);
         } catch (Exception e) {
