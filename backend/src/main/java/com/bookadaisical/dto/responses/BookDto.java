@@ -36,6 +36,9 @@ public class BookDto {
     private LocalDateTime createdOn;
     private LocalDateTime lastModifiedOn;
 
+    private Integer priceCurrency;
+    private Integer pricePoints;
+
     public BookDto(Book book) {
         this.id = book.getId();
         this.title = book.getTitle();
@@ -52,6 +55,8 @@ public class BookDto {
         this.views = book.getNumViews();
         this.createdOn = book.getCreatedOn();
         this.lastModifiedOn = book.getLastModified();
+        this.priceCurrency = book.getPriceCurrency();
+        this.pricePoints = book.getPricePoints();
 
         this.images = new HashSet<>();
         for(Image image : book.getImages()) {

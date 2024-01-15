@@ -1,7 +1,273 @@
+@font-face {
+    font-family: 'LoraItalic';
+    src: url('../../../assets/Lora/Lora-Italic-VariableFont_wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 .chat-sidebar
 {
-    padding: 20px;
+    position: fixed;
+    height: 94vh;
+    top: 6vh;
+    width: 25vw;
+}
+
+.book-page-main
+{
+    width: 100%;
+    height: 150%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.book-page-main-container
+{
+    width: 60%;
     height: 100%;
-    width: 30%;
-    border: 1px solid rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.book-page-divider
+{
+    width: 100%;
+    height: 5%;
+}
+
+.book-page-main-container-book
+{
+    width: 100%;
+    height: 45%;
+    display: flex;
+    flex-direction: row;
+    box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.book-images
+{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid grey;
+}
+
+.book-image-container
+{
+    width: 100%;
+    height: 85%;
+    display: flex;
+    flex-direction: row;
+}
+
+.book-image-left-button
+{
+    width: 15%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.book-image-button-wrapper
+{
+    height: 30%;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.book-image-button-icon
+{
+    font-size: 6vh;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.book-image-button-icon:hover
+{
+    color: grey;
+}
+
+.book-image-box
+{
+    width: 70%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.book-image-wrapper
+{
+    height: 50vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.book-image
+{
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.1);
+}
+
+.book-image-right-button
+{
+    width: 15%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.book-image-index
+{
+    width: 100%;
+    height: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.book-details
+{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.book-details-title-container
+{
+    width: 100%;
+    height: 10%;
+    display: flex;
+    align-items: flex-end;
+}
+
+.book-details-title
+{
+    margin: 0;
+    padding-left: 1vw;
+    font-size: 2vw;
+}
+
+.book-details-author-container
+{
+    width: 100%;
+    height: 10%;
+    display: flex;
+    align-items: flex-start;
+}
+
+.book-details-author
+{
+    margin: 0;
+    padding-left: 1vw;
+    font-size: 1vw;
+    color: rgb(46, 46, 46);
+}
+
+.book-details-misc
+{
+    width: 100%;
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.book-detail-container
+{
+    width: 100%;
+    height: 8%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    padding-left: 1vw;
+}
+
+.book-detail-category
+{
+    margin: 0;
+}
+
+.book-detail-value
+{
+    margin: 0;
+    padding-left: 0.5vw;
+}
+
+.book-actions
+{
+    width: 70%;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.book-page-other-books
+{
+    width: 100%;
+    height: 40%;
+    display: flex;
+    flex-direction: column;
+}
+
+.book-page-other-books-header
+{
+    width: 100%;
+    height: 10%;
+    padding-left: 1vw;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.book-page-other-books-header h1
+{
+    margin: 0;
+    font-family: 'LoraItalic';
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.carousel-container
+{
+    width: 100%;
+    height: 90%;
+}
+
+.other-books-content
+{
+    height: 45vh;
+    width: 15vw;
+    margin: 1vh 1vw;
+    margin-bottom: 2vh;
+}
+
+.book-page-footer
+{
+    width: 100%;
+    height: 20%;
+    background-color: black;
 }

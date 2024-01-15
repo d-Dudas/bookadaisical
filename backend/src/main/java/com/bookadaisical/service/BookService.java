@@ -14,11 +14,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.bookadaisical.dto.requests.BookIdDto;
 import com.bookadaisical.dto.requests.BookSearchFiltersDto;
 import com.bookadaisical.dto.requests.CreateNewBookDto;
+import com.bookadaisical.dto.requests.UsernameDto;
 import com.bookadaisical.dto.responses.BookDto;
 import com.bookadaisical.dto.responses.PopularGenreDto;
 import com.bookadaisical.enums.Genre;
+import com.bookadaisical.exceptions.BookNotFoundException;
 import com.bookadaisical.exceptions.UserNotFoundException;
 import com.bookadaisical.model.Book;
 import com.bookadaisical.model.Image;
@@ -145,5 +148,44 @@ public class BookService implements IBookService {
         book.setTradingOptions(createNewBookDto.getTradingOptions());
 
         return book;
+    }
+
+    @Override
+    public List<BookDto> getRecommendedBooks(UsernameDto usernameDto) throws Exception
+    {
+        List<BookDto> books = new ArrayList<>();
+        Optional<User> user = userRepository.findByUsername(usernameDto.getUsername());
+
+        if(user.isPresent())
+        {
+            List<Book> userBooks = bookRepository.findAllBooksByUploaderUsername(user.get().getUsername());
+            for(Book book : userBooks)
+            {
+                books.add(new BookDto(book));
+                if(books.size() == 10) break;
+            }
+        }
+
+        if(books.size() < 10)
+        {
+            List<Book> allBooks = bookRepository.findAll();
+            for(Book book : allBooks)
+            {
+                books.add(new BookDto(book));
+                if(books.size() == 10) break;
+            }
+        }
+
+        return books;
+    }
+
+    @Override
+    public void updateView(BookIdDto bookIdDto) throws Exception
+    {
+        Optional<Book> book = bookRepository.findById(bookIdDto.getId());
+        if(book.isEmpty()) throw new BookNotFoundException();
+
+        book.get().setNumViews(book.get().getNumViews() + 1);
+        bookRepository.save(book.get());
     }
 }
