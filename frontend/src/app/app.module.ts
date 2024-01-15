@@ -42,6 +42,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -92,7 +93,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatExpansionModule,
     MatSnackBarModule
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [RootComponent]
 })
 export class AppModule { }

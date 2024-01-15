@@ -48,6 +48,8 @@ public class Book {
         this.createdOn = LocalDateTime.now();
         this.lastModified = createdOn;
         this.isActive = true;
+        this.priceCurrency = 0;
+        this.pricePoints = 0;
     }
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -66,6 +68,9 @@ public class Book {
 
     private int numViews;
     private String description;
+
+    private Integer priceCurrency;
+    private Integer pricePoints;
 
     @Column(nullable = false)
     private LocalDateTime createdOn;

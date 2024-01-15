@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bookadaisical.dto.requests.BookIdDto;
 import com.bookadaisical.dto.requests.BookSearchFiltersDto;
 import com.bookadaisical.dto.requests.CreateNewBookDto;
+import com.bookadaisical.dto.requests.UsernameDto;
 import com.bookadaisical.dto.responses.BookDto;
 import com.bookadaisical.service.BookService;
 
@@ -102,6 +104,28 @@ public class BookController {
             return ResponseEntity.ok(createNewBookDto);
         } catch (Exception e) {
             e.printStackTrace();
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/recommended-books")
+    public ResponseEntity<?> getRecommendedBooks(@RequestBody UsernameDto usernameDto)
+    {
+        try {
+            List<BookDto> books = bookService.getRecommendedBooks(usernameDto);
+            return ResponseEntity.ok(books);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/update-view")
+    public ResponseEntity<?> updateView(@RequestBody BookIdDto bookIdDto)
+    {
+        try {
+            bookService.updateView(bookIdDto);
+            return ResponseEntity.ok(null);
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
