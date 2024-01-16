@@ -40,7 +40,6 @@ export class AccountPageComponent {
     const username: string = this.getUserIdFromUrl();
     this.accountService.getUserDetails(username).subscribe({
       next: user => {
-        console.log(user);
         this.user = user;
         this.verifyIfVisitorIsTheOwner();
         this.getUserBooks();
@@ -57,7 +56,6 @@ export class AccountPageComponent {
   {
     this.chatService.getUserChats(this.user?.username!).subscribe({
       next: chats => {
-        console.log(chats);
         this.chats = chats;
       },
       error: (error) => {
@@ -70,7 +68,6 @@ export class AccountPageComponent {
   {
     this.negotiationService.getUserOngoingNegotiations(this.user?.username!).subscribe({
       next: negotiations => {
-        console.log(negotiations);
         this.negotiations = negotiations;
       },
       error: (error) => {
@@ -148,7 +145,6 @@ export class AccountPageComponent {
     this.bookService.getUserBooks(this.user?.username!).subscribe({
       next: userBooks => {
         this.books = userBooks;
-        console.log(this.books);
       },
       error: (error) => {
         console.log(error);

@@ -55,13 +55,13 @@ export class NegotiatePageComponent {
       {
         this.store.select(selectIsAuthenticated).subscribe((isAuthenticated) =>
         {
-          console.log(isAuthenticated);
           if(!isAuthenticated)
           {
             this.router.navigate(['/home']);
           } else {
             this.store.select(selectUser).subscribe((username) => {
               this.initiatorUsername = username!;
+              if(this.initiatorUsername === this.responderUsername) this.router.navigate(['/home']);
               this.getInitiatorBooks();
             });
           }
@@ -82,6 +82,7 @@ export class NegotiatePageComponent {
 
   private async setupResponderData() {
     this.responderUsername = this.negotiationService.getResponderUsername();
+    if(this.initiatorUsername === this.responderUsername) this.router.navigate(['/home']);
     this.getResponderBooks();
   }
 
@@ -136,9 +137,6 @@ export class NegotiatePageComponent {
         {
           this.isAcceptable = true;
         }
-        console.log(negotiationOfferDto.responderSelectedBooks);
-        console.log(negotiationOfferDto.initiatorSelectedBooks);
-        console.log(!negotiationOfferDto.responderSelectedBooks.includes(this.preselectedBookId));
         if(this.initiatorUsername === negotiationOfferDto.initiatorUsername) this.isAcceptableByUser = false;
         this.anOfferWasMade = true;
       },

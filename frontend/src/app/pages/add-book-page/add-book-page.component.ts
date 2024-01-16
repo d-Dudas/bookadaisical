@@ -35,12 +35,12 @@ export class AddBookPageComponent {
   });
 
   bookDetails = this._formBuilder.group({
-    genres: ['', Validators.required],
+    genres: ['' || [''], Validators.required],
     yearOfPublication: ['', [Validators.required, Validators.min(0)]],
     artisticMovement: ['', Validators.required],
     targetAudience: ['', Validators.required],
     bookCondition: ['', Validators.required],
-    tradingOption: ['', Validators.required],
+    tradingOption: ['' || [''], Validators.required],
   });
 
   prices = this._formBuilder.group({
@@ -104,7 +104,7 @@ export class AddBookPageComponent {
   }
 
   onFilesSelected(event: any): void {
-    const files = event.target.file;
+    const files = event.target.files;
 
     for (let file of files) {
       const reader = new FileReader();
@@ -137,22 +137,20 @@ export class AddBookPageComponent {
       author: this.bookDescription.getRawValue().author!,
       description: this.bookDescription.getRawValue().description!,
       yearOfPublication: +this.bookDetails.getRawValue().yearOfPublication!,
-      artisticMovement: this.bookDetails.getRawValue().artisticMovement!,
-      targetAudience: this.bookDetails.getRawValue().targetAudience!,
-      condition: this.bookDetails.getRawValue().bookCondition!,
+      artisticMovement: this.bookDetails.getRawValue().artisticMovement!.toUpperCase(),
+      targetAudience: this.bookDetails.getRawValue().targetAudience!.toUpperCase(),
+      condition: this.bookDetails.getRawValue().bookCondition!.toUpperCase(),
       images: this.imageUrls.map(imageUrl => this.extractBase64Data(imageUrl)),
-      genres: this.bookDetails.getRawValue().genres,
-      tradingOptions: this.bookDetails.getRawValue().tradingOption,
+      genres: this.bookDetails.getRawValue().genres?.map(genre => genre.toUpperCase()),
+      tradingOptions: this.bookDetails.getRawValue().tradingOption?.map(to => to.toUpperCase()),
       priceCurrency: this.prices.getRawValue().priceInCurrency,
       pricePoints: this.prices.getRawValue().priceInPoints,
 
       uploaderUsername: this.uploaderUsername,
     };
 
-    console.log(book);
     this.bookService.uploadNewBook(book).subscribe({
       next: response => {
-        console.log(response);
         this.router.navigate(['/home'])
       },
       error: () => {

@@ -30,7 +30,6 @@ export class LandingPageComponent {
 
     this.bookService.getMostPopularCategories().subscribe((categories) => {
       this.mostPopularCategories = categories;
-      console.log(this.mostPopularCategories);
     })
 
     this.responsiveOptions = [
@@ -50,5 +49,10 @@ export class LandingPageComponent {
           numScroll: 1
       }
     ];
+  }
+
+  public getGenreString(genre: any): string
+  {
+    return genre.charAt(0) + genre.slice(1).toLowerCase();
   }
 }

@@ -44,7 +44,7 @@
                 <div class="book-details-misc">
                     <div class="book-detail-container">
                         <h2 class="book-detail-category">Uploader:</h2>
-                        <h3 class="book-detail-value">{{ book?.uploaderUsername }}</h3>
+                        <h3 class="book-detail-value clickable" [routerLink]="['/account', book?.uploaderUsername]">{{ book?.uploaderUsername }}</h3>
                     </div>
                     <div *ngIf="doesBookHavePricePoints()" class="book-detail-container">
                         <h2 class="book-detail-category">Price in points:</h2>

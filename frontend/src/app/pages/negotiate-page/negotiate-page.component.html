@@ -11,7 +11,7 @@
         <div class="negotiation-books-container">
             <div class="user-books">
                 <div class="user-books-header">
-                    <h2>Initiator: {{ initiatorUsername }}</h2>
+                    <h2>Your books</h2>
                 </div>
                 <div class="user-books-content" >
                     <app-book-preview
@@ -25,7 +25,7 @@
             </div>
             <div class="user-books">
                 <div class="user-books-header">
-                    <h2>Responder: {{ responderUsername }}</h2>
+                    <h2 class="clickable" [routerLink]="['/account', responderUsername]">{{ responderUsername }}</h2><h2>'{{ responderUsername.charAt(responderUsername.length-1) === 's' ? '' : 's'}} books</h2>
                 </div>
                 <div class="user-books-content">
                     <div

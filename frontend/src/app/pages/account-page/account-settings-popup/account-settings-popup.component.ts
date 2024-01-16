@@ -6,6 +6,7 @@ import { AccountService } from 'src/app/services/account.service';
 import { login } from 'src/app/account-management/auth.actions';
 import { UserSlim } from 'src/app/elements/classes/userSlim';
 import { ChangeProfilePictureDto } from 'src/app/elements/interfaces/change-profile-picture-dto';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-account-settings-popup',
@@ -46,7 +47,6 @@ export class AccountSettingsPopupComponent {
   }
 
   public onFilesSelected(event: any): void {
-    console.log(event);
     const file = event.target.files[0];
     const reader = new FileReader();
     reader.onload = (e: any) => {
@@ -120,7 +120,6 @@ export class AccountSettingsPopupComponent {
   public submitChangeProfilePictureForm(): void
   {
     if(!this.changeProfilePictureFormData.valid) return;
-    console.log(this.changeProfilePictureFormData.getRawValue());
 
     let changeProfilePictureDto: ChangeProfilePictureDto = {
       username: this.user?.username!,
@@ -129,7 +128,7 @@ export class AccountSettingsPopupComponent {
 
     this.accountService.changeProfilePicture(changeProfilePictureDto).subscribe({
       next: () => {
-        console.log("success");
+        window.location.reload();
       },
       error: (error) => {
         console.log(error);

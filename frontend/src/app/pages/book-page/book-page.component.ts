@@ -42,11 +42,7 @@ export class BookPageComponent implements OnInit {
         {
           this.bookService.getBookByUniqueId(bookUniqueId).subscribe(book => {
             this.book = book;
-            console.log(this.doesBookHavePriceCurrency());
             this.bookService.updateView({id: this.book?.id!}).subscribe({
-              next: () => {
-                console.log("success");
-              },
               error: (error) => {
                 console.log(error);
               }
@@ -56,7 +52,6 @@ export class BookPageComponent implements OnInit {
 
               this.bookService.getRecommendedBooks({username: this.uploaderUsername!}).subscribe({
                 next: books => {
-                  console.log(books);
                   this.otherBooks = books;
                 },
                 error: (error) => {
