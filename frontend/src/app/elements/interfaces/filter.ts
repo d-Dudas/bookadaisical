@@ -6,4 +6,5 @@ export interface Filter {
     contains: string;
     yearOfPublicationNotLessThen: number;
     yearOfPublicationNotBiggerThen: number;
+    author: string;
 }

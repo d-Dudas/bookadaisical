@@ -6,6 +6,7 @@ import com.bookadaisical.dto.requests.BookIdDto;
 import com.bookadaisical.dto.requests.BookSearchFiltersDto;
 import com.bookadaisical.dto.requests.CreateNewBookDto;
 import com.bookadaisical.dto.requests.UsernameDto;
+import com.bookadaisical.dto.responses.AuthorsDto;
 import com.bookadaisical.dto.responses.BookDto;
 import com.bookadaisical.dto.responses.PopularGenreDto;
 
@@ -19,4 +20,5 @@ public interface IBookService {
     public void uploadNewBook(CreateNewBookDto createNewBookDto) throws Exception;
     public List<BookDto> getRecommendedBooks(UsernameDto usernameDto) throws Exception;
     public void updateView(BookIdDto bookIdDto) throws Exception;
+    public AuthorsDto getAuthors() throws Exception;
 }

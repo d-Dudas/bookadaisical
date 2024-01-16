@@ -18,6 +18,7 @@ import com.bookadaisical.dto.requests.BookIdDto;
 import com.bookadaisical.dto.requests.BookSearchFiltersDto;
 import com.bookadaisical.dto.requests.CreateNewBookDto;
 import com.bookadaisical.dto.requests.UsernameDto;
+import com.bookadaisical.dto.responses.AuthorsDto;
 import com.bookadaisical.dto.responses.BookDto;
 import com.bookadaisical.dto.responses.PopularGenreDto;
 import com.bookadaisical.enums.Genre;
@@ -31,6 +32,8 @@ import com.bookadaisical.repository.UserRepository;
 import com.bookadaisical.repository.specifications.BookSpecification;
 import com.bookadaisical.service.interfaces.IBookService;
 import com.bookadaisical.utils.GenreCount;
+
+import jakarta.security.auth.message.config.AuthConfig;
 
 @Service
 public class BookService implements IBookService {
@@ -187,5 +190,19 @@ public class BookService implements IBookService {
 
         book.get().setNumViews(book.get().getNumViews() + 1);
         bookRepository.save(book.get());
+    }
+
+    @Override
+    public AuthorsDto getAuthors() throws Exception
+    {
+        AuthorsDto autors = new AuthorsDto();
+        List<Book> books = bookRepository.findAll();
+
+        for(Book book : books)
+        {
+            autors.getAuthors().add(book.getAuthor());
+        }
+
+        return autors;
     }
 }

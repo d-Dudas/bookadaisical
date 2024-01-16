@@ -45,6 +45,10 @@ public class BookSpecification implements Specification<Book> {
             predicates.add(criteriaBuilder.equal(root.get("targetAudience"), filters.getTargetAudience()));
         }
 
+        if (filters.getAuthor() != null && !filters.getAuthor().isEmpty()) {
+            predicates.add(criteriaBuilder.equal(root.get("author"), filters.getAuthor()));
+        }
+
         if (filters.getArtisticMovement() != null && filters.getArtisticMovement() != ArtisticMovement.ALL) {
             predicates.add(criteriaBuilder.equal(root.get("artisticMovement"), filters.getArtisticMovement()));
         }

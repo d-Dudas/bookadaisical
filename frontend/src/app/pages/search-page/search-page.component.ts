@@ -20,6 +20,7 @@ export class SearchPageComponent {
   targetAudienceOptions = this.getEnumValues(TargetAudience);
   artisticMovementOptions = this.getEnumValues(ArtisticMovement);
   conditionOptions = this.getEnumValues(Condition);
+  authors: string[] = [];
 
   filter: Filter = {
     genre: [this.genreOptions[0]],
@@ -28,7 +29,8 @@ export class SearchPageComponent {
     condition: this.conditionOptions[0],
     yearOfPublicationNotLessThen: 1800, // TODO: Dynamically get the "oldest" book from database
     yearOfPublicationNotBiggerThen: 2024, // TODO: Dynamically read maximum year
-    contains: ""
+    contains: "",
+    author: ""
   }
 
   filterForm = this.formBuilder.group({
@@ -38,23 +40,35 @@ export class SearchPageComponent {
     condition: [''],
     yearOfPublicationNotLessThen: [1800],
     yearOfPublicationNotBiggerThen: [2024],
-    contains: ['']
+    contains: [''],
+    author: ['']
   });
 
   constructor(private bookService: BookService,
               private activatedRoute: ActivatedRoute,
               private formBuilder: FormBuilder,
-              private router: Router) {
-    this.activatedRoute.queryParams.subscribe(params => {
-        this.filter.genre = params['genre'] || this.genreOptions[0];
-    });
+              private router: Router) 
+  {
   }
 
   ngOnInit(): void {
-    this.filterForm.controls.genre.setValue([this.genreOptions[0]]);
-    this.filterForm.controls.targetAudience.setValue(this.targetAudienceOptions[0]);
-    this.filterForm.controls.artisticMovement.setValue(this.artisticMovementOptions[0]);
-    this.filterForm.controls.condition.setValue(this.conditionOptions[0]);
+    console.log('x');
+    this.bookService.getAuthors().subscribe({
+      next: authorsDto => {
+        console.log(authorsDto);
+        this.authors = authorsDto.authors;
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    })
+    this.activatedRoute.queryParams.subscribe(params => {
+        const genreValue = params['genre'] ? (Array.isArray(params['genre']) ? params['genre'] : [params['genre']]) : [this.genreOptions[0]];
+        this.filterForm.controls.genre.setValue(genreValue);
+        this.filterForm.controls.targetAudience.setValue(params['targetAudience'] || this.targetAudienceOptions[0]);
+        this.filterForm.controls.artisticMovement.setValue(params['artisticMovement'] || this.artisticMovementOptions[0]);
+        this.filterForm.controls.condition.setValue(params['condition'] || this.conditionOptions[0]);
+    });
 
     this.updateBookList();
   }
@@ -66,14 +80,14 @@ export class SearchPageComponent {
   public updateBookList()
   {
     this.filter = this.filterForm.getRawValue() as Filter;
+    console.log(this.filter);
     this.bookService.getFilteredBooks(this.filter).subscribe((books) => {
       this.books = books;
     });
 
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
-      queryParams: this.filter,
-      queryParamsHandling: 'merge',
+      queryParams: this.filterForm.getRawValue(),
     });
   }
 }

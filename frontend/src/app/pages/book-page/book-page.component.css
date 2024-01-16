@@ -271,3 +271,33 @@
     height: 20%;
     background-color: black;
 }
+
+.currency {
+    background-color: orange;
+    backdrop-filter: blur(10px);
+}
+
+.swap {
+    background-color: pink;
+    backdrop-filter: blur(10px);
+}
+
+.points {
+    background-color: rgb(154, 243, 154);
+    backdrop-filter: blur(10px);
+}
+
+.trading-option
+{
+    margin: 0 0.1vw;
+    font-size: 70%;
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    max-width: 50%;
+    padding: 0 5px;
+    height: 80%;
+    text-transform: uppercase;
+}

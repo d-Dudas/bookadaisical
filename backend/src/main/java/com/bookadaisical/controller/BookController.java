@@ -16,6 +16,7 @@ import com.bookadaisical.dto.requests.BookIdDto;
 import com.bookadaisical.dto.requests.BookSearchFiltersDto;
 import com.bookadaisical.dto.requests.CreateNewBookDto;
 import com.bookadaisical.dto.requests.UsernameDto;
+import com.bookadaisical.dto.responses.AuthorsDto;
 import com.bookadaisical.dto.responses.BookDto;
 import com.bookadaisical.service.BookService;
 
@@ -125,6 +126,18 @@ public class BookController {
         try {
             bookService.updateView(bookIdDto);
             return ResponseEntity.ok(null);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/get-authors")
+    public ResponseEntity<?> getAuthors()
+    {
+        AuthorsDto authors;
+        try {
+            authors = bookService.getAuthors();
+            return ResponseEntity.ok(authors);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

@@ -65,6 +65,19 @@
                     </mat-select>
                 </mat-form-field>
 
+                <mat-form-field>
+                    <mat-label>Author</mat-label>
+                    <mat-select
+                        (selectionChange)="updateBookList()"
+                        formControlName="author">
+                        <mat-option
+                            *ngFor="let author of authors"
+                            [value]="author">
+                            {{ author }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
                 <div class="example-label-container">
                     <label id="example-name-label" class="example-name-label">From </label>
                     <label class="example-value-label">{{filterForm.getRawValue().yearOfPublicationNotLessThen}}</label>

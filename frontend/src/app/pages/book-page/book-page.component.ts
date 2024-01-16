@@ -159,6 +159,7 @@ export class BookPageComponent implements OnInit {
 
   public getEnumValueAsString(value: any): string
   {
+    if(value === null) return '';
     return (value.charAt(0) + value.slice(1).toLowerCase()).split('_').join(' ');
   }
 
@@ -177,5 +178,20 @@ export class BookPageComponent implements OnInit {
   {
     return this.book?.tradingOptions.includes(TradingOption.ALL)! ||
           this.book?.tradingOptions.includes(TradingOption.POINTS)!;
+  }
+
+  getTradingOptions()
+  {
+    let tradingOptions = [];
+    if(this.book?.tradingOptions.includes(TradingOption.ALL))
+    {
+      tradingOptions.push(TradingOption.CURRENCY);
+      tradingOptions.push(TradingOption.POINTS);
+      tradingOptions.push(TradingOption.SWAP);
+    } else {
+      tradingOptions = this.book?.tradingOptions!;
+    }
+
+    return tradingOptions;
   }
 }

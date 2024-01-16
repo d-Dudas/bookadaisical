@@ -22,12 +22,5 @@ public class BookSearchFiltersDto {
     private int yearOfPublicationNotLessThen;
     private int yearOfPublicationNotBiggerThen;
     private String contains;
-
-    @Override
-    public String toString() {
-        return "BookSearchFiltersDto [genre=" + genre + ", targetAudience=" + targetAudience + ", artisticMovement="
-                + artisticMovement + ", condition=" + condition + ", tradingOption=" + tradingOption
-                + ", yearOfPublicationNotLessThen=" + yearOfPublicationNotLessThen + ", yearOfPublicationNotBiggerThen="
-                + yearOfPublicationNotBiggerThen + ", contains=" + contains + "]";
-    }
+    private String author;
 }

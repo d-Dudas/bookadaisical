@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { finalize } from 'rxjs/operators';
 import { selectIsAuthenticated, selectTokenVerificationStatus, selectUser } from 'src/app/account-management/auth.state';
+import { TradingOption } from 'src/app/elements/enums/trading-option';
 import { NegotiatingUsersDto } from 'src/app/elements/interfaces/find-existing-negotiation-dto';
 import { NegotiateItem } from 'src/app/elements/interfaces/negotiation-item';
 import { NegotiationOfferDto } from 'src/app/elements/interfaces/negotiation-offer-dto';
@@ -74,7 +75,8 @@ export class NegotiatePageComponent {
     if(this.initiatorUsername === undefined) return;
     this.bookService.getUserBooks(this.initiatorUsername).subscribe((initiatorBooks) => {
       for (const book of initiatorBooks) {
-        this.initiatorItems.push({book, selected: false});
+        if(book.tradingOptions.includes(TradingOption.SWAP) || book.tradingOptions.includes(TradingOption.ALL))
+          this.initiatorItems.push({book, selected: false});
       }
       this.findExistingNegotiation();
     });
@@ -91,7 +93,8 @@ export class NegotiatePageComponent {
     if(this.responderUsername === undefined) return;
     this.bookService.getUserBooks(this.responderUsername).subscribe((responderBooks) => {
       for (const book of responderBooks) {
-        this.responderItems.push({book, selected: book.id === this.preselectedBookId});
+        if(book.tradingOptions.includes(TradingOption.SWAP) || book.tradingOptions.includes(TradingOption.ALL))
+          this.responderItems.push({book, selected: book.id === this.preselectedBookId});
       }
       this.findExistingNegotiation();
     });

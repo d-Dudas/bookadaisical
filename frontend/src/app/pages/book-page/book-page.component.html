@@ -64,23 +64,28 @@
                     </div>
                     <div class="book-detail-container">
                         <h2 class="book-detail-category">Artistic movement:</h2>
-                        <h3 class="book-detail-value">{{ getEnumValueAsString(book?.artisticMovement) }}</h3>
+                        <h3 class="book-detail-value clickable" [routerLink]="['/search']" [queryParams]="{ artisticMovement: book?.artisticMovement}">{{ getEnumValueAsString(book?.artisticMovement) }}</h3>
                     </div>
                     <div class="book-detail-container">
                         <h2 class="book-detail-category">Target Audience:</h2>
-                        <h3 class="book-detail-value">{{ getEnumValueAsString(book?.targetAudience) }}</h3>
+                        <h3 class="book-detail-value clickable" [routerLink]="['/search']" [queryParams]="{ targetAudience: book?.targetAudience}">{{ getEnumValueAsString(book?.targetAudience) }}</h3>
                     </div>
                     <div class="book-detail-container">
                         <h2 class="book-detail-category">Condition:</h2>
-                        <h3 class="book-detail-value">{{ getEnumValueAsString(book?.condition) }}</h3>
+                        <h3 class="book-detail-value clickable" [routerLink]="['/search']" [queryParams]="{ condition: book?.condition}">{{ getEnumValueAsString(book?.condition) }}</h3>
                     </div>
                     <div class="book-detail-container">
                         <h2 class="book-detail-category">Genres:</h2>
-                        <h3 class="book-detail-value">{{ getGenreString() }}</h3>
+                        <h3 class="book-detail-value clickable" *ngFor="let genre of book?.genres" [routerLink]="['/search']" [queryParams]="{ genre: genre}">{{ getEnumValueAsString(genre) }}</h3>
                     </div>
                     <div class="book-detail-container">
                         <h2 class="book-detail-category">Trading options:</h2>
-                        <h3 class="book-detail-value">{{ getTradingOptionsString() }}</h3>
+                        <h3
+                            class="book-detail-value trading-option"
+                            *ngFor="let option of getTradingOptions()"
+                            [ngClass]="{'currency': option === 'CURRENCY', 'swap': option === 'SWAP', 'points': option === 'POINTS'}">
+                            {{ getEnumValueAsString(option) }}
+                        </h3>
                     </div>
                     <div class="book-detail-container">
                         <h2 class="book-detail-category">Views:</h2>

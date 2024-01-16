@@ -6,6 +6,7 @@ import { UserSlim } from '../elements/classes/userSlim';
 import { PopularGenre } from '../elements/interfaces/popular-genre';
 import { GetRecommendedBooksDto } from '../elements/interfaces/get-recommended-books-dto';
 import { BookIdDto } from '../elements/interfaces/book-id-dto';
+import { AuthorsDto } from '../elements/interfaces/authors-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,7 @@ export class BookService {
   private uploadNewBookUrl = '/books/upload-new';
   private getRecommendedBooksUrl = '/recommended-books';
   private updateViewUrl = '/update-view';
+  private getAuthorsUrl = '/get-authors';
 
   constructor(private http: HttpClient)
   {
@@ -75,5 +77,10 @@ export class BookService {
   updateView(data: BookIdDto)
   {
     return this.http.post(this.backendUrl + this.updateViewUrl, data);
+  }
+
+  getAuthors(): Observable<AuthorsDto>
+  {
+    return this.http.get<AuthorsDto>(this.backendUrl + this.getAuthorsUrl);
   }
 }
