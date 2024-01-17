@@ -1,20 +1,38 @@
 @font-face {
-    font-family: 'LoraItalic';
-    src: url('../../../assets/Lora/Lora-Italic-VariableFont_wght.ttf') format('truetype');
+    font-family: 'NeueMetana';
+    src: url('../../../assets/fonts/NeueMetana-Regular.otf') format('opentype');
     font-weight: normal;
     font-style: normal;
+}
+
+@font-face {
+    font-family: 'NeueMetana';
+    src: url('../../../assets/fonts/NeueMetana-Bold.otf') format('opentype');
+    font-weight: bold;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
 }
 
 .navbar-container
 {
     width: 100%;
-    background-color: saddlebrown;
+    background-color: transparent;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     position: fixed;
     top: 0;
-    z-index: 10;
-    height: 6vh;
+    background-color: rgba(0, 0, 0, 0.301); /* Initial background color with some transparency */
+    transition: background-color 0.3s ease;
+    z-index: 1000;
+    height: 10vh;
+}
+
+.navbar-container.hidden {
+    top: -10vh; /* Adjust based on your navbar height */
 }
 
 .navbar-placeholder
@@ -45,8 +63,9 @@
 {
     cursor: pointer;
     color: white;
-    font-family: 'LoraItalic';
-    font-size: 2rem;
+    font-family: 'NeueMetana';
+    text-transform: lowercase;
+    font-size: 2.5rem;
     font-weight: bold;
 }
 
@@ -64,7 +83,7 @@
 
 .navbar-button:hover
 {
-    background-color: rgb(156, 94, 49);
+    text-decoration: underline;
 }
 
 .mat-icon

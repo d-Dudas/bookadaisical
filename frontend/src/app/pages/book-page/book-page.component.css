@@ -1,8 +1,19 @@
 @font-face {
-    font-family: 'LoraItalic';
-    src: url('../../../assets/Lora/Lora-Italic-VariableFont_wght.ttf') format('truetype');
+    font-family: 'NeueMetana';
+    src: url('../../../assets/fonts/NeueMetana-Regular.otf') format('opentype');
     font-weight: normal;
     font-style: normal;
+}
+
+@font-face {
+    font-family: 'NeueMetana';
+    src: url('../../../assets/fonts/NeueMetana-Bold.otf') format('opentype');
+    font-weight: bold;
+}
+
+h1 {
+    font-style: 'NeueMetana';
+    font-weight: bold;
 }
 
 .chat-sidebar
@@ -43,7 +54,6 @@
     height: 45%;
     display: flex;
     flex-direction: row;
-    box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
 }
 
@@ -150,6 +160,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: white;
+    border-radius: 10px;
+    padding-top: 5%;
 }
 
 .book-details-title-container
@@ -165,6 +178,9 @@
     margin: 0;
     padding-left: 1vw;
     font-size: 2vw;
+    font-family: 'NeueMetana';
+    font-weight: bold;
+    padding-left: 10%;
 }
 
 .book-details-author-container
@@ -181,6 +197,7 @@
     padding-left: 1vw;
     font-size: 1vw;
     color: rgb(46, 46, 46);
+    padding-left: 10%;
 }
 
 .book-details-misc
@@ -191,6 +208,7 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
+    padding-left: 5%;
 }
 
 .book-detail-container
@@ -217,7 +235,8 @@
 
 .book-actions
 {
-    width: 70%;
+    width: 50%;
+    padding-bottom: 15%;
     height: 10%;
     display: flex;
     flex-direction: row;

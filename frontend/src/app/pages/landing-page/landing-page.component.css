@@ -1,8 +1,19 @@
 @font-face {
-    font-family: 'LoraItalic';
-    src: url('../../../assets/Lora/Lora-Italic-VariableFont_wght.ttf') format('truetype');
+    font-family: 'NeueMetana';
+    src: url('../../../assets/fonts/NeueMetana-Regular.otf') format('opentype');
     font-weight: normal;
     font-style: normal;
+}
+
+@font-face {
+    font-family: 'NeueMetana';
+    src: url('../../../assets/fonts/NeueMetana-Bold.otf') format('opentype');
+    font-weight: bold;
+}
+
+h1 {
+    font-family: 'NeueMetana';
+    color: white;
 }
 
 .popular-books-content
@@ -32,6 +43,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: white;
 }
 
 .landing-page-separator
@@ -41,6 +53,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: white;
 }
 
 .landing-page-separator-container
@@ -54,7 +67,7 @@
 
 .landing-page-separator-content
 {
-    font-family: 'LoraItalic';
+    font-family: 'NeueMetana';
     font-size: 2rem;
     font-weight: bold;
 }
@@ -94,7 +107,7 @@
     width: 25%;
     height: 80%;
     grid-area: 1 / 1;
-    background-color: coral;
+    background-color: #475d68;
     clip-path: polygon(50% 30%, 100% 0, 100% 100%, 0 100%, 0 0);
     display: flex;
     align-items: center;
@@ -130,3 +143,14 @@
     height: 30%;
     background-color: black;
 }
+
+.top-page-container {
+    
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }

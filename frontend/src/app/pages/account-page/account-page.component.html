@@ -15,7 +15,7 @@
                     </div>
                 </div>
                 <div class="account-page-user-details-username">
-                    <h1>{{ user?.username }}</h1>
+                    <h1 style="font-family: 'NeueMetana';">{{ user?.username }}</h1>
                     <div
                         *ngIf="isVisitorTheOwner"
                         (click)="openAccountSettingsPopup()"
@@ -33,26 +33,26 @@
             <div class="account-page-user-details-points">
                 <div class="account-page-user-details-points-container">
                     <div class="account-page-user-details-points-container-header">
-                        <h1>Current points</h1>
+                        <h1>current points</h1>
                     </div>
                     <div class="account-page-user-details-points-container-value">
-                        <h2>{{ user?.currentPoints }}</h2>
+                        <h2 style="font-family: 'NeueMetana';">{{ user?.currentPoints }}</h2>
                     </div>
                 </div>
                 <div class="account-page-user-details-points-container">
                     <div class="account-page-user-details-points-container-header">
-                        <h1>Total points</h1>
+                        <h1>total points</h1>
                     </div>
                     <div class="account-page-user-details-points-container-value">
-                        <h2>{{ user?.totalPoints }}</h2>
+                        <h2 style="font-family: 'NeueMetana';">{{ user?.totalPoints }}</h2>
                     </div>
                 </div>
                 <div class="account-page-user-details-points-container">
                     <div class="account-page-user-details-points-container-header">
-                        <h1>Special currency</h1>
+                        <h1>special currency</h1>
                     </div>
                     <div class="account-page-user-details-points-container-value">
-                        <h2>{{ user?.specialCurrency }}</h2>
+                        <h2 style="font-family: 'NeueMetana';">{{ user?.specialCurrency }}</h2>
                     </div>
                 </div>
             </div>

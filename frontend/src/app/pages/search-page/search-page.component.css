@@ -1,3 +1,20 @@
+@font-face {
+    font-family: 'NeueMetana';
+    src: url('../../../assets/fonts/NeueMetana-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NeueMetana';
+    src: url('../../../assets/fonts/NeueMetana-Bold.otf') format('opentype');
+    font-weight: bold;
+}
+
+label {
+    font-family: 'NeueMetana';
+}
+
 body, html {
     height: 100%;
     margin: 0;
@@ -11,9 +28,11 @@ body, html {
 }
 
 .filter-fields-container {
-    padding-left: 5%;
-    padding-top: 10%;
-    padding-right: 10px;
+    padding: 2%;
+    background-color: white;
+    margin-top: 10%;
+    margin-left: 3%;
+    border-radius: 5px;
 }
 
 
@@ -100,7 +119,7 @@ app-book-preview {
 }
 
 ::ng-deep .p-multiselect-token {
-    background-color: bisque;
+    background-color: rgb(210, 215, 235);
 }
 
 ::ng-deep p-multiselect .p-inputwrapper {

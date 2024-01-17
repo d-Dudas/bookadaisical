@@ -1,6 +1,19 @@
+@font-face {
+    font-family: 'NeueMetana';
+    src: url('../../../../../assets/fonts/NeueMetana-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NeueMetana';
+    src: url('../../../../../assets/fonts/NeueMetana-Bold.otf') format('opentype');
+    font-weight: bold;
+}
+
 .login-popup-content
 {
-    height: 50vh;
+    height: 60vh;
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 30px;
     display: flex;
@@ -55,4 +68,10 @@
     font-size: 1vw;
     margin: 0 !important;
     margin-right: 1vw;
+    font-family: 'NeueMetana';
+}
+
+.button {
+    font-family: 'NeueMetana';
+    font-weight: bold;
 }

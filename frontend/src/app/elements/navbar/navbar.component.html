@@ -5,14 +5,12 @@
                 class="navbar-button"
                 mat-button
                 routerLink="/home">
-                <mat-icon>home</mat-icon>
                 Home
             </button>
             <button
                 class="navbar-button"
                 mat-button
                 routerLink="/search">
-                <mat-icon>search</mat-icon>
                 Search
             </button>
         </div>
@@ -26,7 +24,6 @@
                 *ngIf="isAuthenticated"
                 [routerLink]="['/upload-new-book']">
                 <mat-icon>book</mat-icon>
-                Upload new book
             </button>
             <button
                 class="navbar-button"
@@ -34,7 +31,6 @@
                 *ngIf="isAuthenticated"
                 [routerLink]="['/account', username]">
                 <mat-icon>person</mat-icon>
-                Account
             </button>
             <app-authenticate-popup></app-authenticate-popup>
         </div>
