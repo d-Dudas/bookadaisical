@@ -1,10 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { AbstractControlOptions, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, AbstractControlOptions, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { User } from 'src/app/elements/classes/user';
 import { AccountService } from 'src/app/services/account.service';
 import { login } from 'src/app/account-management/auth.actions';
 import { UserSlim } from 'src/app/elements/classes/userSlim';
+import { ChangeProfilePictureDto } from 'src/app/elements/interfaces/change-profile-picture-dto';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-account-settings-popup',
@@ -15,16 +17,12 @@ export class AccountSettingsPopupComponent {
   @Input() isAccountSettingsPopupVisible: boolean = false;
   @Input() user: User | null = null;
   @Output() closeAccountSettingsPopup = new EventEmitter<void>();
-
-  changeUsernameFormData: FormGroup;
-  changeEmailFormData: FormGroup;
-  changePasswordFormData: FormGroup;
-  isPasswordVisisble: boolean = false;
-  passwordInputType: string = this.isPasswordVisisble ? "text" : "password";
-
-  isChangeUsernameFormVisible: boolean = false;
-  isChangeEmailFormVisible: boolean = false;
-  isChangePasswordFormVisible: boolean = false;
+  public hidePassword = true;
+  public hideConfirmPassword = true;
+  public changeUsernameFormData: FormGroup;
+  public changeEmailFormData: FormGroup;
+  public changePasswordFormData: FormGroup;
+  public changeProfilePictureFormData: FormGroup;
 
   constructor(private formBuilder: FormBuilder,
       private accountService: AccountService,
@@ -39,25 +37,25 @@ export class AccountSettingsPopupComponent {
     });
 
     this.changePasswordFormData = this.formBuilder.group({
-      password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/)]],
-      confirmPassword: ['', [Validators.required]]
-    }, {
-      validators: this.passwordMatchValidator
-    } as AbstractControlOptions);
+      password: ['', [Validators.required, this.passwordStrengthValidator()]],
+      confirmPassword: ['', [Validators.required, this.passwordsMatchValidator()]]
+    });
+
+    this.changeProfilePictureFormData = this.formBuilder.group({
+      image: ['', Validators.required]
+    });
   }
 
-  passwordMatchValidator(group: FormGroup): ValidationErrors | null {
-    const password = group.get('password')?.value;
-    const confirmPassword = group.get('confirmPassword')?.value;
-
-    if (password === confirmPassword) {
-      return null;
-    } else {
-      return { mismatch: true };
-    }
+  public onFilesSelected(event: any): void {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.changeProfilePictureFormData.controls['image'].setValue(e.target.result);
+    };
+    reader.readAsDataURL(file);
   }
 
-  closePopup(event: MouseEvent)
+  public closePopup(event: MouseEvent)
   {
     if(event.target === event.currentTarget)
     {
@@ -65,16 +63,7 @@ export class AccountSettingsPopupComponent {
     }
   }
 
-  triggerUsernameForm(): void
-  {
-    this.changeUsernameFormData.reset({
-      username: ''
-    });
-
-    this.isChangeUsernameFormVisible = !this.isChangeUsernameFormVisible;
-  }
-
-  submitChangeUsernameForm(): void
+  public submitChangeUsernameForm(): void
   {
     if(!this.changeUsernameFormData.valid) return;
     if(this.user !== null)
@@ -92,16 +81,7 @@ export class AccountSettingsPopupComponent {
     }
   }
 
-  triggerEmailForm(): void
-  {
-    this.changeEmailFormData.reset({
-      email: ''
-    });
-
-    this.isChangeEmailFormVisible = !this.isChangeEmailFormVisible;
-  }
-
-  submitChangeEmailForm(): void
+  public submitChangeEmailForm(): void
   {
     if(!this.changeEmailFormData.valid) return;
     if(this.user !== null)
@@ -119,17 +99,7 @@ export class AccountSettingsPopupComponent {
     }
   }
 
-  triggerPasswordForm(): void
-  {
-    this.changePasswordFormData.reset({
-      password: '',
-      confirmPassword: ''
-    });
-
-    this.isChangePasswordFormVisible = !this.isChangePasswordFormVisible;
-  }
-
-  submitChangePasswordForm(): void
+  public submitChangePasswordForm(): void
   {
     if(!this.changePasswordFormData.valid) return;
     if(this.user !== null)
@@ -147,9 +117,83 @@ export class AccountSettingsPopupComponent {
     }
   }
 
-  togglePasswordVisibility()
+  public submitChangeProfilePictureForm(): void
   {
-    this.isPasswordVisisble = !this.isPasswordVisisble;
-    this.passwordInputType = this.isPasswordVisisble ? "text" : "password";
+    if(!this.changeProfilePictureFormData.valid) return;
+
+    let changeProfilePictureDto: ChangeProfilePictureDto = {
+      username: this.user?.username!,
+      image: this.extractBase64Data(this.changeProfilePictureFormData.controls['image'].value)
+    }
+
+    this.accountService.changeProfilePicture(changeProfilePictureDto).subscribe({
+      next: () => {
+        window.location.reload();
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    })
+  }
+
+  private extractBase64Data(base64String: string): string {
+    const commaIndex = base64String.indexOf(',');
+    if (commaIndex !== -1 && commaIndex + 1 < base64String.length) {
+      return base64String.substring(commaIndex + 1);
+    }
+
+    return base64String;
+  }
+
+  private passwordStrengthValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      const errors: ValidationErrors = {};
+
+      if (!value) {
+        return null;
+      }
+
+      if (value.length < 8) {
+        errors['minLength'] = { requiredLength: 8, actualLength: value.length };
+        return errors;
+      }
+
+      if (!/[A-Z]/.test(value)) {
+        errors['uppercase'] = true;
+        return errors;
+      }
+
+      if (!/[a-z]/.test(value)) {
+        errors['lowercase'] = true;
+        return errors;
+      }
+
+      if (!/\d/.test(value)) {
+        errors['number'] = true;
+        return errors;
+      }
+
+      return Object.keys(errors).length === 0 ? null : errors;
+    };
+  }
+
+  private passwordsMatchValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      const errors: ValidationErrors = {};
+
+      if(!value) {
+        return null;
+      }
+
+      if(value !== this.changePasswordFormData.getRawValue().password)
+      {
+        errors['mismatch'] = true;
+        return errors;
+      }
+
+      return Object.keys(errors).length === 0 ? null : errors;
+    }
   }
 }

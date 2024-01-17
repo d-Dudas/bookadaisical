@@ -1,7 +1,327 @@
+@font-face {
+    font-family: 'NeueMetana';
+    src: url('../../../assets/fonts/NeueMetana-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NeueMetana';
+    src: url('../../../assets/fonts/NeueMetana-Bold.otf') format('opentype');
+    font-weight: bold;
+}
+
+
+
 .chat-sidebar
 {
     padding: 20px;
     height: 100%;
     width: 30%;
     border: 1px solid rgba(0, 0, 0, 0.5);
+    height: 94vh;
+    top: 6vh;
+}
+
+.account-page-main
+{
+    margin-top: 10%;
+    width: 100%;
+    height: 94vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(247, 247, 247);
+}
+
+.account-page-main-container
+{
+    width: 70%;
+    height: 100%;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.account-page-divider
+{
+    height: 5%;
+    width: 100%;
+    background-color: rgb(247, 247, 247);
+}
+
+.account-page-user-details
+{
+    padding-bottom: 5%;
+    height: 30%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.account-page-user-details-username-and-avatar
+{
+    height: 100%;
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.account-page-user-details-avatar-image
+{
+    height: 100%;
+}
+
+.account-page-user-details-avatar
+{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.account-page-user-details-avatar-container
+{
+    height: 20vh;
+    width: 20vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.account-page-user-details-username
+{
+    width: 100%;
+    height: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.account-page-user-details-username h1
+{
+    margin: 0;
+}
+
+.account-page-user-details-button
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-left: 1vw;
+}
+
+.account-page-user-details-button:hover
+{
+    color: grey;
+}
+
+.account-page-user-details-points
+{
+    height: 100%;
+    width: 60%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.account-page-user-details-points > h1
+{
+    font-family: 'NeueMetana';
+}
+
+.account-page-user-details-points-container
+{
+    width: 30%;
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+}
+
+.account-page-user-details-points-container-header
+{
+    width: 100%;
+    height: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'NeueMetana';
+}
+
+.account-page-user-details-points-container-value
+{
+    width: 100%;
+    height: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.account-page-tabs
+{
+    height: 55%;
+}
+
+.account-page-tab-group,
+.account-page-tab
+{
+    width: 100%;
+    height: 100%;
+}
+
+.books-grid
+{
+    width: 100%;
+    height: 90%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(12vw, 2fr));
+    grid-template-rows: repeat(auto-fill, 1fr);
+    grid-gap: 5%;
+    padding: 10px;
+    overflow-y: scroll;
+}
+
+.book-grid-item
+{
+    height: 40vh;
+}
+
+.chats-grid
+{
+    width: 100%;
+    height: 90%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15vw, 2fr));
+    grid-template-rows: repeat(auto-fill, 1fr);
+    grid-gap: 5%;
+    padding: 30px;
+    overflow-y: auto;
+}
+
+.chat-grid-item
+{
+    height: 10vh;
+    background-color: rgb(255, 255, 255);
+    padding: 1vw;
+    border-radius: 20px;
+    box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.chat-grid-item:hover
+{
+    background-color: rgb(235, 235, 235);
+}
+
+.chat-grid-item h2
+{
+    margin: 0;
+}
+
+.chat-grid-item-container
+{
+    width: 100%;
+    height: 100%;
+}
+
+.chat-grid-item-container-message
+{
+    width: 100%;
+    height: 50%;
+}
+
+.chat-grid-item-container-message h3
+{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.negotiations-grid
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 30px;
+    overflow-y: auto;
+    width: 100%;
+    height: 100%;
+}
+
+.negotiation-grid-item
+{
+    width: 90%;
+    height: 8vh;
+    box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+    margin: 1vh 0;
+}
+
+.negotiation-grid-item:hover
+{
+    background-color: rgb(240, 240, 240);
+    height: 8.5vh;
+    width: 91%;
+    transform: translateY(-0.25vh);
+}
+
+.negotiation-grid-item-container
+{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.negotiation-grid-item-partner
+{
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.negotiation-grid-item-h1
+{
+    width: 100%;
+    height: 60%;
+    font-size: 110%;
+    margin: 0;
+    text-align: center;
+}
+
+.negotiation-grid-item-h2
+{
+    width: 100%;
+    height: 40%;
+    font-size: 100%;
+    margin: 0;
+    text-align: center;
+    font-weight: bold;
+}
+
+.negotiation-grid-item-last-offer
+{
+    width: 30%;
+}
+
+.negotiation-grid-item-last-offer
+{
+    width: 30%;
 }

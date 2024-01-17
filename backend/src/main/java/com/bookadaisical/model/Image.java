@@ -15,15 +15,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "images")
@@ -38,8 +35,6 @@ public class Image {
     @JdbcTypeCode(Types.LONGVARBINARY)
     private byte[] imageData;
 
-    private String imageName;
-
     @ManyToOne
     @JsonIgnore
     @JoinColumn(name = "book_id")
@@ -51,5 +46,14 @@ public class Image {
 
     public void setBook(Book book) {
         this.book = book;
+    }
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public Image(byte[] imageData)
+    {
+        this.imageData = imageData;
     }
 }

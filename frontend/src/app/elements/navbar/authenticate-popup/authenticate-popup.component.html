@@ -1,6 +1,8 @@
-<button (click)="showPopup($event)" *ngIf="!isAuthenticated">{{ popupButtonText }}</button>
-<button (click)="signOut()" *ngIf="isAuthenticated">Sign out</button>
-<div class="authenticate-popup" *ngIf="isPopupVisible" (click)="showPopup($event)">
-    <app-login-popup [isLoginPopupVisible]="isLoginPopupVisible" (authenticateDoneEvent)="authenticateDone()" (showRegisterPopupEvent)="showRegisterPopup()"></app-login-popup>
-    <app-register-popup [isRegisterPopupVisible]="isRegisterPopupVisible" (authenticateDoneEvent)="authenticateDone()" (showLoginPopupEvent)="showLoginPopup()"></app-register-popup>
+<div class="register-popup-content">
+        <button mat-raised-button  color="primary" (click)="showPopup()" *ngIf="!isAuthenticated">{{ popupButtonText }}</button>
+        <button mat-raised-button (click)="signOut()" *ngIf="isAuthenticated">Sign out</button>
+        <div class="authenticate-popup" *ngIf="isPopupVisible" (click)="hidePopup($event)">
+        <app-login-popup [isLoginPopupVisible]="isLoginPopupVisible" (authenticateDoneEvent)="authenticateDone()" (showRegisterPopupEvent)="showRegisterPopup()"></app-login-popup>
+        <app-register-popup [isRegisterPopupVisible]="isRegisterPopupVisible" (authenticateDoneEvent)="authenticateDone()" (showLoginPopupEvent)="showLoginPopup()"></app-register-popup>
+    </div>
 </div>

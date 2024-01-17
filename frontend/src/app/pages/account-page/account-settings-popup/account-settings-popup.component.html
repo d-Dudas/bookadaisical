@@ -4,81 +4,182 @@
     <div class="account-settings-popup-main">
         <div class="account-settings-popup-main-container">
             <div class="change-account-settings-container">
-                <div class="change-account-settings">
-                    <button (click)="triggerUsernameForm()">change username</button>
-                    <div
-                        class="change-form-container"
-                        *ngIf="isChangeUsernameFormVisible">
-                        <form class="change-form" (ngSubmit)="submitChangeUsernameForm()" #changeUsernameForm="ngForm" [formGroup]="changeUsernameFormData">
-                            <label for="username">Username</label>
-                            <input type="text" name="username" formControlName="username">
-                            <div *ngIf="changeUsernameFormData.get('username')?.hasError('required') && changeUsernameFormData.get('username')?.touched">
-                                Username is required.
-                            </div>
-                            <div *ngIf="changeUsernameFormData.get('username')?.hasError('minlength') && changeUsernameFormData.get('username')?.touched">
-                                Username must be at least 6 characters long.
-                            </div>
-                            <button>
-                                Change</button>
+                <mat-accordion>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Change username
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+
+                        <form
+                            (ngSubmit)="submitChangeUsernameForm()"
+                            [formGroup]="changeUsernameFormData"
+                            class="update-personal-info-form">
+                            <mat-form-field appearance="fill">
+                                <mat-label>New username</mat-label>
+                                <input formControlName="username" matInput placeholder="someUsername">
+                                @if ( changeUsernameFormData.get('username')?.hasError('required') ) {
+                                    <mat-error>Please fill the input field</mat-error>
+                                }
+                                @if ( changeUsernameFormData.get('username')?.hasError('minlength') ) {
+                                    <mat-error>Username must be at least 6 characters long</mat-error>
+                                }
+                            </mat-form-field>
+    
+                            <button
+                                class="form-button"
+                                color="primary"
+                                mat-raised-button>
+                                Change
+                            </button>
                         </form>
-                    </div>
-                </div>
-                <div class="change-account-settings">
-                    <button (click)="triggerEmailForm()">change email</button>
-                    <div
-                        class="change-form-container"
-                        *ngIf="isChangeEmailFormVisible">
-                        <form class="change-form" (ngSubmit)="submitChangeEmailForm()" #changeEmailForm="ngForm" [formGroup]="changeEmailFormData">
-                            <label for="email">Email</label>
-                            <input type="text" name="email" formControlName="email">
-                            <div *ngIf="changeEmailFormData.get('email')?.hasError('required') && changeEmailFormData.get('email')?.touched">
-                                Email is required.
-                            </div>
-                            <div *ngIf="changeEmailFormData.get('email')?.hasError('email') && changeEmailFormData.get('email')?.touched">
-                                Invailid email format.
-                            </div>
-                            <button>
-                                Change</button>
+                    </mat-expansion-panel>
+                </mat-accordion>
+
+                <mat-accordion>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Change email
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+
+                        <form
+                            (ngSubmit)="submitChangeEmailForm()"
+                            [formGroup]="changeEmailFormData"
+                            class="update-personal-info-form">
+                            <mat-form-field appearance="fill">
+                                <mat-label>New email</mat-label>
+                                <input formControlName="email" matInput placeholder="someUsername">
+                                @if ( changeEmailFormData.get('email')?.hasError('required') ) {
+                                    <mat-error>Please fill the input field</mat-error>
+                                }
+                                @if ( changeEmailFormData.get('email')?.hasError('email') ) {
+                                    <mat-error>Invailid email format</mat-error>
+                                }
+                            </mat-form-field>
+    
+                            <button
+                                class="form-button"
+                                color="primary"
+                                mat-raised-button>
+                                Change
+                            </button>
                         </form>
-                    </div>
-                </div>
-                <div class="change-account-settings">
+                    </mat-expansion-panel>
+                </mat-accordion>
+
+                <!-- <div class="change-account-settings">
                     <button>change profile picture</button>
-                </div>
-                <div class="change-account-settings">
-                    <button (click)="triggerPasswordForm()">change password</button>
-                    <div
-                        class="change-form-container"
-                        *ngIf="isChangePasswordFormVisible">
-                        <form class="change-form" (ngSubmit)="submitChangePasswordForm()" #changePasswordForm="ngForm" [formGroup]="changePasswordFormData">
-                            <label for="password">Password</label>
-                            <input [type]="passwordInputType" name="password" formControlName="password">
-                            <div *ngIf="changePasswordFormData.get('password')?.hasError('required') && changePasswordFormData.get('password')?.touched">
-                                Password is required.
+                </div> -->
+
+                <mat-accordion>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Change profile picture
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+
+                        <form
+                            (ngSubmit)="submitChangeProfilePictureForm()"
+                            [formGroup]="changeProfilePictureFormData"
+                            class="update-personal-info-form">
+                            <!-- <input formControlName="image" matInput > -->
+                            <div
+                                *ngIf="changeProfilePictureFormData.controls['image'].value !== ''" 
+                                class="uploaded-image">
+                                <div
+                                    class="uploaded-image-container">
+                                    <img
+                                        [src]="changeProfilePictureFormData.controls['image'].value"
+                                        class="uploaded-image">
+                                </div>
                             </div>
-                            <div *ngIf="changePasswordFormData.get('password')?.hasError('pattern') && changePasswordFormData.get('password')?.touched">
-                                <p>Password must:</p>
-                                <ul>
-                                    <li>be at least 8 characters long</li>
-                                    <li>contain at least 1 upper case character</li>
-                                    <li>contain at least 1 lower case character</li>
-                                    <li>contain at least 1 number</li>
-                                </ul>
-                            </div>
-                            <label for="confirmPassword">Confirm password</label>
-                            <input [type]="passwordInputType" name="confirmPassword" formControlName="confirmPassword">
-                            <div *ngIf="changePasswordFormData.hasError('mismatch') && changePasswordFormData.get('confirmPassword')?.touched">
-                                Passwords do not match.
-                            </div>
-                            <div class="register-form-show-password-container">
-                                <label for="showPassword">Show password</label>
-                                <input type="checkbox" name="showPassword" (change)="togglePasswordVisibility()">
-                            </div>
-                            <button>
-                                Change</button>
+                            <input
+                                #fileInput
+                                type="file"
+                                (change)="onFilesSelected($event)"
+                                accept="image/*"
+                                style="display: none;"/>
+                            <button
+                                type="button"
+                                class="form-button"
+                                mat-raised-button
+                                (click)="fileInput.click()">
+                                <mat-icon>upload</mat-icon>
+                                Upload
+                            </button>
+    
+                            <button
+                                class="form-button"
+                                color="primary"
+                                mat-raised-button>
+                                Change
+                            </button>
                         </form>
-                    </div>
-                </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+
+                <mat-accordion>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Change password
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+
+                        <form
+                            (ngSubmit)="submitChangePasswordForm()"
+                            [formGroup]="changePasswordFormData"
+                            class="update-personal-info-form">
+                            <mat-form-field appearance="fill">
+                                <mat-label>New password</mat-label>
+                                <input formControlName="password" matInput placeholder="some.Str0ngPassword" [type]="hidePassword ? 'password' : 'text'">
+                                <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+                                    <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                </button>
+                                @if (changePasswordFormData.get('password')?.hasError('required') ) {
+                                    <mat-error>Please fill the input field</mat-error>
+                                }
+                                @if (changePasswordFormData.get('password')?.hasError('minLength') && changePasswordFormData.get('password')?.touched) {
+                                    <mat-error>Use at least 8 characters.</mat-error>
+                                }
+                                @if (changePasswordFormData.get('password')?.hasError('uppercase') && changePasswordFormData.get('password')?.touched) {
+                                    <mat-error>Use at least 1 uppercase character.</mat-error>
+                                }
+                                @if (changePasswordFormData.get('password')?.hasError('lowercase') && changePasswordFormData.get('password')?.touched) {
+                                    <mat-error>Use at least 1 lowercase character.</mat-error>
+                                }
+                                @if (changePasswordFormData.get('password')?.hasError('number') && changePasswordFormData.get('password')?.touched) {
+                                    <mat-error>Use at least 1 number.</mat-error>
+                                }
+                            </mat-form-field>
+
+                            <mat-form-field appearance="fill">
+                                <mat-label>Confirm new password</mat-label>
+                                <input formControlName="confirmPassword" matInput placeholder="" [type]="hideConfirmPassword ? 'password' : 'text'">
+                                <button mat-icon-button matSuffix (click)="hideConfirmPassword = !hideConfirmPassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideConfirmPassword">
+                                    <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                </button>
+                                @if (changePasswordFormData.get('confirmPassword')?.hasError('required') ) {
+                                    <mat-error>Please fill the input field</mat-error>
+                                }
+                                @if (changePasswordFormData.get('confirmPassword')?.hasError('mismatch') && changePasswordFormData.get('confirmPassword')?.touched) {
+                                    <mat-error>Passwords should match.</mat-error>
+                                }
+                            </mat-form-field>
+    
+                            <button
+                                class="form-button"
+                                color="primary"
+                                mat-raised-button>
+                                Change
+                            </button>
+                        </form>
+                    </mat-expansion-panel>
+                </mat-accordion>
             </div>
         </div>
     </div>

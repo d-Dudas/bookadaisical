@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { login, logout } from './auth.actions';
+import { login, logout, setTokenVerificationStatus } from './auth.actions';
 import * as AuthState from '../account-management/auth.state'
-import { UserSlim } from '../elements/classes/userSlim';
 import { UserToken } from '../elements/classes/userToken';
 
 @Injectable({
@@ -32,5 +31,10 @@ export class AuthService {
 
   isAuthenticated() {
     return AuthState.selectIsAuthenticated;
+  }
+
+  setTokenVerificationStatus(status: boolean)
+  {
+    this.store.dispatch(setTokenVerificationStatus({ status }));
   }
 }

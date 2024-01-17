@@ -24,6 +24,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -47,6 +48,8 @@ public class Book {
         this.createdOn = LocalDateTime.now();
         this.lastModified = createdOn;
         this.isActive = true;
+        this.priceCurrency = 0;
+        this.pricePoints = 0;
     }
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -63,10 +66,11 @@ public class Book {
     @Column(nullable = false)
     private String author;
 
-    private int numViews;
-
-    @Column
+    private Integer numViews;
     private String description;
+
+    private Integer priceCurrency;
+    private Integer pricePoints;
 
     @Column(nullable = false)
     private LocalDateTime createdOn;
@@ -117,4 +121,31 @@ public class Book {
         image.setBook(null);
     }
 
+    @ManyToMany(mappedBy = "initiatorSelectedBooks")
+    Set<NegotiationOffer> selectedInNegotiationsByInitiator;
+
+    @ManyToMany(mappedBy = "responderSelectedBooks")
+    Set<NegotiationOffer> selectedInNegotiationsByResponder;
+
+    public Book(User uploader, String title, String author, Integer numViews, String description, Integer priceCurrency,
+            Integer pricePoints, int yearOfPublication, ArtisticMovement artisticMovement,
+            TargetAudience targetAudience, Condition bookCondition, Set<Genre> genres,
+            Set<TradingOption> tradingOptions) {
+        this.uploader = uploader;
+        this.title = title;
+        this.author = author;
+        this.numViews = numViews;
+        this.description = description;
+        this.priceCurrency = priceCurrency;
+        this.pricePoints = pricePoints;
+        this.yearOfPublication = yearOfPublication;
+        this.artisticMovement = artisticMovement;
+        this.targetAudience = targetAudience;
+        this.bookCondition = bookCondition;
+        this.genres = genres;
+        this.tradingOptions = tradingOptions;
+        this.isActive = true;
+        this.createdOn = LocalDateTime.now();
+        this.lastModified = this.createdOn;
+    }
 }

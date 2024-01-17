@@ -12,7 +12,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.bookadaisical.enums.Genre;
 import com.bookadaisical.model.Book;
+import com.bookadaisical.utils.GenreCount;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, UUID>, JpaSpecificationExecutor<Book> {
@@ -26,4 +28,16 @@ public interface BookRepository extends JpaRepository<Book, UUID>, JpaSpecificat
 
    @Query("SELECT b FROM Book b WHERE b.uploader.username = :username")
    List<Book> findAllBooksByUploaderUsername(@Param("username") String username);
+
+   List<Book> findTop10ByIsActiveOrderByCreatedOnDesc(boolean isActive, Pageable pageable);
+
+   @Query("SELECT new com.bookadaisical.utils.GenreCount(b.genres, SUM(b.numViews)) " +
+           "FROM Book b JOIN b.genres genres " +
+           "GROUP BY genres " +
+           "ORDER BY SUM(b.numViews) DESC")
+   List<GenreCount> findTop4GenresByPopularity(Pageable pageable);
+
+   @Query("SELECT b FROM Book b JOIN b.genres g WHERE b.isActive = true AND g = :genre " +
+           "ORDER BY b.numViews DESC LIMIT 1")
+   Optional<Book> findMostPopularActiveBookByGenre(Genre genre);
 }

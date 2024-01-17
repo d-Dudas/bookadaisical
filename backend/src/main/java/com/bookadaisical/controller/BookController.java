@@ -12,7 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bookadaisical.dto.requests.BookIdDto;
 import com.bookadaisical.dto.requests.BookSearchFiltersDto;
+import com.bookadaisical.dto.requests.CreateNewBookDto;
+import com.bookadaisical.dto.requests.UsernameDto;
+import com.bookadaisical.dto.responses.AuthorsDto;
 import com.bookadaisical.dto.responses.BookDto;
 import com.bookadaisical.service.BookService;
 
@@ -43,9 +47,28 @@ public class BookController {
         }
     }
 
+    @GetMapping("/books/recently-added-books")
+    public ResponseEntity<?> getRecentlyAddedBooks(){
+        try {
+            return ResponseEntity.ok(bookService.getRecentlyAddedBooks());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/books/most-popular-categories")
+    public ResponseEntity<?> getMostPopularCategories() {
+        try {
+            return ResponseEntity.ok(bookService.getMostPopularCategories());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @PostMapping("/get-filtered-books")
     public ResponseEntity<?> getFilteredBooks(@RequestBody BookSearchFiltersDto searchFilters)
     {
+        System.out.println(searchFilters);
         try {
             return new ResponseEntity<>(bookService.getFilteredBooks(searchFilters), HttpStatus.OK);
         } catch (Exception e) {
@@ -72,5 +95,51 @@ public class BookController {
     {
         List<BookDto> userBooks = bookService.getBooksByUploaderUsername(username);
         return ResponseEntity.ok(userBooks);
+    }
+
+    @PostMapping("/books/upload-new")
+    public ResponseEntity<?> uploadNewBook(@RequestBody CreateNewBookDto createNewBookDto)
+    {
+        try {
+            bookService.uploadNewBook(createNewBookDto);
+            return ResponseEntity.ok(createNewBookDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/recommended-books")
+    public ResponseEntity<?> getRecommendedBooks(@RequestBody UsernameDto usernameDto)
+    {
+        try {
+            List<BookDto> books = bookService.getRecommendedBooks(usernameDto);
+            return ResponseEntity.ok(books);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/update-view")
+    public ResponseEntity<?> updateView(@RequestBody BookIdDto bookIdDto)
+    {
+        try {
+            bookService.updateView(bookIdDto);
+            return ResponseEntity.ok(null);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/get-authors")
+    public ResponseEntity<?> getAuthors()
+    {
+        AuthorsDto authors;
+        try {
+            authors = bookService.getAuthors();
+            return ResponseEntity.ok(authors);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

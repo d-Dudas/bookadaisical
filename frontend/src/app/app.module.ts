@@ -7,8 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthenticatePopupComponent } from './elements/navbar/authenticate-popup/authenticate-popup.component';
 import { StoreModule } from '@ngrx/store';
-import { UserInfoComponent } from './user-info/user-info.component';
-import { authPopupReducer, authReducer } from './account-management/auth.reducer';
+import { tokenVerificationStatusReducer, authPopupReducer, authReducer } from './account-management/auth.reducer';
 import { RegisterPopupComponent } from './elements/navbar/authenticate-popup/register-popup/register-popup.component';
 import { LoginPopupComponent } from './elements/navbar/authenticate-popup/login-popup/login-popup.component';
 import { NavbarComponent } from './elements/navbar/navbar.component';
@@ -29,14 +28,28 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatSliderModule } from '@angular/material/slider';
-
+import { MatChipsModule } from '@angular/material/chips';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { CarouselModule } from 'primeng/carousel';
+import { AddBookPageComponent } from './pages/add-book-page/add-book-page.component';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatSelectModule } from '@angular/material/select';
+import {
+  MatSlideToggleModule,
+  _MatSlideToggleRequiredValidatorModule,
+} from '@angular/material/slide-toggle';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { DatePipe } from '@angular/common';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 @NgModule({
   declarations: [
     LandingPageComponent,
     AuthenticatePopupComponent,
     LoginPopupComponent,
-    UserInfoComponent,
     RegisterPopupComponent,
     NavbarComponent,
     BookPreviewComponent,
@@ -48,6 +61,7 @@ import { MatSliderModule } from '@angular/material/slider';
     AccountPageComponent,
     AccountSettingsPopupComponent,
     ChatComponent,
+    AddBookPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -57,6 +71,7 @@ import { MatSliderModule } from '@angular/material/slider';
     StoreModule.forRoot(authReducer),
     StoreModule.forFeature('auth', authReducer),
     StoreModule.forFeature('authPopup', authPopupReducer),
+    StoreModule.forFeature('tokenVerificationStatus', tokenVerificationStatusReducer),
     ReactiveFormsModule,
     MatSliderModule,
     BrowserAnimationsModule,
@@ -66,8 +81,21 @@ import { MatSliderModule } from '@angular/material/slider';
     MatFormFieldModule,
     MatInputModule,
     MatCardModule,
+    MatChipsModule,
+    MatToolbarModule,
+    CarouselModule,
+    MatStepperModule,
+    MatSelectModule,
+    MatSlideToggleModule,
+    _MatSlideToggleRequiredValidatorModule,
+    MatDividerModule,
+    MatExpansionModule,
+    MatTabsModule,
+    MatExpansionModule,
+    MatSnackBarModule,
+    MultiSelectModule
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [RootComponent]
 })
 export class AppModule { }

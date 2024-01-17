@@ -1,21 +1,40 @@
-<mat-card class="book-preview-card">
-    <mat-card-header class="book-preview-card-header">
-        <mat-card-title>{{ book.title }}</mat-card-title>
-        <mat-card-subtitle>{{ book.author }}</mat-card-subtitle>
-    </mat-card-header>
-    <img
-        mat-card-image
-        src="data:image/png;base64, {{ book.images[0] }}"
-        alt="{{ book.title }}"
-        class="book-preview-card-image">
-    <mat-card-content class="book-preview-card-content">
-        <p>
-          {{ book.description }}
-        </p>
-    </mat-card-content>
-    <mat-card-actions class="book-preview-card-actions">
-        <button mat-button [routerLink]="['/books', book.id]">
-            <mat-icon>info</mat-icon>
-            Details</button>
-    </mat-card-actions>
-</mat-card>
+<div class="book-preview-card">
+
+    <div class="book-preview-card-image-container">
+        <img
+            mat-card-image
+            src="data:image/png;base64, {{ book.images[bookImageIndex] }}"
+            alt="{{ book.title }}"
+            class="book-preview-card-image">
+        <button
+            *ngIf="book.images.length > 1"
+            class="book-preview-card-image-next book-preview-card-image-button"
+            (click)="nextBookImage()">
+            <mat-icon>keyboard_arrow_right</mat-icon>
+        </button>
+        <button
+            *ngIf="book.images.length > 1"
+            class="book-preview-card-image-previous book-preview-card-image-button"
+            (click)="previousBookImage()">
+            <mat-icon>keyboard_arrow_left</mat-icon>
+        </button>
+    </div>
+
+    <div class="book-preview-card-header">
+        <h1 class="book-preview-card-header-title" [routerLink]="['/books', book.id]">
+            {{ book.title }}
+        </h1>
+        <h2 class="book-preview-card-header-author">{{ book.author }}</h2>
+    </div>
+
+    <div class="book-preview-card-trading-options-container">
+        <div class="mat-card-trading-options">
+            <div
+                class="mat-card-trading-option"
+                *ngFor="let option of tradingOptions" [ngClass]="{'currency': option === 'CURRENCY', 'swap': option === 'SWAP', 'points': option === 'POINTS'}">
+                {{ printTradingOption(option) }}
+            </div>
+        </div>
+    </div>
+    
+</div>

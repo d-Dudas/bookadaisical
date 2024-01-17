@@ -1,8 +1,8 @@
-import { ArtisticMovement } from "src/app/utils/enums/artistic-movement";
-import { Condition } from "src/app/utils/enums/condition";
-import { Genres } from "src/app/utils/enums/genres";
-import { TargetAudience } from "src/app/utils/enums/target-audience";
-import { TradingOption } from "src/app/utils/enums/trading-option";
+import { ArtisticMovement } from "src/app/elements/enums/artistic-movement";
+import { Condition } from "src/app/elements/enums/condition";
+import { Genres } from "src/app/elements/enums/genres";
+import { TargetAudience } from "src/app/elements/enums/target-audience";
+import { TradingOption } from "src/app/elements/enums/trading-option";
 
 export interface Book {
     id: string,
@@ -16,7 +16,7 @@ export interface Book {
     isActive: boolean,
     images: string[],
     genres: Genres[],
-    tradingOptions: TradingOption,
+    tradingOptions: TradingOption[],
 
     uploaderUsername: string,
     views: number,

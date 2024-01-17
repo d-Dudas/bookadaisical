@@ -1,22 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bookadaisical</title>
-</head>
-<body>
-    <app-navbar></app-navbar>
-    <app-problem-popup
-        [isVisible]="problem.exists"
-        [message]="problem.message"
-        (closePopupEvenet)="closeProblemPopup()">
-    </app-problem-popup>
+<app-problem-popup
+    [isVisible]="problem.exists"
+    [message]="problem.message"
+    (closePopupEvenet)="closeProblemPopup()">
+</app-problem-popup>
+<div class="negotiation-page-main">
     <div class="negotiation-main-container">
+        <div class="negotiation-status-container">
+            <h2>Status: {{ negotiationStatus.charAt(0) + negotiationStatus.slice(1).toLowerCase() }}</h2>
+        </div>
         <div class="negotiation-books-container">
             <div class="user-books">
                 <div class="user-books-header">
-                    <h2>Initiator: {{ initiatorUsername }}</h2>
+                    <h2>Your books</h2>
                 </div>
                 <div class="user-books-content" >
                     <app-book-preview
@@ -30,7 +25,7 @@
             </div>
             <div class="user-books">
                 <div class="user-books-header">
-                    <h2>Responder: {{ responderUsername }}</h2>
+                    <h2 class="clickable" [routerLink]="['/account', responderUsername]">{{ responderUsername }}</h2><h2>'{{ responderUsername.charAt(responderUsername.length-1) === 's' ? '' : 's'}} books</h2>
                 </div>
                 <div class="user-books-content">
                     <div
@@ -41,16 +36,53 @@
                         <app-book-preview
                             [book]="item.book">
                         </app-book-preview>
-                        <button (click)="openBookInNewTab(item.book.id)">Details</button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="negotiation-buttons-container">
-            <button>Not interested anymore</button>
-            <button>Accept offer</button>
-            <button (click)="sendOffer()">Send offer</button>
+        <div
+            class="negotiation-buttons-container"
+            [class.negotiation-buttons-container-single-element]="!anOfferWasMade">
+            <button
+                mat-raised-button
+                color="warn"
+                *ngIf="anOfferWasMade"
+                (click)="cancelNegotiation()">
+
+                Not interested anymore
+            </button>
+            <button
+                mat-raised-button
+                color="primary"
+                [disabled]="!isAcceptable"
+                *ngIf="anOfferWasMade && isAcceptableByUser && !isAlreadyAccepted()"
+                (click)="acceptOffer()">
+                <mat-icon>check</mat-icon>
+                Accept offer
+            </button>
+            <button
+                color="primary"
+                mat-raised-button
+                (click)="sendOffer()">
+                <mat-icon>send</mat-icon>
+                Send offer
+            </button>
         </div>
     </div>
-</body>
-</html>
+    <mat-drawer-container
+        autosize>
+    </mat-drawer-container>
+    <mat-drawer 
+        #drawer
+        class="chat-sidebar"
+        mode="push"
+        position="end">
+        <app-chat
+            *ngIf="initiatorUsername !== '' && responderUsername !== ''"
+            [receiverUsername]="responderUsername"
+            [senderUsername]="initiatorUsername"
+            [defaultMessage]="getDefaultMessage()"
+            (closeChat)="closeChat()">
+        </app-chat>
+    </mat-drawer>
+</div>

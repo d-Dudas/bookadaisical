@@ -1,38 +1,162 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bookadaisical</title>
-</head>
-<body>
-    <app-navbar></app-navbar>
-    <h1>{{book?.title}}</h1>
-    <h2>{{book?.author}}</h2>
-    <h3>{{book?.description}}</h3>
-    <div *ngFor="let image of book?.images">
-        <img src="data:image/png;base64, {{ image }}" alt="">
+<div class="book-page-main">
+    <div class="book-page-main-container">
+        <div class="book-page-divider"></div>
+        <div class="book-page-main-container-book">
+            <div class="book-images">
+                <div class="book-image-container">
+                    <div class="book-image-left-button">
+                        <div class="book-image-button-wrapper">
+                            <mat-icon
+                                (click)="previousBookImage()"
+                                class="book-image-button-icon">
+                                keyboard_arrow_left
+                            </mat-icon>
+                        </div>
+                    </div>
+                    <div class="book-image-box">
+                        <div class="book-image-wrapper">
+                            <img
+                                class="book-image"
+                                src="data:image/png;base64, {{ book?.images?.at(bookImageIndex) }}">
+                        </div>
+                    </div>
+                    <div class="book-image-right-button">
+                        <div class="book-image-button-wrapper">
+                            <mat-icon
+                                (click)="nextBookImage()"
+                                class="book-image-button-icon">
+                                keyboard_arrow_right
+                            </mat-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="book-image-index">
+                    <h1>{{ bookImageIndex+1 }}/{{ book?.images?.length }}</h1>
+                </div>
+            </div>
+            <div class="book-details">
+                <div class="book-details-title-container">
+                    <h1 class="book-details-title">{{ book?.title }}</h1>
+                </div>
+                <div class="book-details-author-container">
+                    <h2 class="book-details-author">{{ book?.author }}</h2>
+                </div>
+                <div class="book-details-misc">
+                    <div class="book-detail-container">
+                        <h2 class="book-detail-category">Uploader:</h2>
+                        <h3 class="book-detail-value clickable" [routerLink]="['/account', book?.uploaderUsername]">{{ book?.uploaderUsername }}</h3>
+                    </div>
+                    <div *ngIf="doesBookHavePricePoints()" class="book-detail-container">
+                        <h2 class="book-detail-category">Price in points:</h2>
+                        <h3 class="book-detail-value">{{ book?.pricePoints }}</h3>
+                    </div>
+                    <div *ngIf="doesBookHavePriceCurrency()" class="book-detail-container">
+                        <h2 class="book-detail-category">Price in currency:</h2>
+                        <h3 class="book-detail-value">{{ book?.priceCurrency }}</h3>
+                    </div>
+                    <div class="book-detail-container">
+                        <h2 class="book-detail-category">Uploaded:</h2>
+                        <h3 class="book-detail-value">{{ getDateString() }}</h3>
+                    </div>
+                    <div class="book-detail-container">
+                        <h2 class="book-detail-category">Year of publication:</h2>
+                        <h3 class="book-detail-value">{{ book?.yearOfPublication }}</h3>
+                    </div>
+                    <div class="book-detail-container">
+                        <h2 class="book-detail-category">Artistic movement:</h2>
+                        <h3 class="book-detail-value clickable" [routerLink]="['/search']" [queryParams]="{ artisticMovement: book?.artisticMovement}">{{ getEnumValueAsString(book?.artisticMovement) }}</h3>
+                    </div>
+                    <div class="book-detail-container">
+                        <h2 class="book-detail-category">Target Audience:</h2>
+                        <h3 class="book-detail-value clickable" [routerLink]="['/search']" [queryParams]="{ targetAudience: book?.targetAudience}">{{ getEnumValueAsString(book?.targetAudience) }}</h3>
+                    </div>
+                    <div class="book-detail-container">
+                        <h2 class="book-detail-category">Condition:</h2>
+                        <h3 class="book-detail-value clickable" [routerLink]="['/search']" [queryParams]="{ condition: book?.condition}">{{ getEnumValueAsString(book?.condition) }}</h3>
+                    </div>
+                    <div class="book-detail-container">
+                        <h2 class="book-detail-category">Genres:</h2>
+                        <h3 class="book-detail-value clickable" *ngFor="let genre of book?.genres" [routerLink]="['/search']" [queryParams]="{ genre: genre}">{{ getEnumValueAsString(genre) }}</h3>
+                    </div>
+                    <div class="book-detail-container">
+                        <h2 class="book-detail-category">Trading options:</h2>
+                        <h3
+                            class="book-detail-value trading-option"
+                            *ngFor="let option of getTradingOptions()"
+                            [ngClass]="{'currency': option === 'CURRENCY', 'swap': option === 'SWAP', 'points': option === 'POINTS'}">
+                            {{ getEnumValueAsString(option) }}
+                        </h3>
+                    </div>
+                    <div class="book-detail-container">
+                        <h2 class="book-detail-category">Views:</h2>
+                        <h3 class="book-detail-value">{{ book?.views }}</h3>
+                    </div>
+                </div>
+                <div class="book-actions">
+                    <button
+                        mat-raised-button
+                        extended
+                        type="button"
+                        *ngIf="visitorUsername !== uploaderUsername && isForBuy()"
+                        (click)="onBuyClicked();">
+                        <mat-icon>chat</mat-icon>
+                        Buy
+                    </button>
+                    <button
+                        mat-raised-button
+                        extended
+                        type="button"
+                        style="background-color: lightblue;"
+                        *ngIf="visitorUsername !== uploaderUsername && isForSwap()"
+                        (click)="onSwapClicked()">
+                        <mat-icon>swap_horiz</mat-icon>
+                        Swap
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="book-page-divider"></div>
+        <div class="book-page-other-books">
+            <div class="book-page-other-books-header">
+                <h1 style="font-family: 'NeueMetana';">You may also like</h1>
+            </div>
+            <div class="carousel-container">
+                <p-carousel
+                    [value]="otherBooks"
+                    [numVisible]="4"
+                    [numScroll]="1"
+                    [circular]="true"
+                    [responsiveOptions]="responsiveOptions">
+                    <ng-template
+                        let-product
+                        pTemplate="item">
+                        <div class="other-books-content">
+                            <app-book-preview
+                                [book]="product">
+                            </app-book-preview>
+                        </div>
+                    </ng-template>
+                </p-carousel>
+            </div>
+        </div>
+        <div class="book-page-divider"></div>
     </div>
-    <button
-        mat-raised-button
-        extended
-        type="button"
-        *ngIf="visitorUsername !== uploaderUsername"
-        (click)="drawer.toggle(); onBuyClicked();">
-        <mat-icon>chat</mat-icon>
-        Buy</button>
-    <mat-drawer-container autosize></mat-drawer-container>
-    <mat-drawer #drawer class="chat-sidebar" mode="push" position="end">
-        <app-chat *ngIf="uploaderUsername !== null && visitorUsername !== null" [receiverUsername]="getReceiverUsername()" [senderUsername]="getVisitorUsername()" [defaultMessage]="getDefaultMessage()"></app-chat>
-    </mat-drawer>
-    <button
-        mat-raised-button
-        extended
-        type="button"
-        style="background-color: lightblue;"
-        *ngIf="visitorUsername !== uploaderUsername"
-        (click)="onSwapClicked()">
-        <mat-icon>swap_horiz</mat-icon>
-        Swap</button>
-</body>
-</html>
+</div>
+<div class="book-page-footer"></div>
+
+<mat-drawer-container
+    autosize>
+</mat-drawer-container>
+<mat-drawer 
+    #drawer
+    class="chat-sidebar"
+    mode="push"
+    position="end">
+    <app-chat
+        *ngIf="uploaderUsername !== null && visitorUsername !== null"
+        [receiverUsername]="getReceiverUsername()"
+        [senderUsername]="getVisitorUsername()"
+        [defaultMessage]="getDefaultMessage()">
+    </app-chat>
+</mat-drawer>
+

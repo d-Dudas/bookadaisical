@@ -22,9 +22,10 @@ export class RootComponent {
       this.accountService.loginWithToken(loginToken, loginKey).subscribe({
         next: (response: any) => {
           this.authService.login(response.username);
+          this.authService.setTokenVerificationStatus(true);
         },
-        error: error => {
-          console.log(error);
+        error: (error) => {
+          this.authService.setTokenVerificationStatus(true);
         }
       });
     }

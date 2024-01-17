@@ -1,7 +1,21 @@
+@font-face {
+    font-family: 'NeueMetana';
+    src: url('../../../../../assets/fonts/NeueMetana-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NeueMetana';
+    src: url('../../../../../assets/fonts/NeueMetana-Bold.otf') format('opentype');
+    font-weight: bold;
+}
+
+
 .register-popup-content
 {
     width: 25vw;
-    height: 50vh;
+    height: 80vh;
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 30px;
     display: flex;
@@ -10,6 +24,7 @@
     backdrop-filter: blur(5px);
     flex-direction: column;
     padding: 20px;
+    padding-bottom: 5%;
 }
 
 .register-form
@@ -19,6 +34,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
+    padding-top: 5%;
 }
 
 .register-form-input-container
@@ -28,14 +44,6 @@
     margin: 5px;
 }
 
-.register-form-show-password-container
-{
-    width: 80%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-evenly;
-}
 
 .dont-have-account-box
 {
@@ -51,9 +59,23 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    color: black;
 }
 
 .dont-have-account-content p
 {
     text-align: center;
+    font-family: 'NeueMetana';
+    font-size: medium;
+}
+
+.register-form-input-field
+{
+    width: 100%;
+}
+
+.register-form-remember-me-slider,
+.register-form-submit-button
+{
+    margin-bottom: 3vh;
 }

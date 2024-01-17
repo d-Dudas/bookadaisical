@@ -30,12 +30,23 @@ public class BookSpecification implements Specification<Book> {
     public Predicate toPredicate(Root<Book> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
         List<Predicate> predicates = new ArrayList<>();
 
-        if (filters.getGenre() != null && filters.getGenre() != Genre.ALL) {
-            predicates.add(criteriaBuilder.isMember(filters.getGenre(), root.get("genres")));
+        if (!filters.getGenre().isEmpty() && !filters.getGenre().contains(Genre.ALL)) {
+            List<Predicate> orPredicates = new ArrayList<>();
+        
+            for(Genre genre : filters.getGenre()) {
+                orPredicates.add(criteriaBuilder.isMember(genre, root.get("genres")));
+            }
+        
+            Predicate orCondition = criteriaBuilder.or(orPredicates.toArray(new Predicate[0]));
+            predicates.add(orCondition);
         }
 
         if (filters.getTargetAudience() != null && filters.getTargetAudience() != TargetAudience.ALL) {
             predicates.add(criteriaBuilder.equal(root.get("targetAudience"), filters.getTargetAudience()));
+        }
+
+        if (filters.getAuthor() != null && !filters.getAuthor().isEmpty()) {
+            predicates.add(criteriaBuilder.equal(root.get("author"), filters.getAuthor()));
         }
 
         if (filters.getArtisticMovement() != null && filters.getArtisticMovement() != ArtisticMovement.ALL) {

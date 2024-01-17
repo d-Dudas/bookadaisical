@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AbstractControl, FormBuilder, ValidationErrors, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/account-management/auth-service.service';
 import { UserSlim } from 'src/app/elements/classes/userSlim';
 import { UserToken } from 'src/app/elements/classes/userToken';
@@ -13,24 +14,32 @@ export class LoginPopupComponent {
   @Input() isLoginPopupVisible: boolean = false;
   @Output() authenticateDoneEvent = new EventEmitter<void>();
   @Output() showRegisterPopupEvent = new EventEmitter<void>();
-  loginFormData = {
-    identifier: '',
-    password: '',
+  loginFormData = this.formBuilder.group({
+    identifier: ['', [Validators.required, this.customIdentifierValidator.bind(this)]],
+    password: ['', [Validators.required, this.customPasswordValidator.bind(this)]],
     rememberMe: false
+  });
+
+  errors = {
+    wrongIdentificator: false,
+    wrongPassword: false
   };
-  isPasswordVisisble: boolean = false;
-  passwordInputType: string = this.isPasswordVisisble ? "text" : "password";
+
+  isPasswordHidden: boolean = true;
 
   constructor(private accountService: AccountService,
-              private authService: AuthService) {}
+              private authService: AuthService,
+              private formBuilder: FormBuilder) {}
 
   submitLoginForm()
   {
-    if(!this.isFormValid())
+    if(!this.loginFormData.valid)
     {
       return;
     }
-    this.accountService.sendLoginFormToBackend(this.loginFormData).subscribe({
+    this.errors.wrongIdentificator = false;
+    this.errors.wrongPassword = false;
+    this.accountService.sendLoginFormToBackend(this.loginFormData.getRawValue()).subscribe({
       next:(response: any) =>
       {
         if(response.token !== null)
@@ -49,23 +58,38 @@ export class LoginPopupComponent {
       },
       error:error =>
       {
-        console.log(error);
+        if(error.error === "invalid_password")
+        {
+          this.errors.wrongPassword = true;
+        }
+        else if (error.error === "user_not_found")
+        {
+          this.errors.wrongIdentificator = true;
+        }
+
+        this.loginFormData.controls['identifier'].updateValueAndValidity();
+        this.loginFormData.controls['password'].updateValueAndValidity();
       }
     })
   }
 
-  isFormValid(): boolean
-  {
-    return this.loginFormData.identifier != '' && this.loginFormData.password != '';
+  customPasswordValidator(control: AbstractControl): ValidationErrors | null {
+    if (this.errors?.wrongPassword) {
+      return { invalidPassword: true };
+    }
+    return null;
+  }
+
+  customIdentifierValidator(control: AbstractControl): ValidationErrors | null {
+    if (this.errors?.wrongIdentificator) {
+      return { invalidIdentifier: true };
+    }
+    return null;
   }
 
   clearLoginFormData()
   {
-    this.loginFormData = {
-      identifier: '',
-      password: '',
-      rememberMe: false
-    };
+    this.loginFormData.reset();
   }
 
   showRegisterPopup()
@@ -73,14 +97,15 @@ export class LoginPopupComponent {
     this.showRegisterPopupEvent.emit();
   }
 
-  togglePasswordVisibility()
+  updateIdentificatorError()
   {
-    this.isPasswordVisisble = !this.isPasswordVisisble;
-    this.passwordInputType = this.isPasswordVisisble ? "text" : "password";
+    this.errors.wrongIdentificator = false;
+    this.loginFormData.controls['identifier'].updateValueAndValidity();
   }
 
-  toggleRememberMe()
+  updatePasswordError()
   {
-    this.loginFormData.rememberMe = !this.loginFormData.rememberMe;
+    this.errors.wrongPassword = false;
+    this.loginFormData.controls['password'].updateValueAndValidity();
   }
 }

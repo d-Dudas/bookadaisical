@@ -1,15 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bookadaisical</title>
-</head>
-<body>
-    <app-navbar></app-navbar>
-    <app-user-info></app-user-info>
-    <div class="popular-books-container">
-        <app-book-preview *ngFor="let book of books" [book]="book" class="popular-books-content"></app-book-preview>
-    </div>
-</body>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="landing-page.component.css">
+        <style type="text/css">
+            
+        </style>
+        <title>Bookadaisical</title>
+    </head>
+    
+    <body>
+        <div class="top-page-container">
+            <img class="center" src="../../../assets/images/top-landing-page.png"/>
+        </div>
+        <div class="landing-page-separator">
+            <div class="landing-page-separator-container">
+                <h2 class="landing-page-separator-content">Popular books</h2>
+            </div>
+        </div>
+        <div class="landing-page-top-books">
+            <div class="top-landing-page">
+                <img src="url" alt="">
+            </div>
+            <div class="carousel-container">
+                <p-carousel
+                    [value]="topBooks"
+                    [numVisible]="4"
+                    [numScroll]="1"
+                    [circular]="true"
+                    [responsiveOptions]="responsiveOptions">
+                    <ng-template
+                        let-product
+                        pTemplate="item">
+                        <div class="popular-books-content">
+                            <app-book-preview
+                                [book]="product">
+                            </app-book-preview>
+                        </div>
+                    </ng-template>
+                </p-carousel>
+            </div>
+        </div>
+        <div class="landing-page-separator">
+            <div class="landing-page-separator-container">
+                <h2 class="landing-page-separator-content">Recenlty added books</h2>
+            </div>
+        </div>
+        <div class="landing-page-recently-added-books">
+            <div class="carousel-container">
+                <p-carousel
+                    [value]="recentlyAddedBooks"
+                    [numVisible]="4"
+                    [numScroll]="1"
+                    [circular]="true"
+                    [responsiveOptions]="responsiveOptions">
+                    <ng-template
+                        let-product
+                        pTemplate="item">
+                        <div class="popular-books-content">
+                            <app-book-preview
+                                [book]="product">
+                            </app-book-preview>
+                        </div>
+                    </ng-template>
+                </p-carousel>
+            </div>
+        </div>
+        <div class="landing-page-separator">
+            <div class="landing-page-separator-container">
+                <h2 class="landing-page-separator-content">Most popular genres</h2>
+            </div>
+        </div>
+        <div class="landing-page-most-popular-genres">
+            <div class="landing-page-most-popular-genres-container">
+                <div
+                    *ngFor="let popularGenre of mostPopularCategories"
+                    class="landing-page-most-popular-genres-container-item"
+                    [routerLink]="['/search']" [queryParams]="{ genre: popularGenre.genre}">
+                    <app-book-preview class="landing-page-most-popular-genres-book"
+                        [book]="popularGenre.book">
+                    </app-book-preview>
+                    <div class="landing-page-most-popular-genre-card">
+                        <h1>{{ getGenreString(popularGenre.genre).split('_').join(' ') }}</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="landing-page-separator">
+            <div class="landing-page-separator-container">
+                <h2 class="landing-page-separator-content"></h2>
+            </div>
+        </div>
+        <div class="landing-page-footer">
+        </div>
+    </body>
 </html>
+

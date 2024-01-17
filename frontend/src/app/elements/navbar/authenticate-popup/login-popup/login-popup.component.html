@@ -1,27 +1,68 @@
 <div class="login-popup-content" *ngIf="isLoginPopupVisible">
-    <form class="login-form" (ngSubmit)="submitLoginForm()" #loginForm="ngForm">
-        <div class="login-form-input-container">
-            <label for="identifier">Username or email</label>
-            <input type="text" name="identifier" [(ngModel)]="loginFormData.identifier" required #identifier="ngModel">
-        </div>
-        <div class="login-form-input-container">
-            <label for="password">Password</label>
-            <input [type]="passwordInputType" name="password" [(ngModel)]="loginFormData.password" #password="ngModel">
-        </div>
-        <div class="login-form-show-password-container">
-            <label for="showPassword">Show password</label>
-            <input type="checkbox" name="showPassword" (change)="togglePasswordVisibility()">
-        </div>
-        <div class="login-form-remember-me-container">
-            <label for="rememberMe">Remember me</label>
-            <input type="checkbox" name="rememberMe" (change)="toggleRememberMe()">
-        </div>
-        <button type="submit">Submit</button>
+    <form
+        class="login-form"
+        (ngSubmit)="submitLoginForm()"
+        #loginForm="ngForm"
+        [formGroup]="loginFormData">
+
+        <mat-form-field appearance="outline" class="login-form-input-field">
+            <mat-label>Username or email</mat-label>
+            <input
+                formControlName="identifier"
+                matInput
+                placeholder="some@mail.example"
+                required="true"
+                (ngModelChange)="updateIdentificatorError()">
+            @if (errors.wrongIdentificator) {
+                <mat-error>Username or email not found.</mat-error>
+            }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Enter your password</mat-label>
+            <input
+                matInput
+                [type]="isPasswordHidden ? 'password' : 'text'"
+                required="true"
+                formControlName="password"
+                (ngModelChange)="updatePasswordError()">
+            <button
+                mat-icon-button
+                matSuffix
+                style="color: black"
+                (click)="isPasswordHidden = !isPasswordHidden"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="isPasswordHidden">
+                <mat-icon>
+                    {{isPasswordHidden ? 'visibility_off' : 'visibility'}}
+                </mat-icon>
+            </button>
+            @if (errors.wrongPassword) {
+                <mat-error>Wrong password.</mat-error>
+            }
+        </mat-form-field>
+
+        <mat-slide-toggle
+            class="login-form-remember-me-slider"
+            formControlName="rememberMe">
+            Remember me
+        </mat-slide-toggle>
+        <button
+            class="login-form-submit-button"
+            mat-raised-button
+            type="submit">
+            Submit
+        </button>
     </form>
+    <mat-divider></mat-divider>
     <div class="dont-have-account-box">
         <div class="dont-have-account-content">
-            <p>Don't have account?</p>
-            <button (click)="showRegisterPopup()">Create one!</button>
+            <p>Don't have an account yet?</p>
+            <button
+                mat-button
+                (click)="showRegisterPopup()">
+                Create one!
+            </button>
         </div>
     </div>
 </div>

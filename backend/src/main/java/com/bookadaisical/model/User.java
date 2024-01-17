@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -55,4 +56,20 @@ public class User {
     @OneToMany(mappedBy = "uploader")
     @JsonIgnore
     private Set<Book> uploadedBooks;
+
+    @OneToOne(mappedBy = "user", orphanRemoval = true)
+    private Image image;
+
+    public User(String username, String email, String password, int currentPoints, int totalPoints, int specialCurrency,
+            boolean isAdmin, Image image) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.currentPoints = currentPoints;
+        this.totalPoints = totalPoints;
+        this.specialCurrency = specialCurrency;
+        this.isAdmin = isAdmin;
+        this.image = image;
+    }
+
 }

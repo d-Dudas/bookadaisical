@@ -15,7 +15,7 @@ export class AuthenticatePopupComponent {
   isPopupVisible: boolean = false;
   isLoginPopupVisible: boolean = false;
   isRegisterPopupVisible: boolean = false;
-  popupButtonText: string = this.isPopupVisible ? "Hide popup" : "Show popup";
+  popupButtonText: string = this.isPopupVisible ? "Hide popup" : "Login";
 
   constructor(private authService: AuthService,
               private router: Router,
@@ -26,11 +26,16 @@ export class AuthenticatePopupComponent {
     this.store.select(selectIsAuthenticated).subscribe((is) => {this.isAuthenticated = is;});
   }
 
-  showPopup(event: MouseEvent)
+  showPopup()
+  {
+    this.store.dispatch(showAuthPopup());
+  }
+
+  hidePopup(event: MouseEvent)
   {
     if(event.target === event.currentTarget)
     {
-      this.isPopupVisible ? this.store.dispatch(hideAuthPopup()) : this.store.dispatch(showAuthPopup());
+      this.store.dispatch(hideAuthPopup())
       this.isRegisterPopupVisible = false;
     }
   }

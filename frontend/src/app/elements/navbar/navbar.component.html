@@ -1,5 +1,38 @@
-<nav class="navbar">
-    <app-authenticate-popup></app-authenticate-popup>
-    <a routerLink="/home">Home</a>
-    <a routerLink="/search">Search</a>
-</nav>
+<div class="navbar-placeholder">
+    <mat-toolbar class="navbar-container">
+        <div class="navbar-pages navbar-buttons">
+            <button
+                class="navbar-button"
+                mat-button
+                routerLink="/home">
+                Home
+            </button>
+            <button
+                class="navbar-button"
+                mat-button
+                routerLink="/search">
+                Search
+            </button>
+        </div>
+        <div class="navbar-title">
+            <span routerLink="/home">Bookadaisical</span>
+        </div>
+        <div class="navbar-options navbar-buttons">
+            <button
+                class="navbar-button"
+                mat-button
+                *ngIf="isAuthenticated"
+                [routerLink]="['/upload-new-book']">
+                <mat-icon>book</mat-icon>
+            </button>
+            <button
+                class="navbar-button"
+                mat-button
+                *ngIf="isAuthenticated"
+                [routerLink]="['/account', username]">
+                <mat-icon>person</mat-icon>
+            </button>
+            <app-authenticate-popup></app-authenticate-popup>
+        </div>
+    </mat-toolbar>
+</div>
