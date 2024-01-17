@@ -97,7 +97,7 @@
                         mat-raised-button
                         extended
                         type="button"
-                        *ngIf="visitorUsername !== uploaderUsername"
+                        *ngIf="visitorUsername !== uploaderUsername && isForBuy()"
                         (click)="onBuyClicked();">
                         <mat-icon>chat</mat-icon>
                         Buy
@@ -107,7 +107,7 @@
                         extended
                         type="button"
                         style="background-color: lightblue;"
-                        *ngIf="visitorUsername !== uploaderUsername"
+                        *ngIf="visitorUsername !== uploaderUsername && isForSwap()"
                         (click)="onSwapClicked()">
                         <mat-icon>swap_horiz</mat-icon>
                         Swap

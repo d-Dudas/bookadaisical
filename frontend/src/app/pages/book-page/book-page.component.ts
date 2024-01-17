@@ -194,4 +194,14 @@ export class BookPageComponent implements OnInit {
 
     return tradingOptions;
   }
+
+  isForBuy()
+  {
+    return this.book?.tradingOptions.includes(TradingOption.ALL) || this.book?.tradingOptions.includes(TradingOption.CURRENCY) || this.book?.tradingOptions.includes(TradingOption.POINTS);
+  }
+
+  isForSwap()
+  {
+    return this.book?.tradingOptions.includes(TradingOption.ALL) || this.book?.tradingOptions.includes(TradingOption.SWAP);
+  }
 }
