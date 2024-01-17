@@ -42,7 +42,7 @@
                       <mat-option
                           *ngFor="let genre of genres"
                           [value]="genre">
-                          {{ genre }}
+                          {{ genre.split('_').join(' ') }}
                       </mat-option>
                   </mat-select>
               </mat-form-field>
@@ -53,7 +53,7 @@
                       <mat-option
                           *ngFor="let condition of conditions"
                           [value]="condition">
-                          {{ condition }}
+                          {{ condition.split('_').join(' ') }}
                       </mat-option>
                   </mat-select>
               </mat-form-field>
@@ -75,7 +75,7 @@
                       <mat-option
                           *ngFor="let artisticMovement of artisticMovements"
                           [value]="artisticMovement">
-                          {{ artisticMovement }}
+                          {{ artisticMovement.split('_').join(' ') }}
                       </mat-option>
                   </mat-select>
               </mat-form-field>
@@ -86,7 +86,7 @@
                       <mat-option
                           *ngFor="let targetAudience of targetAudiences"
                           [value]="targetAudience">
-                          {{ targetAudience }}
+                          {{ targetAudience.split('_').join(' ') }}
                       </mat-option>
                   </mat-select>
               </mat-form-field>
@@ -97,7 +97,7 @@
                       <mat-option
                           *ngFor="let tradingOption of tradingOptions"
                           [value]="tradingOption">
-                          {{ tradingOption }}
+                          {{ tradingOption.split('_').join(' ') }}
                       </mat-option>
                   </mat-select>
               </mat-form-field>

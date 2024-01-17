@@ -59,4 +59,17 @@ public class User {
 
     @OneToOne(mappedBy = "user", orphanRemoval = true)
     private Image image;
+
+    public User(String username, String email, String password, int currentPoints, int totalPoints, int specialCurrency,
+            boolean isAdmin, Image image) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.currentPoints = currentPoints;
+        this.totalPoints = totalPoints;
+        this.specialCurrency = specialCurrency;
+        this.isAdmin = isAdmin;
+        this.image = image;
+    }
+
 }

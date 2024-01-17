@@ -86,21 +86,22 @@ export class AddBookPageComponent {
 
   isPriceNecessary()
   {
-    return this.bookDetails.getRawValue().tradingOption?.includes(TradingOption.ALL) ||
-            this.bookDetails.getRawValue().tradingOption?.includes(TradingOption.CURRENCY) ||
-            this.bookDetails.getRawValue().tradingOption?.includes(TradingOption.POINTS);
+    console.log(this.bookDetails.getRawValue().tradingOption);
+    return this.bookDetails.getRawValue().tradingOption?.map(x => x.toUpperCase()).includes(TradingOption.ALL) ||
+            this.bookDetails.getRawValue().tradingOption?.map(x => x.toUpperCase()).includes(TradingOption.CURRENCY) ||
+            this.bookDetails.getRawValue().tradingOption?.map(x => x.toUpperCase()).includes(TradingOption.POINTS);
   }
 
   isPriceInCurrency()
   {
-    return this.bookDetails.getRawValue().tradingOption?.includes(TradingOption.ALL) ||
-            this.bookDetails.getRawValue().tradingOption?.includes(TradingOption.CURRENCY);
+    return this.bookDetails.getRawValue().tradingOption?.map(x => x.toUpperCase()).includes(TradingOption.ALL) ||
+            this.bookDetails.getRawValue().tradingOption?.map(x => x.toUpperCase()).includes(TradingOption.CURRENCY);
   }
 
   isPriceInPoints()
   {
-    return this.bookDetails.getRawValue().tradingOption?.includes(TradingOption.ALL) ||
-            this.bookDetails.getRawValue().tradingOption?.includes(TradingOption.POINTS);
+    return this.bookDetails.getRawValue().tradingOption?.map(x => x.toUpperCase()).includes(TradingOption.ALL) ||
+            this.bookDetails.getRawValue().tradingOption?.map(x => x.toUpperCase()).includes(TradingOption.POINTS);
   }
 
   onFilesSelected(event: any): void {

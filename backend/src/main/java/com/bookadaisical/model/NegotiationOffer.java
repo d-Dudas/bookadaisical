@@ -71,4 +71,20 @@ public class NegotiationOffer {
         this.lastUpdated = LocalDateTime.now();
         negotiationStatus = NegotiationStatus.ONGOING;
     }
+
+    public NegotiationOffer(
+        User initiator,
+        User responder,
+        Set<Book> initiatorSelectedBooks,
+        Set<Book> responderSelectedBooks,
+        NegotiationStatus negotiationStatus
+    )
+    {
+        this.initiator = initiator;
+        this.responder = responder;
+        this.initiatorSelectedBooks = initiatorSelectedBooks;
+        this.responderSelectedBooks = responderSelectedBooks;
+        this.lastUpdated = LocalDateTime.now();
+        this.negotiationStatus = negotiationStatus;
+    }
 }

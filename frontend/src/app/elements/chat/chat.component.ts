@@ -45,6 +45,22 @@ export class ChatComponent {
     );
   }
 
+  @Input()
+  set receiverUsernamex(value: string)
+  {
+    console.log(value);
+    this.receiverUsername = value;
+    this.chatService.getChatHistory(this.senderUsername, this.receiverUsername, this.messagePage, this.messagesPerPage).subscribe(
+      (chats) => {
+        this.messages = chats.content;
+      },
+      (error) => {
+        console.error('Error fetching chat history:', error);
+      }
+    );
+
+  }
+
   formatSentAt(dateArray: number[]): string {
     const date = new Date(dateArray[0], dateArray[1] - 1, dateArray[2], dateArray[3], dateArray[4], dateArray[5], dateArray[6] / 1000000);
     return date.toISOString();

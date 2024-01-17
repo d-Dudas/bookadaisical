@@ -17,14 +17,10 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "images")
@@ -55,4 +51,9 @@ public class Image {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    public Image(byte[] imageData)
+    {
+        this.imageData = imageData;
+    }
 }

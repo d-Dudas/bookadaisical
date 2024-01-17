@@ -23,8 +23,6 @@ import com.bookadaisical.repository.ChatRepository;
 import com.bookadaisical.repository.UserRepository;
 import com.bookadaisical.service.interfaces.IChatService;
 
-import jakarta.annotation.Nonnull;
-
 @Service
 public class ChatService implements IChatService {
 

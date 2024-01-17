@@ -70,6 +70,10 @@
                         (selectionChange)="updateBookList()"
                         formControlName="author">
                         <mat-option
+                            [value]="''">
+                            All
+                        </mat-option>
+                        <mat-option
                             *ngFor="let author of authors"
                             [value]="author">
                             {{ author }}

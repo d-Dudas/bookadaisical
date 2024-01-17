@@ -244,6 +244,7 @@
     border-radius: 10px;
     cursor: pointer;
     transition: 0.2s;
+    margin: 1vh 0;
 }
 
 .negotiation-grid-item:hover

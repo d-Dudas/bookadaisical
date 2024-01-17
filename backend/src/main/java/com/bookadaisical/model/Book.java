@@ -66,7 +66,7 @@ public class Book {
     @Column(nullable = false)
     private String author;
 
-    private int numViews;
+    private Integer numViews;
     private String description;
 
     private Integer priceCurrency;
@@ -126,4 +126,26 @@ public class Book {
 
     @ManyToMany(mappedBy = "responderSelectedBooks")
     Set<NegotiationOffer> selectedInNegotiationsByResponder;
+
+    public Book(User uploader, String title, String author, Integer numViews, String description, Integer priceCurrency,
+            Integer pricePoints, int yearOfPublication, ArtisticMovement artisticMovement,
+            TargetAudience targetAudience, Condition bookCondition, Set<Genre> genres,
+            Set<TradingOption> tradingOptions) {
+        this.uploader = uploader;
+        this.title = title;
+        this.author = author;
+        this.numViews = numViews;
+        this.description = description;
+        this.priceCurrency = priceCurrency;
+        this.pricePoints = pricePoints;
+        this.yearOfPublication = yearOfPublication;
+        this.artisticMovement = artisticMovement;
+        this.targetAudience = targetAudience;
+        this.bookCondition = bookCondition;
+        this.genres = genres;
+        this.tradingOptions = tradingOptions;
+        this.isActive = true;
+        this.createdOn = LocalDateTime.now();
+        this.lastModified = this.createdOn;
+    }
 }

@@ -29,6 +29,8 @@ export class AccountPageComponent {
   @ViewChild('drawer') drawer!: MatDrawer;
   public chatMateUsername: string | null = null;
 
+  private isChatOpened: boolean = false;
+
   constructor(private accountService: AccountService,
               private route: ActivatedRoute,
               private router: Router,
@@ -154,8 +156,14 @@ export class AccountPageComponent {
 
   public openChatWith(username: string)
   {
+    if(this.drawer.opened)
+    {
+      if(this.chatMateUsername === username)
+        this.drawer.toggle();
+    } else {
+      this.drawer.toggle();
+    }
     this.chatMateUsername = username;
-    this.drawer.toggle();
   }
 
   public printNegotiationStatus(status: any): string
