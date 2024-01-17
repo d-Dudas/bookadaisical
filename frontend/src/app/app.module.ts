@@ -43,6 +43,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { DatePipe } from '@angular/common';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 @NgModule({
   declarations: [
@@ -91,7 +92,8 @@ import { DatePipe } from '@angular/common';
     MatExpansionModule,
     MatTabsModule,
     MatExpansionModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MultiSelectModule
   ],
   providers: [DatePipe],
   bootstrap: [RootComponent]

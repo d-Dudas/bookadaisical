@@ -16,14 +16,14 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 })
 export class SearchPageComponent {
   books: Book[] = [];
-  genreOptions = this.getEnumValues(Genres);
+  genreOptions = this.getEnumValues(Genres).map(option => ({ label: this.formatGenre(option), value: option }));
   targetAudienceOptions = this.getEnumValues(TargetAudience);
   artisticMovementOptions = this.getEnumValues(ArtisticMovement);
   conditionOptions = this.getEnumValues(Condition);
   authors: string[] = [];
 
   filter: Filter = {
-    genre: [this.genreOptions[0]],
+    genre: [this.genreOptions[0].value],
     targetAudience: this.targetAudienceOptions[0],
     artisticMovement: this.artisticMovementOptions[0],
     condition: this.conditionOptions[0],
@@ -63,7 +63,7 @@ export class SearchPageComponent {
       }
     })
     this.activatedRoute.queryParams.subscribe(params => {
-        const genreValue = params['genre'] ? (Array.isArray(params['genre']) ? params['genre'] : [params['genre']]) : [this.genreOptions[0]];
+        const genreValue = params['genre'] ? (Array.isArray(params['genre']) ? params['genre'] : [params['genre']]) : [this.genreOptions[0].value];
         this.filterForm.controls.genre.setValue(genreValue);
         this.filterForm.controls.targetAudience.setValue(params['targetAudience'] || this.targetAudienceOptions[0]);
         this.filterForm.controls.artisticMovement.setValue(params['artisticMovement'] || this.artisticMovementOptions[0]);
@@ -77,6 +77,11 @@ export class SearchPageComponent {
     return Object.keys(e).filter(key => isNaN(Number(key)));
   }
 
+
+  formatGenre(genre: string): string {
+    return (genre.charAt(0) + genre.slice(1).toLowerCase()).split('_').join(' ');
+  }
+
   public updateBookList()
   {
     this.filter = this.filterForm.getRawValue() as Filter;
@@ -87,7 +92,8 @@ export class SearchPageComponent {
 
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
-      queryParams: this.filterForm.getRawValue(),
+      queryParams: this.filterForm.value, //aici in loc the value era getRawValue()
     });
   }
+
 }

@@ -10,22 +10,21 @@
     </div>
     <div class="content">
         <div class="filter-fields-container">
-            <form class="filter-fields" [formGroup]="filterForm">
-
-                <mat-form-field>
-                    <mat-label>Genre</mat-label>
-                    <mat-select
-                        multiple
-                        (selectionChange)="updateBookList()"
-                        formControlName="genre">
-                        <mat-option
-                            *ngFor="let genre of genreOptions"
-                            [value]="genre">
-                            {{ (genre.charAt(0) + genre.slice(1).toLowerCase()).split('_').join(' ') === 'Sci fi' ? 'Sci-fi' : (genre.charAt(0) + genre.slice(1).toLowerCase()).split('_').join(' ') }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-
+        
+            <form class="filter-fields" [formGroup]="filterForm">            
+                    <label style="height: 10px;">Genres</label>
+                    <p-multiSelect
+                        inputId="float-label"
+                        [options]="genreOptions"
+                        formControlName="genre"
+                        (onChange)="updateBookList()"
+                        [filter]="true"
+                        [showToggleAll]="false"
+                        display="chip" 
+                        [showClear]="true"
+                        placeholder="Select genres"
+                    ></p-multiSelect>
+                    
                 <mat-form-field>
                     <mat-label>Target audience</mat-label>
                     <mat-select
